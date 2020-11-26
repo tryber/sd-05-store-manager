@@ -38,7 +38,7 @@ productRouter.get('/:id', async (req, res) => {
   try {
     const product = await productService.findById(id);
     // console.log(product);
-   return  res.status(200).json(product);
+    return res.status(200).json(product);
   } catch (err) {
     if (err.err.code === 'invalid_data') {
       return res.status(422).json(err);
@@ -50,16 +50,17 @@ productRouter.get('/:id', async (req, res) => {
 
 productRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
-  
+  const { name, quantity } = req.body;
+
   try {
-    const product = await productService.findById(id);
-    // console.log(product);
-   return  res.status(200).json(product);
+    const updatedProduct = await productService.update(id, name, quantity);
+
+    return res.status(200).json(updatedProduct);
   } catch (err) {
     if (err.err.code === 'invalid_data') {
       return res.status(422).json(err);
     }
-    console.error(err);
+    // console.error(err);
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });

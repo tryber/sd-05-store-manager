@@ -39,7 +39,7 @@ const add = async (name, quantity) => {
     };
   }
 
-  return (addedProduct = await productModel.add(name, quantity));
+  return await productModel.add(name, quantity);
 };
 
 const findById = async (id) => {
@@ -61,9 +61,61 @@ const findById = async (id) => {
     };
   }
 
-  // console.log(ObjectId.isValid(id));
-
   return product;
 };
 
-module.exports = { add, findById };
+const update = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+
+  if (name.length < 5) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long',
+      },
+    };
+  }
+
+  if (quantity < 1) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1',
+      },
+    };
+  }
+
+  if (!Number.isInteger(quantity)) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be a number',
+      },
+    };
+  }
+
+  const updatedProduct = await productModel.update(id, name, quantity);
+  // console.log(updatedProduct);
+  if (!updatedProduct) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+
+  return {
+    _id: ObjectId(id),
+    name,
+    quantity
+  };
+}
+module.exports = { add, findById, update };
