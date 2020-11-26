@@ -15,4 +15,4 @@ const validateId = rescue(async (req, res, next) => {
   next();
 });
 
-module.exports = validateId
+module.exports = validateId;

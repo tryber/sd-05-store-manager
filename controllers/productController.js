@@ -1,8 +1,7 @@
 const express = require('express');
 const rescue = require('express-rescue');
 const products = require('../models/products');
-const validateProduct = require('../middleware/productValidation');
-const validateId = require('../middleware/idValidation');
+const { validateProduct, validateId } = require('../middleware/index');
 
 const productController = express.Router();
 
