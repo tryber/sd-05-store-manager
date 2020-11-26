@@ -32,7 +32,7 @@ salesController.get('/:id', async (req, res) => {
   try {
     // console.log('entrou 1', id);
     const sales = await salesService.findById(id);
-    res.status(200).json({ sales });
+    return res.status(200).json({ sales });
   } catch (err) {
     if (err.code === 'not_found') {
       return res.status(404).json({ err: { code: err.code, message: err.message } });
