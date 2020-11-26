@@ -24,5 +24,4 @@ saleController.get('/', rescue(async (_, res) => {
   res.status(200).json({ sales: findAllSales });
 }));
 
-
 module.exports = saleController;
