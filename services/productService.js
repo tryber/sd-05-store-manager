@@ -15,46 +15,20 @@ class CodeError extends Error {
 const add = async (name, quantity) => {
   if (name.length < 5) {
     throw new CodeError('"name" length must be at least 5 characters long', 'invalid_data');
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: '"name" length must be at least 5 characters long',
-    //   },
-    // };
   }
 
   if (quantity < 1) {
     throw new CodeError('"quantity" must be larger than or equal to 1', 'invalid_data');
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: '"quantity" must be larger than or equal to 1',
-    //   },
-    // };
   }
 
   if (!Number.isInteger(quantity)) {
     throw new CodeError('"quantity" must be a number', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: '"quantity" must be a number',
-    //   },
-    // };
   }
 
   const isThisProductAlreaadyDocumented = await productModel.findProductByName(name);
 
   if (isThisProductAlreaadyDocumented) {
     throw new CodeError('Product already exists', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: 'Product already exists',
-    //   },
-    // };
   }
 
   return productModel.add(name, quantity);
@@ -63,24 +37,10 @@ const add = async (name, quantity) => {
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw new CodeError('Wrong id format', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: 'Wrong id format',
-    //   },
-    // };
   }
   const product = await productModel.findById(id);
   if (!product) {
     throw new CodeError('Wrong id format', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: 'Wrong id format',
-    //   },
-    // };
   }
 
   return product;
@@ -89,58 +49,21 @@ const findById = async (id) => {
 const update = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) {
     throw new CodeError('Wrong id format', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: 'Wrong id format',
-    //   },
-    // };
   }
 
   if (name.length < 5) {
     throw new CodeError('"name" length must be at least 5 characters long', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: '"name" length must be at least 5 characters long',
-    //   },
-    // };
   }
 
   if (quantity < 1) {
     throw new CodeError('"quantity" must be larger than or equal to 1', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: '"quantity" must be larger than or equal to 1',
-    //   },
-    // };
   }
 
   if (!Number.isInteger(quantity)) {
     throw new CodeError('"quantity" must be a number', 'invalid_data');
-
-    // throw {
-    //   err: {
-    //     code: 'invalid_data',
-    //     message: '"quantity" must be a number',
-    //   },
-    // };
   }
 
   await productModel.update(id, name, quantity);
-  // console.log(updatedProduct);
-  // if (!updatedProduct) {
-  //   throw {
-  //     err: {
-  //       code: 'invalid_data',
-  //       message: 'Wrong id format',
-  //     },
-  //   };
-  // }
 
   return {
     _id: ObjectId(id),
