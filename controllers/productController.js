@@ -13,9 +13,9 @@ productRouter.post('/', async (req, res) => {
 
     res.status(201).json(addedValidatedProduct);
   } catch (err) {
-    if (err.err.code === 'invalid_data') {
+    if (err.code === 'invalid_data') {
       // console.log((err));
-      return res.status(422).json(err);
+      return res.status(422).json({err: {code: err.code, message: err.message}});
     }
     console.error(err);
     res.status(500).json({ message: 'Algo deu errado' });
