@@ -24,6 +24,7 @@ const isValid = async (name, quantity) => {
     };
   }
   if (typeof quantity !== 'number') {
+    // if (!Number.isInteger(quantity)) {
     throw {
       code: 'invalid_data',
       message: '"quantity" must be a number',
@@ -56,4 +57,22 @@ const getById = async (id) => {
   return productById;
 };
 
-module.exports = { create, getById };
+const updateById = async (id, name, quantity) => {
+  const validProduct = await isValid(name, quantity);
+  if (!validProduct) return false;
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  await prodModel.updateById(id, name, quantity);
+  return {
+    _id: ObjectId(id),
+    name,
+    quantity,
+  };
+  // para limitar objeto retornado que seria enorme
+};
+
+module.exports = { create, getById, updateById };

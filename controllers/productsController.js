@@ -60,4 +60,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// 3 - Crie um endpoint para atualizar um produto
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  try {
+    const updatedProd = await prodService.updateById(id, name, quantity);
+    res.status(200).json(updatedProd);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno aiaiai' });
+  }
+});
+
 module.exports = router;
