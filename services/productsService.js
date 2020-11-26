@@ -4,9 +4,30 @@ const prodModel = require('../models/productsModel');
 
 const isValid = async (name, quantity) => {
   const nameInDB = await prodModel.findProdByName(name);
-  if (nameInDB) return false;
-  if (!name || name.length <= 5) return false;
-  if (!quantity || quantity <= 0 || !Number.isInteger(quantity)) return false;
+  if (nameInDB) {
+    throw {
+      code: 'invalid_data',
+      message: 'Product already exists',
+    };
+  }
+  if (name.length <= 5) {
+    throw {
+      code: 'invalid_data',
+      message: '"name" length must be at least 5 characters long',
+    };
+  }
+  if (quantity <= 0) {
+    throw {
+      code: 'invalid_data',
+      message: '"quantity" must be larger than or equal to 1',
+    };
+  }
+  if (typeof quantity !== 'number') {
+    throw {
+      code: 'invalid_data',
+      message: '"quantity" must be a number',
+    };
+  }
   return true;
 };
 

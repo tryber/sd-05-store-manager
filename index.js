@@ -22,5 +22,6 @@ app.use('/products', prodController);
 // app.use('/sales', require('./controllers/salesController'));
 
 // PORT LISTENER
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => console.log(`Sweet dreams are made of ${PORT} port (and baguettes!)`));

@@ -1,6 +1,8 @@
 const { Router } = require('express');
+
 const router = Router();
-const rescue = require('express-rescue');
+
+// const rescue = require('express-rescue');
 
 const prodService = require('../services/productsService');
 
@@ -15,7 +17,10 @@ router.post('/', async (req, res) => {
     if (!productCreated) return res.status(400).json({ message: 'Produto não foi criado' });
     return res.status(201).json(productCreated);
   } catch (err) {
-    console.log(err.message);
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.error(err);
     res.status(500).json({ message: 'Erro interno aiaiai' });
   }
 });
