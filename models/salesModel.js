@@ -10,4 +10,20 @@ const getAll = async () => getCollection('sales').then((sales) => sales.find().t
 
 const findById = async (id) => getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
 
-module.exports = { addSale, getAll, findById };
+const update = async (id, productId, quantity) =>
+  getCollection('sales').then((sales) => {
+    console.log('model');
+    // console.log(id, productId, quantity);
+    // https://issue.life/questions/39071359
+    return sales.updateOne(
+      {
+        _id: ObjectId(id),
+        'itensSold.productId': productId,
+      },
+      {
+        $set: { 'itensSold.$.quantity': quantity },
+      },
+    );
+  });
+
+module.exports = { addSale, getAll, findById, update };

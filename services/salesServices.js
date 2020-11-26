@@ -26,8 +26,6 @@ const addSale = async (itensSold) => {
 
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) {
-    // console.log('entrou isvalid');
-
     throw new CodeError('Wrong product ID or invalid quantity', 'invalid_data');
   }
   // console.log('entrou no service find id');
@@ -43,4 +41,31 @@ const findById = async (id) => {
   return sale;
 };
 
-module.exports = { addSale, findById };
+const update = async (id, productId, quantity) => {
+  // console.log(id, productId, quantity);
+  if (!ObjectId.isValid(id)) {
+    console.log('object is valid?');
+    throw new CodeError('Wrong product ID or invalid quantity', 'invalid_data');
+  }
+
+  if (quantity < 1 || typeof quantity !== 'number') {
+    console.log('quantity');
+    throw new CodeError('Wrong product ID or invalid quantity', 'invalid_data');
+  }
+
+  console.log(id, productId, quantity);
+
+  await salesModel.update(id, productId, quantity);
+
+  return {
+    _id: id,
+    itensSold: [
+      {
+        productId,
+        quantity,
+      },
+    ],
+  };
+};
+
+module.exports = { addSale, findById, update };

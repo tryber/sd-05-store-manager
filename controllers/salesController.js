@@ -40,4 +40,18 @@ salesController.get('/:id', async (req, res) => {
   }
 });
 
+salesController.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { productId, quantity } = req.body[0];
+  // console.log(productId, quantity);
+  try {
+    const updateSale = await salesService.update(id, productId, quantity);
+    return res.status(200).json(updateSale);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+  }
+});
+
 module.exports = salesController;
