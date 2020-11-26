@@ -40,8 +40,8 @@ productRouter.get('/:id', async (req, res) => {
     // console.log(product);
     return res.status(200).json(product);
   } catch (err) {
-    if (err.err.code === 'invalid_data') {
-      return res.status(422).json(err);
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({err: {code: err.code, message: err.message}});
     }
     console.error(err);
     res.status(500).json({ message: 'Algo deu errado' });
@@ -57,8 +57,8 @@ productRouter.put('/:id', async (req, res) => {
 
     return res.status(200).json(updatedProduct);
   } catch (err) {
-    if (err.err.code === 'invalid_data') {
-      return res.status(422).json(err);
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({err: {code: err.code, message: err.message}});
     }
     // console.error(err);
     res.status(500).json({ message: 'Algo deu errado' });
