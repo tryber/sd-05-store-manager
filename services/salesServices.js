@@ -24,4 +24,23 @@ const addSale = async (itensSold) => {
   return salesModel.addSale(itensSold);
 };
 
-module.exports = { addSale };
+const findById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    // console.log('entrou isvalid');
+
+    throw new CodeError('Wrong product ID or invalid quantity', 'invalid_data');
+  }
+  // console.log('entrou no service find id');
+
+  const sale = await salesModel.findById(id);
+
+  // console.log(sale);
+
+  if (!sale) {
+    throw new CodeError('Sale not found', 'not_found');
+  }
+
+  return sale;
+};
+
+module.exports = { addSale, findById };
