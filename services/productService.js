@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 const add = async (name, quantity) => {
   if (name.length < 5) {
@@ -18,22 +19,22 @@ const add = async (name, quantity) => {
     };
   }
 
-  if (!Number.isInteger(quantity)){
+  if (!Number.isInteger(quantity)) {
     throw {
       err: {
         code: 'invalid_data',
-        message: "\"quantity\" must be a number",
+        message: '"quantity" must be a number',
       },
     };
   }
 
   const isThisProductAlreaadyDocumented = await productModel.findProductByName(name);
 
-  if(isThisProductAlreaadyDocumented) {
+  if (isThisProductAlreaadyDocumented) {
     throw {
       err: {
         code: 'invalid_data',
-        message: "Product already exists",
+        message: 'Product already exists',
       },
     };
   }
@@ -41,4 +42,30 @@ const add = async (name, quantity) => {
   return (addedProduct = await productModel.add(name, quantity));
 };
 
-module.exports = { add };
+const findById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+  const product = await productModel.findById(id);
+  console.log('servovce');
+  
+  if (!product) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+
+  console.log(ObjectId.isValid(id));
+
+  return product;
+};
+
+module.exports = { add, findById };
