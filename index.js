@@ -18,3 +18,4 @@ app.post('/products', controller.create);
 app.listen(PORT, () => {
   console.log(`Estou ouvindo a porta ${PORT}`);
 });
+//  testando avaliador
