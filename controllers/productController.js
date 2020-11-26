@@ -69,7 +69,7 @@ productRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const productDeleted = await productService.exclude(id)
+    const productDeleted = await productService.exclude(id);
     return res.status(200).json(productDeleted);
   } catch (err) {
     if (err.code === 'invalid_data') {
