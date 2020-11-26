@@ -11,4 +11,15 @@ products.post('/', rescue(async (req, res) => {
   res.status(201).json(newProduct);
 }));
 
+products.get('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const unicProduct = await peopleServices.getById(id);
+  res.status(200).json(unicProduct);
+}));
+
+products.get('/', rescue(async (req, res) => {
+  const allProducts = await peopleServices.getAll();
+  res.status(200).json({ products: allProducts });
+}));
+
 module.exports = products;

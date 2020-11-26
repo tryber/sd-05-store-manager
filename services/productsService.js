@@ -1,6 +1,21 @@
 const model = require('../models/productsModel');
 
+const getAll = async () => model.getAll();
+
+const getById = async (id) => {
+  const product = await model.getById(id);
+  if (!product) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return product;
+};
+
 const create = async (name, quantity) => {
+  const isProductRegistered = await model.getByName(name);
+
   if (name.length < 5) {
     throw {
       code: 'invalid_data',
@@ -22,7 +37,6 @@ const create = async (name, quantity) => {
     };
   }
 
-  const isProductRegistered = await model.getByName(name);
   if (isProductRegistered) {
     throw {
       code: 'invalid_data',
@@ -35,4 +49,6 @@ const create = async (name, quantity) => {
 
 module.exports = {
   create,
+  getAll,
+  getById,
 };
