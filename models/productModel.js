@@ -15,7 +15,6 @@ const findById = async (id) => getCollection('products').then((res) => res.findO
 
 const update = async (id, name, quantity) =>
   getCollection('products').then((products) =>
-    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
 module.exports = { add, findProductByName, getAll, findById, update };

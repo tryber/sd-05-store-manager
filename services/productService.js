@@ -131,7 +131,7 @@ const update = async (id, name, quantity) => {
     // };
   }
 
-  const updatedProduct = await productModel.update(id, name, quantity);
+  await productModel.update(id, name, quantity);
   // console.log(updatedProduct);
   // if (!updatedProduct) {
   //   throw {
