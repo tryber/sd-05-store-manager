@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const getCollection = require('./getCollection');
 
 const create = async (name, quantity) =>
@@ -8,7 +9,14 @@ const create = async (name, quantity) =>
 const checkProduct = async (pName) =>
   getCollection('products').then((product) => product.findOne({ name: pName }));
 
+const getAll = async () => getCollection('products').then((product) => product.find().toArray());
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollection('products').then((product) => product.findOne(ObjectId(id)));
+};
 module.exports = {
   create,
   checkProduct,
+  getAll,
+  getById,
 };
