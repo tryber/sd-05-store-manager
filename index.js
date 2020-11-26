@@ -12,7 +12,7 @@ app.get('/', (request, response) => {
 
 app.use('/products', productController);
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);

@@ -27,6 +27,17 @@ const add = async (name, quantity) => {
     };
   }
 
+  const isThisProductAlreaadyDocumented = await productModel.findProductByName(name);
+
+  if(isThisProductAlreaadyDocumented) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: "Product already exists",
+      },
+    };
+  }
+
   return (addedProduct = await productModel.add(name, quantity));
 };
 
