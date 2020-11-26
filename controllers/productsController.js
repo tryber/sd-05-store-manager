@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
   const { name, quantity } = req.body;
   try {
     const productCreated = await prodService.create(name, quantity);
-    if (!productCreated) return res.status(400).json({ message: 'ruim' });
+    if (!productCreated) return res.status(400).json({ message: 'Produto não foi criado' });
     return res.status(201).json(productCreated);
   } catch (err) {
     console.log(err.message);
