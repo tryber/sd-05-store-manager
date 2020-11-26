@@ -4,7 +4,7 @@ const products = require('../models/products');
 const validateProduct = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
 
-  if (name.length < 5) {
+  if (name && name.length < 5) {
     res.status(422).json({
       err: {
         code: 'invalid_data',
@@ -22,7 +22,7 @@ const validateProduct = rescue(async (req, res, next) => {
     });
   }
 
-  if (!Number.isInteger(quantity)) {
+  if (quantity && !Number.isInteger(quantity)) {
     res.status(422).json({
       err: {
         code: 'invalid_data',

@@ -9,6 +9,15 @@ const add = async (collection, query) => {
   return { _id: result.insertedId, name, quantity };
 };
 
+const update = async (collection, id, query) => {
+  const { name, quantity } = query;
+  const db = await connection(collection);
+
+  await db.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
+
+  return { _id: ObjectId(id), name, quantity };
+};
+
 const findByName = async (collection, name) => {
   const db = await connection(collection);
   const result = await db.findOne({ name });
@@ -35,4 +44,5 @@ module.exports = {
   findByName,
   findById,
   findAll,
+  update,
 };

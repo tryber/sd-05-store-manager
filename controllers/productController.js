@@ -26,4 +26,12 @@ productController.get('/:id', validateId, rescue(async (req, res) => {
   res.status(200).json(findProduct);
 }));
 
+productController.put('/:id', validateProduct, validateId, rescue(async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const updateProduct = await products.update('products', id, { name, quantity });
+
+  res.status(200).json(updateProduct);
+}));
+
 module.exports = productController;
