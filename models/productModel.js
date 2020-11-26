@@ -1,5 +1,5 @@
-const getCollection = require('./get-Collection');
 const { ObjectId } = require('mongodb');
+const getCollection = require('./get-Collection');
 
 const add = async (name, quantity) =>
   getCollection('products')
@@ -13,7 +13,9 @@ const getAll = async () => getCollection('products').then((products) => products
 
 const findById = async (id) => getCollection('products').then((res) => res.findOne(ObjectId(id)));
 
-const update = async (id,name, quantity) => 
-getCollection('products').then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }) )
+const update = async (id, name, quantity) =>
+  getCollection('products').then((products) =>
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
+  );
 
 module.exports = { add, findProductByName, getAll, findById, update };

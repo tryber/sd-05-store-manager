@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
+
 const add = async (name, quantity) => {
   if (name.length < 5) {
     throw {
@@ -39,7 +40,7 @@ const add = async (name, quantity) => {
     };
   }
 
-  return await productModel.add(name, quantity);
+  return productModel.add(name, quantity);
 };
 
 const findById = async (id) => {
@@ -115,7 +116,7 @@ const update = async (id, name, quantity) => {
   return {
     _id: ObjectId(id),
     name,
-    quantity
+    quantity,
   };
-}
+};
 module.exports = { add, findById, update };

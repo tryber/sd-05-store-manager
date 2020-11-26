@@ -1,5 +1,5 @@
 const express = require('express');
-const rescue = require('express-rescue');
+// const rescue = require('express-rescue');
 const productModel = require('../models/productModel');
 const productService = require('../services/productService');
 
