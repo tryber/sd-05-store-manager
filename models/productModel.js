@@ -10,4 +10,8 @@ const findProductByName = async (name) =>
   getCollection('products')
   .then(products => products.findOne({name}))
 
-module.exports = { add, findProductByName };
+const getAll = async () =>
+getCollection('products')
+.then((products) => products.find().toArray())
+
+module.exports = { add, findProductByName, getAll };

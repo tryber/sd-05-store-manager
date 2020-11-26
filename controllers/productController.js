@@ -1,9 +1,10 @@
 const express = require('express');
 const rescue = require('express-rescue');
-// const productModel = require('../models/productModel');
+const productModel = require('../models/productModel');
 const productService = require('../services/productService');
 
 const productRouter = express.Router();
+
 productRouter.post('/', async (req, res) => {
   const { name, quantity } = req.body;
 
@@ -16,36 +17,51 @@ productRouter.post('/', async (req, res) => {
       // console.log((err));
       return res.status(422).json(err);
     }
+    console.error(err);
+    res.status(500).json({ message: 'Algo deu errado' });
   }
 });
-// productRouter.post(
-//   '/',
-//   rescue(async (req, res) => {
 
-//   }),
-// );
-// productRouter.post(
-//   '/',
-//   rescue(async (req, res) => {
+productRouter.get('/', async (req, res) => {
+  try {
+    const products = await productModel.getAll();
 
-//   }),
-// );
-// productRouter.post(
-//   '/',
-//   rescue(async (req, res) => {
+    res.status(200).json(products)
+  } catch (err) {
+    
+  }
+});
 
-//   }),
-// );
-// productRouter.post(
-//   '/',
-//   rescue(async (req, res) => {
+// productRouter.get('/', async (req, res) => {
+//   try {
 
-//   }),
-// );
-// productRouter.post(
-//   '/',
-//   rescue(async (req, res) => {
+//   } catch (err) {
+    
+//   }
+// });
 
-//   }),
-// );
+// productRouter.get('/', async (req, res) => {
+//   try {
+
+//   } catch (err) {
+    
+//   }
+// });
+
+// productRouter.get('/', async (req, res) => {
+//   try {
+
+//   } catch (err) {
+    
+//   }
+// });
+
+// productRouter.get('/', async (req, res) => {
+//   try {
+
+//   } catch (err) {
+    
+//   }
+// });
+
 module.exports = productRouter;
