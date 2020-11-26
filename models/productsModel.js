@@ -1,6 +1,5 @@
 const connection = require('./connection');
-// const mongodb = require('mongodb');
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 // O model faz a relação com o BD, no caso, o mongoDB, usando o arquivo connection.js .
 
@@ -15,4 +14,14 @@ const create = async (name, quantity) =>
     .then((result) => ({ _id: result.insertedId, name, quantity }));
 // para personalizar retorno pois objeto result é bem maior
 
-module.exports = { findProdByName, create };
+const getAll = async () =>
+  connection()
+    .then((db) => db.collection('products'))
+    .then((products) => products.find().toArray());
+
+const getById = async (id) =>
+  connection()
+    .then((db) => db.collection('products'))
+    .then((products) => products.findOne(ObjectId(id)));
+
+module.exports = { findProdByName, create, getAll, getById };

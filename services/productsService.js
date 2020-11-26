@@ -1,6 +1,7 @@
 const prodModel = require('../models/productsModel');
 // O Service faz as regras de negócio e todas funções de apoio chamadas no Controller.
 // As funções aqui chamam as funções do Model para efetivar as mudanças no BD.
+const { ObjectId } = require('mongodb');
 
 const isValid = async (name, quantity) => {
   const nameInDB = await prodModel.findProdByName(name);
@@ -38,4 +39,33 @@ const create = async (name, quantity) => {
   return newProduct;
 };
 
-module.exports = { create };
+const findById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw new CodeError('Wrong id format', 'invalid_data');
+  }
+  const product = await productModel.findById(id);
+  if (!product) {
+    throw new CodeError('Wrong id format', 'invalid_data');
+  }
+
+  return product;
+};
+
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  const productById = await prodModel.getById(id);
+  if (!productById) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return productById;
+};
+
+module.exports = { create, getById };
