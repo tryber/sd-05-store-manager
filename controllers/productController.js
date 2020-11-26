@@ -13,7 +13,7 @@ productRouter.post('/', async (req, res) => {
     res.status(201).json(addedValidatedProduct);
   } catch (err) {
     if (err.err.code === 'invalid_data') {
-      console.log((err));
+      // console.log((err));
       return res.status(422).json(err);
     }
   }
