@@ -2,9 +2,9 @@ const connection = require('./connection');
 
 const add = async (collection, itensSold) => {
   const db = await connection(collection);
-  await db.insertMany(itensSold);
+  const result = await db.insertOne({ itensSold });
 
-  return { itensSold };
+  return { _id: result.insertedId, itensSold };
 };
 
 module.exports = {

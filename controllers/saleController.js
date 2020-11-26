@@ -1,7 +1,8 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const { validateSale } = require('../middleware/index');
 const sales = require('../models/sales');
+const shared = require('../models/shared');
+const { validateSale, validateSaleId } = require('../middleware/index');
 
 const saleController = express.Router();
 
@@ -11,5 +12,17 @@ saleController.post('/', validateSale, rescue(async (req, res) => {
 
   res.status(200).json(result);
 }));
+
+saleController.get('/:id', validateSaleId, rescue(async (req, res) => {
+  const { id } = req.params;
+  const findAllSales = await shared.findById('sales', id);
+  res.status(200).json({ sales: findAllSales });
+}));
+
+saleController.get('/', rescue(async (_, res) => {
+  const findAllSales = await shared.findAll('sales');
+  res.status(200).json({ sales: findAllSales });
+}));
+
 
 module.exports = saleController;

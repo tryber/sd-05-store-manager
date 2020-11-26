@@ -1,7 +1,7 @@
 const rescue = require('express-rescue');
 const { ObjectId } = require('mongodb');
 
-const validateId = rescue(async (req, res, next) => {
+const validateProductId = rescue(async (req, res, next) => {
   const { id } = req.params;
   if (!ObjectId.isValid(id)) {
     res.status(422).json({
@@ -15,4 +15,18 @@ const validateId = rescue(async (req, res, next) => {
   next();
 });
 
-module.exports = validateId;
+const validateSaleId = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  if (!ObjectId.isValid(id)) {
+    res.status(404).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+    });
+  }
+
+  next();
+});
+
+module.exports = { validateProductId, validateSaleId };

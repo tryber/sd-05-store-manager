@@ -33,25 +33,9 @@ const exclude = async (collection, id) => {
   return deletedProduct;
 };
 
-const findById = async (collection, id) => {
-  const db = await connection(collection);
-  const result = await db.findOne(ObjectId(id));
-
-  return result;
-};
-
-const findAll = async (collection) => {
-  const db = await connection(collection);
-  const result = await db.find({}).toArray();
-
-  return result;
-};
-
 module.exports = {
   add,
   findByName,
-  findById,
-  findAll,
   update,
   exclude,
 };

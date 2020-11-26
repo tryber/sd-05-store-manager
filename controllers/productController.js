@@ -1,7 +1,8 @@
 const express = require('express');
 const rescue = require('express-rescue');
+const shared = require('../models/shared');
 const products = require('../models/products');
-const { validateProduct, validateId } = require('../middleware/index');
+const { validateProduct, validateProductId } = require('../middleware/index');
 
 const productController = express.Router();
 
@@ -13,12 +14,12 @@ productController.post('/', validateProduct, rescue(async (req, res) => {
 }));
 
 productController.get('/', rescue(async (_, res) => {
-  const findAllProducts = await products.findAll('products');
+  const findAllProducts = await shared.findAll('products');
 
   res.status(200).json({ products: findAllProducts });
 }));
 
-productController.get('/:id', validateId, rescue(async (req, res) => {
+productController.get('/:id', validateProductId, rescue(async (req, res) => {
   const { id } = req.params;
   const findProduct = await products.findById('products', id);
 
@@ -33,7 +34,7 @@ productController.put('/:id', validateProduct, rescue(async (req, res) => {
   res.status(200).json(updatedProduct);
 }));
 
-productController.delete('/:id', validateId, rescue(async (req, res) => {
+productController.delete('/:id', validateProductId, rescue(async (req, res) => {
   const { id } = req.params;
   const excludedProduct = await products.exclude('products', id);
 
