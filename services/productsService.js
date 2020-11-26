@@ -76,10 +76,11 @@ const updateById = async (id, name, quantity) => {
 };
 
 const deleteById = async (id) => {
-  await getById(id); // jà tem validaçao e retorno certo
+  const delProd = await getById(id);
   await prodModel.deleteById(id);
-  // console.log("youhou");
-  // erro "cannot convert undefined or null to object"
+  return delProd;
+  // error TypeError: Cannot convert undefined or null to object
+  // se for inverter linhas 80 e 81, simplesmente nao deleta
 };
 
 module.exports = { create, getById, updateById, deleteById };
