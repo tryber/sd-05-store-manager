@@ -1,5 +1,5 @@
-const connection = require('./connection');
 const { ObjectId } = require('mongodb');
+const connection = require('./connection');
 
 // O model faz a relação com o BD, no caso, o mongoDB, usando o arquivo connection.js .
 

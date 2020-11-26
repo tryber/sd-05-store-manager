@@ -9,7 +9,7 @@ const prodService = require('../services/productsService');
 // Chama as funções do service que fazem a ponte até o model e o BD.
 
 const prodModel = require('../models/productsModel');
-const { restart } = require('nodemon');
+
 // Controller pode chamar diretamente model tb, pulando service.
 
 // 1 - Crie um endpoint para o cadastro de produtos
