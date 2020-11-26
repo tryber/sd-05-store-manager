@@ -52,8 +52,6 @@ const findById = async (id) => {
     };
   }
   const product = await productModel.findById(id);
-  console.log('servovce');
-  
   if (!product) {
     throw {
       err: {
@@ -63,7 +61,7 @@ const findById = async (id) => {
     };
   }
 
-  console.log(ObjectId.isValid(id));
+  // console.log(ObjectId.isValid(id));
 
   return product;
 };
