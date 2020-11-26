@@ -75,4 +75,11 @@ const updateById = async (id, name, quantity) => {
   // para limitar objeto retornado que seria enorme
 };
 
-module.exports = { create, getById, updateById };
+const deleteById = async (id) => {
+  await getById(id); // jà tem validaçao e retorno certo
+  await prodModel.deleteById(id);
+  // console.log("youhou");
+  // erro "cannot convert undefined or null to object"
+};
+
+module.exports = { create, getById, updateById, deleteById };

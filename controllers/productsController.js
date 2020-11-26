@@ -76,4 +76,18 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedProduct = await prodService.deleteById(id);
+    return res.status(200).json(deletedProduct);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno aiaiai' });
+  }
+});
+
 module.exports = router;
