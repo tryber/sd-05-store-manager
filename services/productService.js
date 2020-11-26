@@ -71,4 +71,20 @@ const update = async (id, name, quantity) => {
     quantity,
   };
 };
-module.exports = { add, findById, update };
+
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw new CodeError('Wrong id format', 'invalid_data');
+  }
+
+  const { _id, name, quantity } = await productModel.findById(id);
+
+  if (!name) {
+    throw new CodeError('Wrong id format', 'invalid_data');
+  }
+
+  await productModel.exclude(id);
+
+  return { _id, name, quantity };
+};
+module.exports = { add, findById, update, exclude };

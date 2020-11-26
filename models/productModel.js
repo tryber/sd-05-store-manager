@@ -17,4 +17,6 @@ const update = async (id, name, quantity) =>
   getCollection('products').then((products) =>
     products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
-module.exports = { add, findProductByName, getAll, findById, update };
+const exclude = async (id) => getCollection('products').then(products => products.deleteOne({_id: ObjectId(id)}))
+
+module.exports = { add, findProductByName, getAll, findById, update, exclude };

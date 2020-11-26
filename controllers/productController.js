@@ -65,13 +65,18 @@ productRouter.put('/:id', async (req, res) => {
   }
 });
 
-// productRouter.get('/', async (req, res) => {
-//   try {
+productRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
 
-//   } catch (err) {
-
-//   }
-// });
+  try {
+    const productDeleted = await productService.exclude(id)
+    return res.status(200).json(productDeleted);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+  }
+});
 
 // productRouter.get('/', async (req, res) => {
 //   try {
