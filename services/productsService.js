@@ -4,13 +4,6 @@ const prodModel = require('../models/productsModel');
 // As funções aqui chamam as funções do Model para efetivar as mudanças no BD.
 
 const isValid = async (name, quantity) => {
-  const nameInDB = await prodModel.findProdByName(name);
-  if (nameInDB) {
-    throw {
-      code: 'invalid_data',
-      message: 'Product already exists',
-    };
-  }
   if (name.length <= 5) {
     throw {
       code: 'invalid_data',
@@ -24,7 +17,7 @@ const isValid = async (name, quantity) => {
     };
   }
   if (typeof quantity !== 'number') {
-    // if (!Number.isInteger(quantity)) {
+  // if (!Number.isInteger(quantity)) {
     throw {
       code: 'invalid_data',
       message: '"quantity" must be a number',
@@ -36,6 +29,13 @@ const isValid = async (name, quantity) => {
 const create = async (name, quantity) => {
   const validProduct = await isValid(name, quantity);
   if (!validProduct) return false;
+  const nameInDB = await prodModel.findProdByName(name);
+  if (nameInDB) {
+    throw {
+      code: 'invalid_data',
+      message: 'Product already exists',
+    };
+  }
   const newProduct = await prodModel.create(name, quantity);
   return newProduct;
 };
