@@ -4,19 +4,13 @@ const connection = require('./connection');
 
 // O model faz a relação com o BD, no caso, o mongoDB, usando o arquivo connection.js .
 
-// async function isUnique(name) {
-//   await connection();
-//   const nameInBD = await db.collection('products').findOne(name).length;
-//   if (nameInBD > 0) return false;
-//   return true;
-// }
+const findProdByName = async (name) =>
+  connection().then((db)=> db.collection('products')).then((products) => products.findOne({ name }));
 
-async function create(name, quantity) {
+const create = async (name, quantity) =>
   connection()
-  .then((db) =>
-    db.collection('products').insertOne({ name, quantity })
-  )
-  .then((result) => result);
-};
+    .then((db) => db.collection('products').insertOne({ name, quantity }))
+    .then((result) => ({ _id: result.insertedId, name, quantity }));
+    // para personalizar retorno pois objeto result é bem maior
 
-module.exports = create;
+module.exports = { findProdByName, create };
