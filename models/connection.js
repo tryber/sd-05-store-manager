@@ -6,8 +6,8 @@ const DB_NAME = 'StoreManager';
 
 const { MongoClient } = require('mongodb');
 
-const connection = () => {
-  return MongoClient.connect(MONGO_DB_URL, {
+const connection = () =>
+  MongoClient.connect(MONGO_DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -16,6 +16,5 @@ const connection = () => {
       console.error(err);
       process.exit(1);
     });
-};
 
 module.exports = connection;
