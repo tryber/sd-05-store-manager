@@ -15,8 +15,7 @@ const findById = async (id) => getCollection('products').then((res) => res.findO
 
 const update = async (id, name, quantity) =>
   getCollection('products').then((products) =>
-    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
 const exclude = async (id) =>
   getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
