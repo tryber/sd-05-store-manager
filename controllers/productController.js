@@ -78,20 +78,4 @@ productRouter.delete('/:id', async (req, res) => {
   }
 });
 
-// productRouter.get('/', async (req, res) => {
-//   try {
-
-//   } catch (err) {
-
-//   }
-// });
-
-// productRouter.get('/', async (req, res) => {
-//   try {
-
-//   } catch (err) {
-
-//   }
-// });
-
 module.exports = productRouter;
