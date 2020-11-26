@@ -1,12 +1,12 @@
 const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 
-//https://stackoverflow.com/questions/53080948/generic-throw-giving-expected-an-object-to-be-thrown-lint-error
+// https://stackoverflow.com/questions/53080948/generic-throw-giving-expected-an-object-to-be-thrown-lint-error
 
 class CodeError extends Error {
   constructor(message, code) {
-   super(message);
-   this.code = code;
+    super(message);
+    this.code = code;
   }
 }
 
@@ -14,7 +14,7 @@ class CodeError extends Error {
 
 const add = async (name, quantity) => {
   if (name.length < 5) {
-    throw new CodeError('"name" length must be at least 5 characters long', 'invalid_data')
+    throw new CodeError('"name" length must be at least 5 characters long', 'invalid_data');
     // throw {
     //   err: {
     //     code: 'invalid_data',
@@ -24,7 +24,7 @@ const add = async (name, quantity) => {
   }
 
   if (quantity < 1) {
-    throw new CodeError('"quantity" must be larger than or equal to 1', 'invalid_data')
+    throw new CodeError('"quantity" must be larger than or equal to 1', 'invalid_data');
     // throw {
     //   err: {
     //     code: 'invalid_data',
@@ -34,7 +34,7 @@ const add = async (name, quantity) => {
   }
 
   if (!Number.isInteger(quantity)) {
-    throw new CodeError('"quantity" must be a number', 'invalid_data')
+    throw new CodeError('"quantity" must be a number', 'invalid_data');
 
     // throw {
     //   err: {
@@ -47,7 +47,7 @@ const add = async (name, quantity) => {
   const isThisProductAlreaadyDocumented = await productModel.findProductByName(name);
 
   if (isThisProductAlreaadyDocumented) {
-    throw new CodeError('Product already exists', 'invalid_data')
+    throw new CodeError('Product already exists', 'invalid_data');
 
     // throw {
     //   err: {
@@ -62,7 +62,7 @@ const add = async (name, quantity) => {
 
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) {
-    throw new CodeError('Wrong id format', 'invalid_data')
+    throw new CodeError('Wrong id format', 'invalid_data');
 
     // throw {
     //   err: {
@@ -73,7 +73,7 @@ const findById = async (id) => {
   }
   const product = await productModel.findById(id);
   if (!product) {
-    throw new CodeError('Wrong id format', 'invalid_data')
+    throw new CodeError('Wrong id format', 'invalid_data');
 
     // throw {
     //   err: {
@@ -88,7 +88,7 @@ const findById = async (id) => {
 
 const update = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) {
-    throw new CodeError('Wrong id format', 'invalid_data')
+    throw new CodeError('Wrong id format', 'invalid_data');
 
     // throw {
     //   err: {
@@ -99,7 +99,7 @@ const update = async (id, name, quantity) => {
   }
 
   if (name.length < 5) {
-    throw new CodeError('"name" length must be at least 5 characters long', 'invalid_data')
+    throw new CodeError('"name" length must be at least 5 characters long', 'invalid_data');
 
     // throw {
     //   err: {
@@ -110,9 +110,8 @@ const update = async (id, name, quantity) => {
   }
 
   if (quantity < 1) {
-    throw new CodeError('"quantity" must be larger than or equal to 1', 'invalid_data')
+    throw new CodeError('"quantity" must be larger than or equal to 1', 'invalid_data');
 
-    
     // throw {
     //   err: {
     //     code: 'invalid_data',
@@ -122,7 +121,7 @@ const update = async (id, name, quantity) => {
   }
 
   if (!Number.isInteger(quantity)) {
-    throw new CodeError('"quantity" must be a number', 'invalid_data')
+    throw new CodeError('"quantity" must be a number', 'invalid_data');
 
     // throw {
     //   err: {
@@ -134,14 +133,14 @@ const update = async (id, name, quantity) => {
 
   const updatedProduct = await productModel.update(id, name, quantity);
   // console.log(updatedProduct);
-  if (!updatedProduct) {
-    throw {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      },
-    };
-  }
+  // if (!updatedProduct) {
+  //   throw {
+  //     err: {
+  //       code: 'invalid_data',
+  //       message: 'Wrong id format',
+  //     },
+  //   };
+  // }
 
   return {
     _id: ObjectId(id),
