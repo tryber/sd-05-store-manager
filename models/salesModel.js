@@ -8,9 +8,6 @@ const addSale = async (itensSold) =>
 
 const getAll = async () => getCollection('sales').then((sales) => sales.find().toArray());
 
-const findById = async (id) => {
-  // console.log('entrou no model find id');
-  return getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
-};
+const findById = async (id) => getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
 
 module.exports = { addSale, getAll, findById };
