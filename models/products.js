@@ -25,6 +25,14 @@ const findByName = async (collection, name) => {
   return result;
 };
 
+const exclude = async (collection, id) => {
+  const db = await connection(collection);
+  const deletedProduct = await db.findOne({ _id: ObjectId(id) });
+  await db.deleteOne({ _id: ObjectId(id) });
+
+  return deletedProduct;
+};
+
 const findById = async (collection, id) => {
   const db = await connection(collection);
   const result = await db.findOne(ObjectId(id));
@@ -45,4 +53,5 @@ module.exports = {
   findById,
   findAll,
   update,
+  exclude,
 };

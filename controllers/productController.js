@@ -26,12 +26,19 @@ productController.get('/:id', validateId, rescue(async (req, res) => {
   res.status(200).json(findProduct);
 }));
 
-productController.put('/:id', validateProduct, validateId, rescue(async (req, res) => {
+productController.put('/:id', validateProduct, rescue(async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
-  const updateProduct = await products.update('products', id, { name, quantity });
+  const updatedProduct = await products.update('products', id, { name, quantity });
 
-  res.status(200).json(updateProduct);
+  res.status(200).json(updatedProduct);
+}));
+
+productController.delete('/:id', validateId, rescue(async (req, res) => {
+  const { id } = req.params;
+  const excludedProduct = await products.exclude('products', id);
+
+  res.status(200).json(excludedProduct);
 }));
 
 module.exports = productController;
