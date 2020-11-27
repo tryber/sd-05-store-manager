@@ -1,4 +1,21 @@
+const express = require('express');
+const parser = require('body-parser');
+const routes = require('./routes/index')
+require('dotenv').config();
+
+const model = require('./models/productModels');
+const app = express();
+const PORT = process.env.PORT;
+
+app.use(parser.json())
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();
+});
+
+
+app.use('/products', routes.product);
+
+app.listen(PORT, () => {
+  console.log(`O PAI TÁ ON NA PORTA ${PORT}`);
 });
