@@ -68,4 +68,17 @@ const update = async (id, productId, quantity) => {
   };
 };
 
-module.exports = { addSale, findById, update };
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    console.log('object is valid?');
+    throw new CodeError('Wrong sale ID format', 'invalid_data');
+  }
+
+  const saleBeforeBeingDeleted = await salesModel.findById(id);
+
+  await salesModel.deleteSale(id);
+
+  return saleBeforeBeingDeleted;
+};
+
+module.exports = { addSale, findById, update, exclude };
