@@ -65,7 +65,7 @@ const remove = async (req, res) => { // rescue(
   const { id } = req.params;
   try {
     await service.exclude(id);
-  } catch (error) {
+  } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }

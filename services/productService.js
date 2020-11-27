@@ -130,7 +130,6 @@ const exclude = async (id) => {
   await model.excludeProducts(id);
 
   return product;
-
 };
 
 module.exports = {
