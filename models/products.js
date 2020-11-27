@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
+const { findById } = require('./shared');
 
 const add = async (collection, query) => {
   const { name, quantity } = query;
@@ -33,9 +34,37 @@ const exclude = async (collection, id) => {
   return deletedProduct;
 };
 
+const updateQuantity = async (collection, query, method) => {
+  const db = await connection(collection);
+  const promises = await query.map(async ({ productId, quantity }) => {
+    const product = await findById('products', productId);
+    if (method === 'POST') {
+      const newQuantity = product.quantity - quantity;
+      if (newQuantity < 0) return { err: true };
+      await db.updateOne(
+        { _id: ObjectId(productId) },
+        { $set: { quantity: newQuantity } },
+      );
+    }
+
+    if (method === 'DELETE') {
+      await db.updateOne(
+        { _id: ObjectId(productId) },
+        { $set: { quantity: product.quantity + quantity } },
+      );
+    }
+    const updatedProduct = await findById('products', productId);
+
+    return updatedProduct;
+  });
+
+  return Promise.all(promises);
+};
+
 module.exports = {
   add,
   findByName,
   update,
   exclude,
+  updateQuantity,
 };
