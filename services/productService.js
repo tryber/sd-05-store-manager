@@ -106,9 +106,37 @@ const update = async (id, name, quantity) => {
   return { name, quantity };
 };
 
+const exclude = async (id) => {
+  if (!id) {
+    throw {
+      code: 'invalid_data', message: 'Wrong id format',
+    };
+  }
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data', message: 'Wrong id format',
+    };
+  }
+
+  const product = await model.getProductsById(id);
+
+  if (!product) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+
+  await model.excludeProducts(id);
+
+  return product;
+
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
+  exclude,
 };

@@ -61,22 +61,23 @@ const update = async (req, res) => { // rescue(
   }
 }; // )
 
-// const remove = async (req, res) => { // rescue(
-//   const { id } = req.params;
-// try {
-//   await service.exclude(id);
-
-// } catch (error) {
-//   res.status(204).end();
-
-// }
-
-// }; // )
+const remove = async (req, res) => { // rescue(
+  const { id } = req.params;
+  try {
+    await service.exclude(id);
+  } catch (error) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+    // console.error(err.message);
+    res.status(500).json({ message: 'Algo deu errado no REMOVE' });
+  }
+}; // )
 
 module.exports = {
   getAll,
   getById,
   create,
   update,
-  // remove,
+  remove,
 };

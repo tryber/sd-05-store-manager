@@ -28,7 +28,7 @@ const updateProducts = async (id, name, quantity) => {
 };
 
 const excludeProducts = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
+  // if (!ObjectId.isValid(id)) return null;
 
   return getCollection('products').then((db) => db.deleteOne({ _id: ObjectId(id) }));
 };
