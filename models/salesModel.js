@@ -1,4 +1,4 @@
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const create = async (itensSold) =>
@@ -6,23 +6,15 @@ const create = async (itensSold) =>
     .then((db) => db.collection('sales').insertOne({ itensSold }))
     .then((result) => ({ _id: result.insertedId, itensSold }));
 
-// const create = async (productId, quantity) =>
-//   connection()
-//     .then((db) => db.collection('products').insertOne({ productId, quantity }))
-//     .then((result) => ({
-//       _id: result.insertedId,
-//       itensSold: [
-//         {
-//           productId,
-//           quantity,
-//         },
-//       ],
-//     }));
+const getAll = async () =>
+  connection()
+    .then((db) => db.collection('sales'))
+    .then((products) => products.find().toArray());
 
-// const getAll = async () =>
-//   connection()
-//     .then((db) => db.collection('products'))
-//     .then((products) => products.find().toArray());
+const getById = async (id) =>
+  connection()
+    .then((db) => db.collection('sales'))
+    .then((products) => products.findOne(ObjectId(id)));
 
 // const updateById = async (id, name, quantity) =>
 //   connection()
@@ -42,4 +34,4 @@ const create = async (itensSold) =>
 
 // module.exports = { findProdByName, create, getAll, getById, updateById, deleteById };
 
-module.exports = { create };
+module.exports = { create, getAll, getById };

@@ -47,22 +47,22 @@ const create = async (salesList) => {
   return newlySold;
 };
 
-// const getById = async (id) => {
-//   if (!ObjectId.isValid(id)) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
-//   const productById = await prodModel.getById(id);
-//   if (!productById) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
-//   return productById;
-// };
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  const salesById = await salesModel.getById(id);
+  if (!salesById) {
+    throw {
+      code: 'not_found',
+      message: 'Sales not found',
+    };
+  }
+  return salesById;
+};
 
 // const updateById = async (id, name, quantity) => {
 //   const validProduct = await isValid(name, quantity);
@@ -98,4 +98,4 @@ const create = async (salesList) => {
 //   return deletedProd;
 // };
 
-module.exports = { create };
+module.exports = { create, getById };
