@@ -22,16 +22,17 @@ const exclude = async (id) =>
   getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
 // -----
 const incrementQuantity = async (productId, quantity, vendaOuDelete) => {
+  const id = ObjectId(productId);
   if (vendaOuDelete === 'venda') {
     console.log('increment com venda');
     getCollection('products').then((products) =>
-      products.updateOne({ _id: ObjectId(productId) }, { $inc: { quantity: -quantity } }),
+      products.updateOne({ _id: id }, { $inc: { quantity: -quantity } }),
     );
   } else if (vendaOuDelete === 'delete') {
     console.log('decrement com delete');
 
     getCollection('products').then((products) =>
-      products.updateOne({ _id: ObjectId(productId) }, { $inc: { quantity: quantity } }),
+      products.updateOne({ _id: id }, { $inc: { quantity: quantity } }),
     );
   }
 };
