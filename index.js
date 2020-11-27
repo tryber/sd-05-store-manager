@@ -6,8 +6,6 @@ const bodyParser = require('body-parser');
 
 const productsController = require('./controllers/productsController');
 
-const store = require('./controllers/salesController');
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -23,5 +21,5 @@ app.get('/', (request, response) => {
 
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Knocking, knocking, knocking on ${PORT}\'s door...`);
+  console.log(`Knocking, knocking, knocking on ${PORT}'s door...`);
 });
