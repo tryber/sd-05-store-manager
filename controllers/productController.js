@@ -1,6 +1,9 @@
+const { Router } = require('express');
+
+const product = Router();
 const service = require('../services/storeServices');
 
-const create = async (req, res) => {
+product.post('/', async (req, res) => {
   try {
     const { name, quantity } = req.body;
     await service.isValid(name, quantity);
@@ -9,8 +12,6 @@ const create = async (req, res) => {
   } catch (err) {
     res.status(422).json(err);
   }
-};
+});
 
-module.exports = {
-  create,
-};
+module.exports = product;

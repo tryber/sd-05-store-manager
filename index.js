@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const controller = require('./controllers/storeController');
+const productController = require('./controllers/productController');
 
 const PORT = 3000;
 
@@ -13,9 +13,8 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-app.post('/products', controller.create);
+app.use('/products', productController);
 
 app.listen(PORT, () => {
   console.log(`Estou ouvindo a porta ${PORT}`);
 });
-//  testando avaliador
