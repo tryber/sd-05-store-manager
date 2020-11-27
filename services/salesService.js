@@ -99,21 +99,22 @@ const updateById = async (id, productId, quantity) => {
   };
 };
 
-// const deleteById = async (id) => {
-//   if (!ObjectId.isValid(id)) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
-//   const deletedProd = await prodModel.deleteById(id);
-//   if (!deletedProd) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
-//   return deletedProd;
-// };
+const deleteById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  const deletedSale = await salesModel.deleteById(id);
+  if (!deletedSale) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  // 404 por aqui tb
+  return deletedSale;
+};
 
-module.exports = { create, getById, updateById };
+module.exports = { create, getById, updateById, deleteById };

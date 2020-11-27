@@ -9,19 +9,19 @@ const create = async (itensSold) =>
 const getAll = async () =>
   connection()
     .then((db) => db.collection('sales'))
-    .then((products) => products.find().toArray());
+    .then((sales) => sales.find().toArray());
 
 const getById = async (id) =>
   connection()
     .then((db) => db.collection('sales'))
-    .then((products) => products.findOne(ObjectId(id)));
+    .then((sales) => sales.findOne(ObjectId(id)));
 
 const updateById = async (id, productId, quantity) =>
   connection()
     .then((db) => db.collection('sales'))
-    // .then((products) => console.log(products))
-    .then((products) =>
-      products.updateOne(
+    // .then((sales) => console.log(sales))
+    .then((sales) =>
+      sales.updateOne(
         {
           // filtro: devemos achar mesmos id de venda E de produto
           _id: ObjectId(id),
@@ -31,19 +31,13 @@ const updateById = async (id, productId, quantity) =>
         {
           $set: { 'itensSold.0.quantity': quantity },
         },
-      ));
+      ),
+    );
 
-// // const deleteById = async (id, name, quantity) =>
-// //   connection()
-// //     .then((db) => db.collection('products'))
-// //     .then((products) => products.deleteOne({ _id: ObjectId(id) }));
+const deleteById = async (id) =>
+  connection()
+    .then((db) => db.collection('sales'))
+    .then((sale) => sale.findOneAndDelete({ _id: ObjectId(id) }))
+    .then((excludedSale) => excludedSale.value);
 
-// const deleteById = async (id) =>
-//   connection()
-//     .then((db) => db.collection('products'))
-//     .then((product) => product.findOneAndDelete({ _id: ObjectId(id) }))
-//     .then((excludedProd) => excludedProd.value);
-
-// module.exports = { findProdByName, create, getAll, getById, updateById, deleteById };
-
-module.exports = { create, getAll, getById, updateById };
+module.exports = { create, getAll, getById, updateById, deleteById };
