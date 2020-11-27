@@ -14,11 +14,19 @@ const getById = async (id) => {
   return getCollection('products').then((collection) => collection.findOne(ObjectId(id)));
 };
 
-const getAll = async () => getCollection('products').then((collection) => collection.find().toArray());
+const getAll = async () =>
+  getCollection('products').then((collection) => collection.find().toArray());
+
+const update = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollection('products').then((collection) =>
+    collection.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+};
 
 module.exports = {
   create,
   getByName,
   getById,
   getAll,
+  update,
 };
