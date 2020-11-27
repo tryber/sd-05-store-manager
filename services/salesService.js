@@ -32,8 +32,6 @@ const create = async (salesList) => {
       };
     }
     const existingProduct = await prodModel.getById(sale.productId);
-    // await not valid dentro de forEach!
-    // promiseAll - espera todos resolverem
     if (!existingProduct || sale.quantity <= 0 || typeof sale.quantity !== 'number') {
       throw {
         code: 'invalid_data',
@@ -41,6 +39,8 @@ const create = async (salesList) => {
       };
     }
   });
+  // tentativa inicial de await not valid dentro de forEach
+  // resolvido com Promise.all - que espera todos resolverem
   const allPromises = await Promise.all(iterarSales);
   console.log(allPromises);
   const newlySold = await salesModel.create(salesList);
@@ -53,6 +53,7 @@ const getById = async (id) => {
       code: 'not_found',
       message: 'Sale not found',
     };
+    // seria melhor invalid mas o teste que manda
   }
   const salesById = await salesModel.getById(id);
   if (!salesById) {
@@ -64,22 +65,39 @@ const getById = async (id) => {
   return salesById;
 };
 
-// const updateById = async (id, name, quantity) => {
-//   const validProduct = await isValid(name, quantity);
-//   if (!validProduct) return false;
-//   if (!ObjectId.isValid(id)) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
-//   await prodModel.updateById(id, name, quantity);
-//   return {
-//     _id: ObjectId(id),
-//     name,
-//     quantity,
-//   };
-// };
+const updateById = async (id, productId, quantity) => {
+  const saleExists = getById(id);
+  if (!saleExists) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+  const existingProduct = await prodModel.getById(sale.productId);
+  if (!existingProduct) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+  const validId = ObjectId.isValid(id);
+  if (!validId || quantity <= 0 || typeof quantity !== 'number') {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+  await salesModel.updateById(id, productId, quantity);
+  return {
+    _id: id,
+    itensSold: [
+      {
+        productId,
+        quantity,
+      },
+    ],
+  };
+};
 
 // const deleteById = async (id) => {
 //   if (!ObjectId.isValid(id)) {
@@ -98,4 +116,4 @@ const getById = async (id) => {
 //   return deletedProd;
 // };
 
-module.exports = { create, getById };
+module.exports = { create, getById, updateById };

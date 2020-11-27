@@ -16,10 +16,23 @@ const getById = async (id) =>
     .then((db) => db.collection('sales'))
     .then((products) => products.findOne(ObjectId(id)));
 
-// const updateById = async (id, name, quantity) =>
-//   connection()
-//     .then((db) => db.collection('products'))
-//     .then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+const updateById = async (id, productId, quantity) =>
+  connection()
+    .then((db) => db.collection('sales'))
+    // .then((products) => console.log(products))
+    .then((products) =>
+      products.updateOne(
+        {
+          // filtro: devemos achar mesmos id de venda E de produto
+          _id: ObjectId(id),
+          'itensSold.productId': productId,
+          // conforme objeto criado linha 7
+        },
+        {
+          $set: { 'itensSold.0.quantity': quantity },
+        },
+      ),
+    );
 
 // // const deleteById = async (id, name, quantity) =>
 // //   connection()
@@ -34,4 +47,4 @@ const getById = async (id) =>
 
 // module.exports = { findProdByName, create, getAll, getById, updateById, deleteById };
 
-module.exports = { create, getAll, getById };
+module.exports = { create, getAll, getById, updateById };
