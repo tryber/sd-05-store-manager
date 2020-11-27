@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const findAll = async (collection) => {
@@ -9,9 +10,18 @@ const findAll = async (collection) => {
 
 const findById = async (collection, id) => {
   const db = await connection(collection);
-  const result = await db.findOne(ObjectId(id));
-
-  return result;
+  if (ObjectId.isValid(id)) {
+    const result = await db.findOne(ObjectId(id));
+    return result;
+  }
 };
 
-module.exports = { findAll, findById };
+const exclude = async (collection, id) => {
+  const db = await connection(collection);
+  const deletedProduct = await db.findOne({ _id: ObjectId(id) });
+  await db.deleteOne({ _id: ObjectId(id) });
+
+  return deletedProduct;
+};
+
+module.exports = { findAll, findById, exclude };

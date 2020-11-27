@@ -2,7 +2,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 const sales = require('../models/sales');
 const shared = require('../models/shared');
-const { validateSale, validateSaleId } = require('../middleware/index');
+const { validateSale, validateSaleId, validateDeleteId } = require('../middleware/index');
 
 const saleController = express.Router();
 
@@ -32,6 +32,14 @@ saleController.put('/:id', validateSale, rescue(async (req, res) => {
   const updatedSale = await sales.update('sales', id, document);
 
   res.status(200).json(updatedSale);
+}));
+
+saleController.delete('/:id', validateDeleteId, rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const excludedSale = await shared.exclude('sales', id);
+
+  res.status(200).json(excludedSale);
 }));
 
 module.exports = saleController;
