@@ -19,6 +19,13 @@ const sales = Router();
 //   res.status(200).json({ _id: id, name, quantity });
 // }));
 
+sales.put('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const unicSale = req.body;
+  await salesServices.update(id, unicSale);
+  res.status(200).json({ _id: id, itensSold: unicSale });
+}));
+
 sales.post('/', rescue(async (req, res) => {
   const newSales = await salesServices.create(req.body);
   res.status(200).json(newSales);

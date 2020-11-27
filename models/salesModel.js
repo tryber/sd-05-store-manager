@@ -11,6 +11,12 @@ const create = async (sales) => {
   };
 };
 
+const update = async (id, sales) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollection('sales').then((collection) =>
+    collection.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sales } }));
+};
+
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
   return getCollection('sales').then((collection) => collection.findOne(ObjectId(id)));
@@ -23,4 +29,5 @@ module.exports = {
   create,
   getById,
   getAll,
+  update,
 };
