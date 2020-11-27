@@ -118,7 +118,7 @@ const exclude = async (id) => {
     };
   }
 
-  const { _id, name, quantity }  = await model.getProductsById(id);
+  const { _id, name, quantity } = await model.getProductsById(id);
 
   if (!name || !quantity) {
     throw {
