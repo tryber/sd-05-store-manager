@@ -103,14 +103,14 @@ const deleteById = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw {
       code: 'invalid_data',
-      message: 'Wrong id format',
+      message: 'Wrong sale ID format',
     };
   }
   const deletedSale = await salesModel.deleteById(id);
   if (!deletedSale) {
     throw {
       code: 'invalid_data',
-      message: 'Wrong id format',
+      message: 'Wrong sale ID format',
     };
   }
   // 404 por aqui tb
