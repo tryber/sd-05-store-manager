@@ -1,10 +1,5 @@
-const { ObjectId } = require('mongodb');
+// const { ObjectId } = require('mongodb');
 const connection = require('./connection');
-
-// const getProductById = async (id) =>
-//   connection()
-//     .then((db) => db.collection('products'))
-//     .then((products) => products.findOne(ObjectId(id)));
 
 const create = async (itensSold) =>
   connection()
