@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 
 const salesModel = require('../models/salesModel');
-// const prodModel = require('../models/productsModel');
+const prodModel = require('../models/productsModel');
 
 // const isValid = async (name, quantity) => {
 //   if (quantity <= 0) {
@@ -20,17 +20,30 @@ const salesModel = require('../models/salesModel');
 // };
 
 const create = async (salesList) => {
-  salesList.forEach((sale) => {
-    // const existingProduct = await prodModel.getById(sale.productId);
-    // await not valid dentro de forEach!
+  const iterarSales = salesList.map(async (sale) => {
     const validProductId = ObjectId.isValid(sale.productId);
-    if (!validProductId || sale.quantity <= 0 || typeof sale.quantity !== 'number') {
+    // melhor pratica colocar na promise do model
+    // ou seja if essa valida dà false, da null, continua promise
+    console.log(validProductId);
+    if (!validProductId) {
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      };
+    }
+    const existingProduct = await prodModel.getById(sale.productId);
+    console.log("bla");
+    // await not valid dentro de forEach!
+    // promiseAll - espera todos resolverem
+    if (!existingProduct || sale.quantity <= 0 || typeof sale.quantity !== 'number') {
       throw {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
       };
     }
   });
+  const allPromises = await Promise.all(iterarSales);
+  console.log(allPromises);
   const newlySold = await salesModel.create(salesList);
   return newlySold;
 };
