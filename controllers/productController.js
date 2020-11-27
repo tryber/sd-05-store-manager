@@ -23,7 +23,7 @@ const getById = async (req, res) => { // rescue(
     res.status(200).json(product);
   } catch (err) {
     console.log(err);
-    res.status(422).json(err)
+    res.status(422).json(err);
   }
 }; // )
 
@@ -34,9 +34,9 @@ const create = async (req, res) => { // rescue(
     const createdProduct = await service.create({ name, quantity });
 
     res.status(201).json(createdProduct);
-  } catch (err) { //achei que íam ter códigos diferentes, dá para deixar tudo com 1 if...
+  } catch (err) { // achei que íam ter códigos diferentes, dá para deixar tudo com 1 if...
     if (err.message === 'already_exists') {
-      return res.status(422).json(err)
+      return res.status(422).json(err);
     }
     if (err.message === '"name" should exist') {
       return res.status(422).json(err);
@@ -52,7 +52,7 @@ const create = async (req, res) => { // rescue(
     }
     console.error(err);
     res.status(500).json({ message: 'Algo deu ruim no create' });
-  };
+  }
 }; // )
 
 // update validate?

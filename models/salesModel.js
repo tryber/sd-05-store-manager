@@ -25,9 +25,9 @@ const createSales = async ({ itemsSold }) => {
 const updateSales = async ({ id, itemsSold }) => {
   if (!ObjectId.isValid(id)) return null;
 
-  const sale = await getCollection('sales')
-    .then((sales) => sales.updateOne({ _id: ObjectId(id) }, { $set: { itemsSold } })); // items sold in array?
-  
+  const sale = await getCollection('sales') // items sold in array na linha abaixo?
+    .then((sales) => sales.updateOne({ _id: ObjectId(id) }, { $set: { itemsSold } }));
+
   return sale;
 };
 

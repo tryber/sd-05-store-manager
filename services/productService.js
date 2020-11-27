@@ -16,7 +16,7 @@ const getById = async (id) => {
     return {
       error: true,
       code: 'invalid_data',
-      message: `Wrong id format`,
+      message: 'Wrong id format',
     };
   }
 
@@ -65,7 +65,8 @@ const create = async ({ name, quantity }) => {
   return newProduct;
 };
 
-const update = async () => model.updateProducts({ id, name, quantity });
+// update precisa validar nome, id quantity?
+const update = async ({ id, name, quantity }) => model.updateProducts({ id, name, quantity });
 
 module.exports = {
   getAll,
