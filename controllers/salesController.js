@@ -9,9 +9,9 @@ salesController.post('/', async (req, res) => {
   const itensSold = req.body;
 
   try {
-    // envia o array de items vendidos para um forEach que atualiza 
+    // envia o array de items vendidos para um forEach que atualiza
     // a quantidade de produtos
-    await productService.updateProductsDB(itensSold, 'venda')
+    await productService.updateProductsDB(itensSold, 'venda');
 
     const itensSoldAdded = await salesService.addSale(itensSold);
     res.status(200).json(itensSoldAdded);
@@ -61,14 +61,14 @@ salesController.put('/:id', async (req, res) => {
 // -----
 salesController.delete('/:id', async (req, res) => {
   const { id } = req.params;
-// find itens sold of this sale id
+  // find itens sold of this sale id
   const itensSold = await salesModel.findById(id);
-  if(!itensSold) {
-    return res.status(404).json({message: 'nenhuma sale encontrada com este id'})
+  if (!itensSold) {
+    return res.status(404).json({ message: 'nenhuma sale encontrada com este id' });
   }
   console.log('before delete, itens sold');
   console.log(itensSold.itensSold);
-  await productService.updateProductsDB(itensSold.itensSold, 'delete')
+  await productService.updateProductsDB(itensSold.itensSold, 'delete');
 
   try {
     const isSaleDeleted = await salesService.exclude(id);

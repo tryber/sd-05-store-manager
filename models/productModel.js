@@ -22,20 +22,19 @@ const exclude = async (id) =>
   getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
 // -----
 const incrementQuantity = async (productId, quantity, vendaOuDelete) => {
-  if(vendaOuDelete === 'venda') {
-   console.log('increment com venda');
+  if (vendaOuDelete === 'venda') {
+    console.log('increment com venda');
     getCollection('products').then((products) =>
       products.updateOne({ _id: ObjectId(productId) }, { $inc: { quantity: -quantity } }),
     );
   } else if (vendaOuDelete === 'delete') {
     console.log('decrement com delete');
 
-        getCollection('products').then((products) =>
+    getCollection('products').then((products) =>
       products.updateOne({ _id: ObjectId(productId) }, { $inc: { quantity: quantity } }),
     );
-
   }
-}
+};
 // -----
 
 module.exports = { add, findProductByName, getAll, findById, update, exclude, incrementQuantity };
