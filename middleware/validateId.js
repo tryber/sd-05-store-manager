@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 const rescue = require('express-rescue');
-const shared = require('../models/shared');
+const { shared } = require('../models/index');
 
 const validateProductId = rescue(async (req, res, next) => {
   const { id } = req.params;

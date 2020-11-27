@@ -1,7 +1,6 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const shared = require('../models/shared');
-const products = require('../models/products');
+const { shared, products } = require('../models/index');
 const { validateProduct, validateProductId } = require('../middleware/index');
 
 const productController = express.Router();

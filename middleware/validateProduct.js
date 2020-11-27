@@ -1,5 +1,5 @@
 const rescue = require('express-rescue');
-const products = require('../models/products');
+const { products } = require('../models/index');
 
 const validateProduct = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;

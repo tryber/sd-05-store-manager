@@ -1,8 +1,6 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const sales = require('../models/sales');
-const shared = require('../models/shared');
-const products = require('../models/products');
+const { sales, shared, products } = require('../models/index');
 const { validateSale, validateSaleId, validateDeleteId } = require('../middleware/index');
 const { findById } = require('../models/shared');
 
