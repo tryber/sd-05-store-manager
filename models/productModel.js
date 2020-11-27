@@ -12,11 +12,10 @@ const findProductByName = async (name) =>
 const getAll = async () => getCollection('products').then((products) => products.find().toArray());
 
 const findById = async (id) => getCollection('products').then((res) => res.findOne(ObjectId(id)));
-
+// prettier-ignore
 const update = async (id, name, quantity) =>
   getCollection('products').then((products) =>
-    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
 const exclude = async (id) =>
   getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
@@ -32,7 +31,7 @@ const incrementQuantity = async (productId, quantity, vendaOuDelete) => {
     console.log('decrement com delete');
 
     getCollection('products').then((products) =>
-      products.updateOne({ _id: id }, { $inc: { quantity: quantity } }),
+      products.updateOne({ _id: id }, { $inc: { quantity } }),
     );
   }
 };
