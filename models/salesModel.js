@@ -31,8 +31,7 @@ const updateById = async (id, productId, quantity) =>
         {
           $set: { 'itensSold.0.quantity': quantity },
         },
-      ),
-    );
+      ));
 
 // // const deleteById = async (id, name, quantity) =>
 // //   connection()

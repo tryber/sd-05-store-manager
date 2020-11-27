@@ -73,7 +73,7 @@ const updateById = async (id, productId, quantity) => {
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  const existingProduct = await prodModel.getById(sale.productId);
+  const existingProduct = await prodModel.getById(productId);
   if (!existingProduct) {
     throw {
       code: 'invalid_data',
