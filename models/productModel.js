@@ -20,7 +20,7 @@ const update = async (id, name, quantity) =>
 const exclude = async (id) =>
   getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
 // -----
- // REVIEW
+// REVIEW
 // prettier-ignore
 const incrementQuantity = async (productId, quantity, vendaOuDelete) => {
   const id = ObjectId(productId);

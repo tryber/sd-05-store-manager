@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
-const productModel = require('../models/productModel')
+// const productModel = require('../models/productModel')
 
 // https://stackoverflow.com/questions/53080948/generic-throw-giving-expected-an-object-to-be-thrown-lint-error
 
@@ -14,11 +14,10 @@ class CodeError extends Error {
 // throw new CodeError(myMessage, 404);
 
 const addSale = async (itensSold) => {
-  const isQuantityWrong = false;
+  // const isQuantityWrong = false;
 
   itensSold.forEach((e) => {
     const isProductIdValid = ObjectId.isValid(e.productId);
-
 
     // const mongoItem = await productModel.findById(e.productId);
 
