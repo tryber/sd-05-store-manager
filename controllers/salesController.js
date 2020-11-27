@@ -38,7 +38,7 @@ salesRouter.get('/:id', async (req, res) => {
     res.status(200).json(saleById);
   } catch (err) {
     if (err.code === 'invalid_data') {
-      return res.status(422).json({ err });
+      return res.status(404).json({ err });
     }
     if (err.code === 'not_found') {
       return res.status(404).json({ err });
