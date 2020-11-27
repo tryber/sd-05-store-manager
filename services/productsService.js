@@ -11,7 +11,7 @@ function showError(code, message) {
 
 const create = async (name, quantity) => {
   if (typeof name !== 'string' || name.length < 5) {
-    return showError('invalid_data', '"name" length must be at leat 5 characters long');
+    return showError('invalid_data', '"name" length must be at least 5 characters long');
   }
 
   if (quantity <= 0) {

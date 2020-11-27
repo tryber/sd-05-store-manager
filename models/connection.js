@@ -1,9 +1,10 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 let connection;
 
 const DB_NAME = 'StoreManager';
-const MONGO_DB_URL = `mongodb://mongodb:27017/${DB_NAME}`;
+const MONGO_DB_URL = process.env.MONGO_DB_URL || `mongodb://mongodb:27017/${DB_NAME}`;
 
 async function getCollection(collectionName) {
   connection = connection
