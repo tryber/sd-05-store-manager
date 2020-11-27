@@ -1,1 +1,102 @@
-// const salesModel = require('../models/salesModel');
+const { ObjectId } = require('mongodb');
+
+const salesModel = require('../models/salesModel');
+const prodModel = require('../models/productsModel');
+
+// const isValid = async (name, quantity) => {
+  // if (quantity <= 0) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: '"quantity" must be larger than or equal to 1',
+  //   };
+  // }
+  // if (typeof quantity !== 'number') {
+  //   // if (!Number.isInteger(quantity)) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: '"quantity" must be a number',
+  //   };
+  // }
+  // return true;
+// };
+
+const create = async (salesList) => {
+  salesList.forEach((sale) => {
+    // const existingProduct = await prodModel.getById(sale.productId);
+    // await not valid dentro de forEach!
+    const validProductId = ObjectId.isValid(sale.productId);
+    if (!validProductId || sale.quantity <= 0 || typeof sale.quantity !== 'number') {
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      };
+    }
+  })
+  const newlySold= await salesModel.create(salesList);
+  return newlySold;
+};
+
+const addSale = async (itensSold) => {
+  itensSold.forEach((e) => {
+    const isProductIdValid = ObjectId.isValid(e.productId);
+
+    if (e.quantity < 1 || typeof e.quantity !== 'number' || !isProductIdValid) {
+      throw new CodeError('Wrong product ID or invalid quantity', 'invalid_data');
+    }
+  });
+
+  return salesModel.addSale(itensSold);
+};
+
+// const getById = async (id) => {
+  // if (!ObjectId.isValid(id)) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong id format',
+  //   };
+  // }
+  // const productById = await prodModel.getById(id);
+  // if (!productById) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong id format',
+  //   };
+  // }
+  // return productById;
+// };
+
+// const updateById = async (id, name, quantity) => {
+  // const validProduct = await isValid(name, quantity);
+  // if (!validProduct) return false;
+  // if (!ObjectId.isValid(id)) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong id format',
+  //   };
+  // }
+  // await prodModel.updateById(id, name, quantity);
+  // return {
+  //   _id: ObjectId(id),
+  //   name,
+  //   quantity,
+  // };
+// };
+
+// const deleteById = async (id) => {
+  // if (!ObjectId.isValid(id)) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong id format',
+  //   };
+  // }
+  // const deletedProd = await prodModel.deleteById(id);
+  // if (!deletedProd) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong id format',
+  //   };
+  // }
+  // return deletedProd;
+// };
+
+module.exports = { create };

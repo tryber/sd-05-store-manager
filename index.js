@@ -10,6 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const prodController = require('./controllers/productsController');
+const salesController = require('./controllers/salesController');
 
 // ENDPOINTS
 // 0 - Não remova esse endpoint, é para o avaliador funcionar
@@ -19,7 +20,7 @@ app.get('/', (request, response) => {
 
 app.use('/products', prodController);
 // Todos paths dos endpoints escritos no productsController vão começar com /products
-// app.use('/sales', require('./controllers/salesController'));
+app.use('/sales', salesController);
 
 // PORT LISTENER
 // const PORT = process.env.PORT || 3000;
