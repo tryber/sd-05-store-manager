@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const model = require('../models/productsModel');
 
 const getAll = async () => model.getAllProducts();
@@ -10,8 +11,16 @@ const getById = async (id) => {
       message: '"id" should exist',
     };
   }
-  const product = await model.getProductsById(id);
+  if (!ObjectId.isValid(id)) {
+    return {
+      error: true,
+      code: 'invalid data',
+      message: '"id" should exist',
+    };
+  }
 
+  const product = await model.getProductsById(id);
+  
   if (!product) {
     return {
       error: true,
@@ -38,7 +47,7 @@ const create = async ({ name, quantity }) => {
       message: '"name" length must be at least 5 characters long',
     };
   }
-  if (!quantity || (typeof quantity !== 'number')) {
+  if (!quantity || typeof quantity !== 'number' || !Number.isInteger(quantity)) {
     return {
       error: true,
       code: 'invalid data',
@@ -65,8 +74,52 @@ const create = async ({ name, quantity }) => {
   return newProduct;
 };
 
-// update precisa validar nome, id quantity?
-const update = async ({ id, name, quantity }) => model.updateProducts({ id, name, quantity });
+const update = async ({ id, name, quantity }) => {
+  if (!id) {
+    return {
+      error: true,
+      code: 'invalid data',
+      message: '"id" should exist',
+    };
+  }
+  if (!ObjectId.isValid(id)) {
+    return {
+      error: true,
+      code: 'invalid data',
+      message: '"id" should exist',
+    };
+  }
+  if (!name) {
+    return {
+      error: true,
+      code: 'invalid data',
+      message: '"name" should exist',
+    };
+  }
+  if (name.length < 5) {
+    return {
+      error: true,
+      code: 'invalid data',
+      message: '"name" length must be at least 5 characters long',
+    };
+  }
+  if (!quantity || (typeof quantity !== 'number') || !Number.isInteger(quantity)) {
+    return {
+      error: true,
+      code: 'invalid data',
+      message: '"quantity" must be a number',
+    };
+  }
+  if (quantity < 1) {
+    return {
+      error: true,
+      code: 'invalid data',
+      message: '"quantity" must be larger than or equal to 1',
+    };
+  }
+  updatedProduct = model.updateProducts({ id, name, quantity });
+  return updatedProduct;
+};
 
 module.exports = {
   getAll,

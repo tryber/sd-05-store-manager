@@ -5,16 +5,14 @@ const getCollection = require('./connection');
 const getAllProducts = async () =>
   getCollection('products').then((products) => products.find().toArray());
 
-const getProductsById = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
+const getProductsById = async (id) => 
+  getCollection('products').then((db) => db.findOne(ObjectId(id))); 
+  // if (!ObjectId.isValid(id)) return null;
 
-  return getCollection('products').then((db) => db.findOne(ObjectId(id)));
-};
+const getProductByName = async (name) => getCollection('products')
+  .then((products) => products.findOne({ name }));
 
-const getProductByName = async ({ name }) => getCollection('products')
-  .then((products) => products.findOne({ name }).toArray());
-
-const createProducts = async ({ name, quantity }) => {
+const createProducts = async (name, quantity) => {
   const product = await getCollection('products')
     .then((db) => db.insertOne({ name, quantity }));
   return { _id: product.insertedId, name, quantity };
