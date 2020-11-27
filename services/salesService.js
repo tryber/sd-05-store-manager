@@ -32,7 +32,6 @@ const create = async (salesList) => {
       };
     }
     const existingProduct = await prodModel.getById(sale.productId);
-    console.log("bla");
     // await not valid dentro de forEach!
     // promiseAll - espera todos resolverem
     if (!existingProduct || sale.quantity <= 0 || typeof sale.quantity !== 'number') {
