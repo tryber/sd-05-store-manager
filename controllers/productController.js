@@ -21,6 +21,17 @@ router.get('/', async (_req, res) => {
   const products = await service.getAll();
   return res.status(200).json({ products });
 });
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await service.deleteProduct(id);
+    return res.status(200).json(product);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+  }
+});
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;

@@ -20,10 +20,17 @@ const update = async (id, name, quantity) => {
     product.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
   return products;
 };
+const deleteProduct = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  const deleteP = await getCollection('products').then((product) =>
+    product.deleteOne({ _id: ObjectId(id) }));
+  return deleteP;
+};
 module.exports = {
   create,
   checkProduct,
   getAll,
   getById,
   update,
+  deleteProduct,
 };
