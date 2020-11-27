@@ -50,8 +50,8 @@ const create = async (salesList) => {
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw {
-      code: 'invalid_data',
-      message: 'Wrong id format',
+      code: 'not_found',
+      message: 'Sales not found',
     };
   }
   const salesById = await salesModel.getById(id);
