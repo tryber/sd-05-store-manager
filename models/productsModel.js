@@ -28,7 +28,7 @@ const updateProducts = async (id, name, quantity) => {
 };
 
 const excludeProducts = async (id) => getCollection('products')
-  .then((db) => db.deleteOne({ _id: ObjectId(id) }));
+  .then((products) => products.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   getAllProducts,

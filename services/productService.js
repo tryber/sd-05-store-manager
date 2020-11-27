@@ -118,9 +118,9 @@ const exclude = async (id) => {
     };
   }
 
-  const product = await model.getProductsById(id);
+  const { _id, name, quantity }  = await model.getProductsById(id);
 
-  if (!product) {
+  if (!name || !quantity) {
     throw {
       code: 'invalid_data',
       message: 'Wrong id format',
@@ -129,7 +129,7 @@ const exclude = async (id) => {
 
   await model.excludeProducts(id);
 
-  return product;
+  return { _id, name, quantity };
 };
 
 module.exports = {

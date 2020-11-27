@@ -64,7 +64,8 @@ const update = async (req, res) => { // rescue(
 const remove = async (req, res) => { // rescue(
   const { id } = req.params;
   try {
-    await service.exclude(id);
+    const removed = await service.exclude(id);
+    res.status(200).json(removed);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
