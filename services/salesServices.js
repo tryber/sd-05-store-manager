@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
+const productModel = require('../models/productModel')
 
 // https://stackoverflow.com/questions/53080948/generic-throw-giving-expected-an-object-to-be-thrown-lint-error
 
@@ -13,13 +14,28 @@ class CodeError extends Error {
 // throw new CodeError(myMessage, 404);
 
 const addSale = async (itensSold) => {
+  const isQuantityWrong = false;
+
   itensSold.forEach((e) => {
     const isProductIdValid = ObjectId.isValid(e.productId);
+
+
+    // const mongoItem = await productModel.findById(e.productId);
+
+    // if (mongoItem.quantity < e.quantity) {
+    //   isQuantityWrong = true;
+    //   return
+    //   // throw new CodeError('Such amount is not permitted to sell', 'stock_problem');
+    // }
 
     if (e.quantity < 1 || typeof e.quantity !== 'number' || !isProductIdValid) {
       throw new CodeError('Wrong product ID or invalid quantity', 'invalid_data');
     }
   });
+
+  // if(isQuantityWrong) {
+  //     throw new CodeError('Such amount is not permitted to sell', 'stock_problem');
+  // }
 
   return salesModel.addSale(itensSold);
 };

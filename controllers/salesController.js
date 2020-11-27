@@ -8,7 +8,6 @@ const salesController = express.Router();
 // realiza venda
 salesController.post('/', async (req, res) => {
   const itensSold = req.body;
-  
 
   try {
     // envia o array de items vendidos para um forEach que atualiza
@@ -18,15 +17,18 @@ salesController.post('/', async (req, res) => {
 
     const itensSoldAdded = await salesService.addSale(itensSold);
     res.status(200).json(itensSoldAdded);
+    // FIXME
   } catch (err) {
+
+    console.log('entrou no catch do stock');
     if (err.code === 'invalid_data') {
       // console.log((err));
       return res.status(422).json({ err: { code: err.code, message: err.message } });
+    } // FIXME teria que entrar aqui.
+    
+    if (err.code === 'stock_problem') {
+      return res.status(404).json({ err: { code: err.code, message: err.message } });
     }
-            if(err.code = 'stock_problem') {
-              return res.status(404).json({ err: { code: err.code, message: err.message } });
-            }
-
   }
 });
 

@@ -25,11 +25,11 @@ const exclude = async (id) =>
 const incrementQuantity = async (productId, quantity, vendaOuDelete) => {
   const id = ObjectId(productId);
   if (vendaOuDelete === 'venda') {
-    console.log('increment com venda');
+    // console.log('increment com venda');
     getCollection('products').then((products) =>
       products.updateOne({ _id: id }, { $inc: { quantity: -quantity } }));
   } else if (vendaOuDelete === 'delete') {
-    console.log('decrement com delete');
+    // console.log('decrement com delete');
 
     getCollection('products').then((products) =>
       products.updateOne({ _id: id }, { $inc: { quantity } }));

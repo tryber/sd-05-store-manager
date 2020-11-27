@@ -17,6 +17,12 @@ app.use('/sales', salesController);
 
 const PORT = 3000;
 
+// app.use('/', (err, req, res, next) => {
+//   if(err.code = 'stock_problem') {
+//     return res.status(404).json({ err: { code: err.code, message: err.message } });
+//   }
+// })
+
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
 });
