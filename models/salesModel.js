@@ -26,6 +26,7 @@ const update = async (id, productId, quantity) =>
     );
   });
 
-  const deleteSale = (id) => getCollection('sales').then(sales => sales.deleteOne({_id: ObjectId(id)}))
+const deleteSale = (id) =>
+  getCollection('sales').then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = { addSale, getAll, findById, update, deleteSale };

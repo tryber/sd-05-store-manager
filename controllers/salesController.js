@@ -55,16 +55,16 @@ salesController.put('/:id', async (req, res) => {
 });
 
 salesController.delete('/:id', async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
   try {
     const isSaleDeleted = await salesService.exclude(id);
-    return res.status(200).json(isSaleDeleted)
+    return res.status(200).json(isSaleDeleted);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
   }
-})
+});
 
 module.exports = salesController;
