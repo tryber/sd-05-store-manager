@@ -32,18 +32,32 @@ salesController.get('/', async (req, res) => {
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });
-
+// 6 - não está passando
 salesController.get('/:id', async (req, res) => {
   const { id } = req.params;
-  try {
-    // console.log('entrou 1', id);
-    const sales = await salesService.findById(id);
-    return res.status(200).json({ sales });
-  } catch (err) {
-    if (err.code === 'not_found') {
-      return res.status(404).json({ err: { code: err.code, message: err.message } });
-    }
+ // WARNING: tive que tirar alguns 
+ // services, demorava mais tempo que o // teste esperaria
+  if (!ObjectId.isValid(id)) {
+    res.status(404).json({ err: { code: 'not_found', message: 'Sale not found' } });
   }
+
+  const sales = await salesModel.findById(id);
+
+  if (!sales) {
+    res.status(404).json({ err: { code: 'not_found', message: 'Sale not found' } });
+  }
+
+  return res.status(200).json({ sales });
+
+  // try {
+  //   // console.log('entrou 1', id);
+  //   const sales = await salesService.findById(id);
+  //   return res.status(200).json({ sales });
+  // } catch (err) {
+  //   if (err.code === 'not_found') {
+  //     return res.status(404).json({ err: { code: err.code, message: err.message } });
+  //   }
+  // }
 });
 
 salesController.put('/:id', async (req, res) => {
