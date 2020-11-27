@@ -101,9 +101,9 @@ const update = async (id, name, quantity) => {
       message: '"quantity" must be a number',
     };
   }
-  const updatedProduct = model.updateProducts(id, name, quantity);
+  model.updateProducts(id, name, quantity);
 
-  return {name, quantity};
+  return { name, quantity };
 };
 
 module.exports = {

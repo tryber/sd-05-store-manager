@@ -25,7 +25,7 @@ const getById = async (req, res) => { // rescue(
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
-   // console.error(err);
+    // console.error(err);
     res.status(500).json({ message: 'Algo deu errado getId' });
   }
 }; // )
@@ -34,13 +34,13 @@ const create = async (req, res) => { // rescue(
   const { name, quantity } = req.body;
   try {
     const createdProduct = await service.create(name, quantity);
-console.log(createdProduct);
+    // console.log(createdProduct);
     res.status(201).json(createdProduct);
   } catch (err) {
-      // console.log(err);
-      if (err.code === 'invalid_data') {
-        return res.status(422).json({ err: { code: err.code, message: err.message } });
-      }
+    // console.log(err);
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
     console.error(err.message);
     res.status(500).json({ message: 'Algo deu ruim no create' });
   }
