@@ -88,13 +88,14 @@ const exclude = async (id) => {
 
   return { _id, name, quantity };
 };
-
-const updateProductsDB = async (itensSold) => {
+// -----
+const updateProductsDB = async (itensSold, vendaOuDelete) => {
   await itensSold.forEach(async (item) => {
     console.log(('entrou no for each do updateProduct'));
-    await productModel.incrementQuantity(item.productId, item.quantity)
+    await productModel.incrementQuantity(item.productId, item.quantity, vendaOuDelete)
   })
-  
+
   return 
 }
+// -----
 module.exports = { add, findById, update, exclude, updateProductsDB };
