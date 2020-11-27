@@ -18,19 +18,16 @@ const getSalesById = async (id) => {
 // };
 
 const createSales = async ({ itemsSold }) => {
-  const sale = await getCollection('sales').then((db) =>
-    db.insertOne({ itemsSold })
-  );
+  const sale = await getCollection('sales').then((db) => db.insertOne({ itemsSold }));
   return { _id: sale.insertedId, itemsSold };
 };
 
 const updateSales = async ({ id, itemsSold }) => {
   if (!ObjectId.isValid(id)) return null;
 
-  const sale = await getCollection('sales').then((sales) =>
-  sales.updateOne({ _id: ObjectId(id) }, { $set: { itemsSold } }) // items sold in array?
-  );
-
+  const sale = await getCollection('sales')
+    .then((sales) => sales.updateOne({ _id: ObjectId(id) }, { $set: { itemsSold } })); // items sold in array?
+  
   return sale;
 };
 

@@ -11,25 +11,20 @@ const getProductsById = async (id) => {
   return getCollection('products').then((db) => db.findOne(ObjectId(id)));
 };
 
-const getProductByName = async ({ name }) => {
-  return getCollection('products').then((products) =>
-    products.findOne({ name }).toArray()
-  );
-};
+const getProductByName = async ({ name }) => getCollection('products')
+  .then((products) => products.findOne({ name }).toArray());
 
 const createProducts = async ({ name, quantity }) => {
-  const product = await getCollection('products').then((db) =>
-    db.insertOne({ name, quantity })
-  );
+  const product = await getCollection('products')
+    .then((db) => db.insertOne({ name, quantity }));
   return { _id: product.insertedId, name, quantity };
 };
 
 const updateProducts = async ({ id, name, quantity }) => {
   if (!ObjectId.isValid(id)) return null;
 
-  const product = await getCollection('products').then((products) =>
-  products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } })
-  );
+  const product = await getCollection('products')
+    .then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
   return product;
 };

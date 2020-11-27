@@ -15,8 +15,8 @@ const getById = async (id) => {
   if (!product) {
     return {
       error: true,
-      code: 'not_found',
-      message: `Product with id ${id} was not found`,
+      code: 'invalid_data',
+      message: `Wrong id format`,
     };
   }
 
@@ -38,8 +38,7 @@ const create = async ({ name, quantity }) => {
       message: '"name" length must be at least 5 characters long',
     };
   }
-
-  if (!quantity || (typeof quantity != 'number')) {
+  if (!quantity || (typeof quantity !== 'number')) {
     return {
       error: true,
       code: 'invalid data',
@@ -54,7 +53,6 @@ const create = async ({ name, quantity }) => {
     };
   }
   const productExists = await model.getProductByName({ name });
-
   if (productExists) {
     return {
       error: true,
@@ -62,14 +60,16 @@ const create = async ({ name, quantity }) => {
       message: 'Product already exists',
     };
   }
-
   const newProduct = await model.createProducts({ name, quantity });
 
   return newProduct;
 };
 
+const update = async () => model.updateProducts({ id, name, quantity });
+
 module.exports = {
   getAll,
   getById,
   create,
+  update,
 };
