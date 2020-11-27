@@ -2,10 +2,7 @@ const express = require('express');
 // const rescue = require('express-rescue');
 const bodyParser = require('body-parser');
 
-// const songModel = require('./models/songModel');
 const productController = require('./controllers/productController');
-
-// const pingController = require('./controllers/pingController');
 
 // const errorMiddleware = require('./middlewares/error');
 
@@ -18,17 +15,15 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-// app.get('/ping', pingController.ping);
+app.post('/products', productController.create);
 
 app.get('/products', productController.getAll);
 
-app.post('/products', productController.create);
-
-// app.put('/songs/:id', songController.update);
-
 app.get('/products/:id', productController.getById);
 
-// app.delete('/songs/:id', songController.remove);
+app.put('/products/:id', productController.update);
+
+// app.delete('/products/:id', productController.remove);
 
 // app.use(errorMiddleware);
 
