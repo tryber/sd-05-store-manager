@@ -21,7 +21,7 @@ productController.get('/', rescue(async (_, res) => {
 
 productController.get('/:id', validateProductId, rescue(async (req, res) => {
   const { id } = req.params;
-  const findProduct = await products.findById('products', id);
+  const findProduct = await shared.findById('products', id);
 
   res.status(200).json(findProduct);
 }));
