@@ -12,7 +12,7 @@ salesRouter.post('/', async (req, res) => {
   try {
     const saleCreated = await salesService.create(salesList);
     if (!saleCreated) return res.status(400).json({ message: 'Venda não foi criada' });
-    return res.status(201).json(saleCreated);
+    return res.status(200).json(saleCreated);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
