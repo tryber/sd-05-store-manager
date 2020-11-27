@@ -1,4 +1,5 @@
 const { ObjectId } = require('mongodb');
+const { forEachChild } = require('typescript');
 const productModel = require('../models/productModel');
 
 // https://stackoverflow.com/questions/53080948/generic-throw-giving-expected-an-object-to-be-thrown-lint-error
@@ -87,4 +88,13 @@ const exclude = async (id) => {
 
   return { _id, name, quantity };
 };
-module.exports = { add, findById, update, exclude };
+
+const updateProductsDB = async (itensSold) => {
+  await itensSold.forEach(async (item) => {
+    console.log(('entrou no for each do updateProduct'));
+    await productModel.incrementQuantity(item.productId, item.quantity)
+  })
+  
+  return 
+}
+module.exports = { add, findById, update, exclude, updateProductsDB };

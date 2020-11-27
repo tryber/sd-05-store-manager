@@ -1,13 +1,18 @@
 const express = require('express');
 const salesModel = require('../models/salesModel');
 const salesService = require('../services/salesServices');
+const productService = require('../services/productService');
 
 const salesController = express.Router();
-
+// realiza venda
 salesController.post('/', async (req, res) => {
   const itensSold = req.body;
 
   try {
+    // envia o array de items vendidos para um forEach que atualiza 
+    // a quantidade de produtos
+    await productService.updateProductsDB(itensSold)
+
     const itensSoldAdded = await salesService.addSale(itensSold);
     res.status(200).json(itensSoldAdded);
   } catch (err) {
