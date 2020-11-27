@@ -21,7 +21,26 @@ const isValid = async (name, quantity) => {
 
 const create = async (name, quantity) => storeModel.create(name, quantity);
 
+const getAll = async () => storeModel.getAll();
+
+const getById = async (id) => {
+  if (id.length < 24) {
+    throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
+  }
+
+  const saida = await storeModel.getById(id);
+  if (!saida) {
+    throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
+  }
+  return saida;
+};
+
+const update = async (id, name, quantity) => storeModel.update(id, name, quantity);
+
 module.exports = {
   isValid,
   create,
+  getAll,
+  getById,
+  update,
 };

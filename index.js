@@ -13,8 +13,15 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-app.use('/products', productController);
+app.post('/products', productController.create);
+
+app.get('/products', productController.getAll);
+
+app.get('/products/:id', productController.getById);
+
+app.put('/products/:id', productController.update);
 
 app.listen(PORT, () => {
   console.log(`Estou ouvindo a porta ${PORT}`);
 });
+//  testando avaliador
