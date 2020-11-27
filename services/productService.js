@@ -5,25 +5,20 @@ const getAll = async () => model.getAllProducts();
 
 const getById = async (id) => {
   if (!id) {
-    return {
-      error: true,
-      code: 'invalid data',
-      message: '"id" should exist',
+    throw {
+      code: 'invalid_data', message: 'Wrong id format',
     };
   }
   if (!ObjectId.isValid(id)) {
-    return {
-      error: true,
-      code: 'invalid data',
-      message: '"id" should exist',
+    throw {
+      code: 'invalid_data', message: 'Wrong id format',
     };
   }
 
   const product = await model.getProductsById(id);
 
   if (!product) {
-    return {
-      error: true,
+    throw {
       code: 'invalid_data',
       message: 'Wrong id format',
     };
@@ -32,94 +27,83 @@ const getById = async (id) => {
   return product;
 };
 
-const create = async ({ name, quantity }) => {
+const create = async (name, quantity) => {
   if (!name) {
-    return {
-      error: true,
-      code: 'invalid data',
+    throw {
+      code: 'invalid_data',
       message: '"name" should exist',
     };
   }
-  if (name.length < 5) {
-    return {
-      error: true,
-      code: 'invalid data',
+  if (name.length <= 5) {
+    throw {
+      code: 'invalid_data',
       message: '"name" length must be at least 5 characters long',
     };
   }
-  if (!quantity || typeof quantity !== 'number' || !Number.isInteger(quantity)) {
-    return {
-      error: true,
-      code: 'invalid data',
-      message: '"quantity" must be a number',
-    };
-  }
-  if (quantity < 1) {
-    return {
-      error: true,
-      code: 'invalid data',
+  if (quantity <= 0) {
+    throw {
+      code: 'invalid_data',
       message: '"quantity" must be larger than or equal to 1',
     };
   }
-  const productExists = await model.getProductByName({ name });
+  if (!quantity || typeof quantity !== 'number' || !Number.isInteger(quantity)) {
+    throw {
+      code: 'invalid_data',
+      message: '"quantity" must be a number',
+    };
+  }
+  const productExists = await model.getProductByName(name);
   if (productExists) {
-    return {
-      error: true,
+    throw {
       code: 'invalid_data',
       message: 'Product already exists',
     };
   }
-  const newProduct = await model.createProducts({ name, quantity });
+  const newProduct = await model.createProducts(name, quantity);
 
   return newProduct;
 };
 
-const update = async ({ id, name, quantity }) => {
+const update = async (id, name, quantity) => {
   if (!id) {
-    return {
-      error: true,
-      code: 'invalid data',
-      message: '"id" should exist',
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
     };
   }
   if (!ObjectId.isValid(id)) {
-    return {
-      error: true,
-      code: 'invalid data',
-      message: '"id" should exist',
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
     };
   }
   if (!name) {
-    return {
-      error: true,
-      code: 'invalid data',
+    throw {
+      code: 'invalid_data',
       message: '"name" should exist',
     };
   }
-  if (name.length < 5) {
-    return {
-      error: true,
-      code: 'invalid data',
+  if (name.length <= 5) {
+    throw {
+      code: 'invalid_data',
       message: '"name" length must be at least 5 characters long',
     };
   }
-  if (!quantity || (typeof quantity !== 'number') || !Number.isInteger(quantity)) {
-    return {
-      error: true,
-      code: 'invalid data',
-      message: '"quantity" must be a number',
-    };
-  }
-  if (quantity < 1) {
-    return {
-      error: true,
-      code: 'invalid data',
+  if (quantity <= 0) {
+    throw {
+      code: 'invalid_data',
       message: '"quantity" must be larger than or equal to 1',
     };
   }
-  const updatedProduct = model.updateProducts({ id, name, quantity });
+  if (!quantity || (typeof quantity !== 'number') || !Number.isInteger(quantity)) {
+    throw {
+      code: 'invalid_data',
+      message: '"quantity" must be a number',
+    };
+  }
+  const updatedProduct = model.updateProducts(id, name, quantity);
 
-  return updatedProduct;
+  return {name, quantity};
 };
 
 module.exports = {
