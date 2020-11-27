@@ -24,15 +24,16 @@ sales.post('/', rescue(async (req, res) => {
   res.status(200).json(newSales);
 }));
 
-// products.get('/:id', rescue(async (req, res) => {
-//   const { id } = req.params;
-//   const unicProduct = await peopleServices.getById(id);
-//   res.status(200).json(unicProduct);
-// }));
+sales.get('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const unicSale = await salesServices.getById(id);
+  res.status(200).json(unicSale);
+}));
 
-// products.get('/', rescue(async (req, res) => {
-//   const allProducts = await peopleServices.getAll();
-//   res.status(200).json({ products: allProducts });
-// }));
+sales.get('/', rescue(async (req, res) => {
+  const allSales = await salesServices.getAll();
+  console.log(allSales);
+  res.status(200).json({ sales: allSales });
+}));
 
 module.exports = sales;

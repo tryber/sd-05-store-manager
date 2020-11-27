@@ -1,7 +1,8 @@
+const { ObjectId } = require('mongodb');
 const getCollection = require('./get-collection');
 
 const create = async (sales) => {
-  const sale = await getCollection('products').then((collection) => collection.insertOne({
+  const sale = await getCollection('sales').then((collection) => collection.insertOne({
     itensSold: sales,
   }));
   return {
@@ -10,6 +11,16 @@ const create = async (sales) => {
   };
 };
 
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollection('sales').then((collection) => collection.findOne(ObjectId(id)));
+};
+
+const getAll = async () =>
+  getCollection('sales').then((collection) => collection.find().toArray());
+
 module.exports = {
   create,
+  getById,
+  getAll,
 };

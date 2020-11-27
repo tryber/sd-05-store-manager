@@ -1,5 +1,18 @@
 const model = require('../models/salesModel');
 
+const getAll = async () => model.getAll();
+
+const getById = async (id) => {
+  const sale = await model.getById(id);
+  if (!sale) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+  return sale;
+};
+
 const create = async (sales) => {
   for (let i = 0; i < sales.length; i += 1) {
     if (sales[i].quantity <= 0) {
@@ -21,4 +34,6 @@ const create = async (sales) => {
 
 module.exports = {
   create,
+  getAll,
+  getById,
 };
