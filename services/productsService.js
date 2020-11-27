@@ -48,6 +48,15 @@ const create = async (name, quantity) => {
 };
 
 const update = async (id, name, quantity) => {
+  const product = await model.getById(id);
+
+  if (!product) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+
   if (name.length < 5) {
     throw {
       code: 'invalid_data',
@@ -72,9 +81,22 @@ const update = async (id, name, quantity) => {
   return model.update(id, name, quantity);
 };
 
+const exclude = async (id) => {
+  const product = await model.getById(id);
+
+  if (!product) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return model.exclude(id);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  exclude,
 };

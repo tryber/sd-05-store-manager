@@ -5,6 +5,13 @@ const peopleServices = require('../services/productsService');
 
 const products = Router();
 
+products.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const deletedProduct = await peopleServices.getById(id);
+  await peopleServices.exclude(id);
+  res.status(200).json(deletedProduct);
+}));
+
 products.put('/:id', rescue(async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;

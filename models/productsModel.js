@@ -23,10 +23,16 @@ const update = async (id, name, quantity) => {
     collection.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 };
 
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollection('products').then((collection) => collection.deleteOne({ _id: ObjectId(id) }));
+};
+
 module.exports = {
   create,
   getByName,
   getById,
   getAll,
   update,
+  exclude,
 };
