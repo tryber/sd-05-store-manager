@@ -1,4 +1,5 @@
 const express = require('express');
+const {ObjectId} =require('mongodb')
 const salesModel = require('../models/salesModel');
 const salesService = require('../services/salesServices');
 const productService = require('../services/productService');
@@ -61,23 +62,30 @@ salesController.put('/:id', async (req, res) => {
 // -----
 salesController.delete('/:id', async (req, res) => {
   const { id } = req.params;
+  if (!ObjectId.isValid(id)) {
+    res.status(422).json({err: { code: 'invalid_data', message: 'Wrong sale ID format'}})
+  }
   // find itens sold of this sale id
-  const itensSold = await salesModel.findById(id);
-  if (!itensSold) {
-    return res.status(404).json({ message: 'nenhuma sale encontrada com este id' });
-  }
-  console.log('before delete, itens sold');
-  console.log(itensSold.itensSold);
-  await productService.updateProductsDB(itensSold.itensSold, 'delete');
-
-  try {
-    const isSaleDeleted = await salesService.exclude(id);
-    return res.status(200).json(isSaleDeleted);
-  } catch (err) {
-    if (err.code === 'invalid_data') {
-      return res.status(422).json({ err: { code: err.code, message: err.message } });
+  // if (!itensSold) {
+    //   return res.status(404).json({ message: 'nenhuma sale encontrada com este id' });
+    // }
+    
+  // try {
+    const itensSold = await salesModel.findById(id);
+    if(itensSold) {
+      productService.updateProductsDB(itensSold.itensSold, 'delete');
+      const isSaleDeleted = await salesService.exclude(id);
+      // console.log('before delete, itens sold');
+      // console.log(itensSold.itensSold);
+      return res.status(200).json(isSaleDeleted);
     }
-  }
+
+    res.status(422).json({err: { code: 'invalid_data', message: 'Wrong sale ID format'}})
+  // } catch (err) {
+    // if (err.code === 'invalid_data') {
+      // return res.status(422).json({ err: { code: err.code, message: err.message } });
+    // }
+  // }
 });
 // -----
 module.exports = salesController;
