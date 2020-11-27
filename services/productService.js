@@ -20,7 +20,7 @@ const getById = async (id) => {
   }
 
   const product = await model.getProductsById(id);
-  
+
   if (!product) {
     return {
       error: true,
@@ -117,7 +117,8 @@ const update = async ({ id, name, quantity }) => {
       message: '"quantity" must be larger than or equal to 1',
     };
   }
-  updatedProduct = model.updateProducts({ id, name, quantity });
+  const updatedProduct = model.updateProducts({ id, name, quantity });
+
   return updatedProduct;
 };
 
