@@ -25,9 +25,15 @@ const getById = async (id) => {
 const getAll = async () =>
   getCollection('sales').then((collection) => collection.find().toArray());
 
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollection('sales').then((collection) => collection.deleteOne({ _id: ObjectId(id) }));
+};
+
 module.exports = {
   create,
   getById,
   getAll,
   update,
+  exclude,
 };

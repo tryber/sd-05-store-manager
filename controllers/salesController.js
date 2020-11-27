@@ -5,12 +5,12 @@ const salesServices = require('../services/salesService');
 
 const sales = Router();
 
-// products.delete('/:id', rescue(async (req, res) => {
-//   const { id } = req.params;
-//   const deletedProduct = await peopleServices.getById(id);
-//   await peopleServices.exclude(id);
-//   res.status(200).json(deletedProduct);
-// }));
+sales.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const deletedSale = await salesServices.getById(id, req.method);
+  await salesServices.exclude(id);
+  res.status(200).json(deletedSale);
+}));
 
 // products.put('/:id', rescue(async (req, res) => {
 //   const { id } = req.params;

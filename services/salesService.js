@@ -2,9 +2,9 @@ const model = require('../models/salesModel');
 
 const getAll = async () => model.getAll();
 
-const getById = async (id) => {
+const getById = async (id, method) => {
   const sale = await model.getById(id);
-  if (!sale) {
+  if (!sale && method !== 'DELETE') {
     throw {
       code: 'not_found',
       message: 'Sale not found',
@@ -51,9 +51,22 @@ const update = (id, sales) => {
   return model.update(id, sales);
 };
 
+const exclude = async (id) => {
+  const sale = await model.getById(id);
+
+  if (!sale) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+  return model.exclude(id);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  exclude,
 };
