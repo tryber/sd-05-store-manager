@@ -51,14 +51,14 @@ const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw {
       code: 'not_found',
-      message: 'Sales not found',
+      message: 'Sale not found',
     };
   }
   const salesById = await salesModel.getById(id);
   if (!salesById) {
     throw {
       code: 'not_found',
-      message: 'Sales not found',
+      message: 'Sale not found',
     };
   }
   return salesById;
