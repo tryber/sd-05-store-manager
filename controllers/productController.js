@@ -38,9 +38,21 @@ const update = async (req, res) => {
   }
 };
 
+const exclude = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const saida = await service.getById(id);
+    await service.exclude(id);
+    res.status(200).json(saida);
+  } catch (err) {
+    res.status(422).json(err);
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  exclude,
 };

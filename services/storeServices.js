@@ -1,7 +1,7 @@
 const storeModel = require('../models/storeModel');
 
 const isValid = async (name, quantity) => {
-  const check = await storeModel.productExists(name);
+  const check = await storeModel.productExistsByName(name);
 
   if (!name || name.length < 5) {
     throw { err: { code: 'invalid_data', message: '"name" length must be at least 5 characters long' } };
@@ -37,10 +37,13 @@ const getById = async (id) => {
 
 const update = async (id, name, quantity) => storeModel.update(id, name, quantity);
 
+const exclude = async (id) => storeModel.exclude(id);
+
 module.exports = {
   isValid,
   create,
   getAll,
   getById,
   update,
+  exclude,
 };

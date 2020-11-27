@@ -21,7 +21,8 @@ app.get('/products/:id', productController.getById);
 
 app.put('/products/:id', productController.update);
 
+app.delete('/products/:id', productController.exclude);
+
 app.listen(PORT, () => {
   console.log(`Estou ouvindo a porta ${PORT}`);
 });
-//  testando avaliador

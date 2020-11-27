@@ -7,7 +7,7 @@ const create = async (name, quantity) => {
   return insert.ops[0];
 };
 
-const productExists = async (name) => connection().then((db) => db.collection('products').findOne({ name }));
+const productExistsByName = async (name) => connection().then((db) => db.collection('products').findOne({ name }));
 
 const getAll = async () => {
   const saida = await connection().then((db) => db.collection('products').find({}).toArray());
@@ -25,10 +25,13 @@ const update = async (id, name, quantity) => {
   return { _id: id, name, quantity };
 };
 
+const exclude = async (id) => connection().then((db) => db.collection('products').deleteOne({ _id: { $in: [ObjectId(id)] } }));
+
 module.exports = {
   create,
-  productExists,
+  productExistsByName,
   getAll,
   getById,
   update,
+  exclude,
 };
