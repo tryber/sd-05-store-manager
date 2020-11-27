@@ -17,7 +17,7 @@ const isValid = async (name, quantity) => {
     };
   }
   if (typeof quantity !== 'number') {
-  // if (!Number.isInteger(quantity)) {
+    // if (!Number.isInteger(quantity)) {
     throw {
       code: 'invalid_data',
       message: '"quantity" must be a number',
@@ -75,12 +75,29 @@ const updateById = async (id, name, quantity) => {
   // para limitar objeto retornado que seria enorme
 };
 
+// const deleteById = async (id) => {
+//   const delProd = await getById(id);
+//   await prodModel.deleteById(id);
+//   return delProd;
+//   // error TypeError: Cannot convert undefined or null to object
+//   // se for inverter linhas 80 e 81, simplesmente nao deleta
+// };
+
 const deleteById = async (id) => {
-  const delProd = await getById(id);
-  await prodModel.deleteById(id);
-  return delProd;
-  // error TypeError: Cannot convert undefined or null to object
-  // se for inverter linhas 80 e 81, simplesmente nao deleta
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  const deletedProd = await prodModel.deleteById(id);
+  if (!deletedProd) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return deletedProd;
 };
 
 module.exports = { create, getById, updateById, deleteById };
