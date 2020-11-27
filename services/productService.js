@@ -89,9 +89,19 @@ const exclude = async (id) => {
   return { _id, name, quantity };
 };
 // -----
+// REVIEW
 const updateProductsDB = async (itensSold, vendaOuDelete) => {
-  await itensSold.forEach(async (item) => {
+  return itensSold.forEach(async (item) => {
     console.log('entrou no for each do updateProduct');
+
+    const mongoItem = await productModel.findById(item.productId);
+
+    if (mongoItem.quantity < item.quantity) {
+      throw new CodeError('Such amount is not permitted to sell', 'stock_problem');
+    }
+    console.log('mongoItem');
+    console.log(mongoItem);
+
     await productModel.incrementQuantity(item.productId, item.quantity, vendaOuDelete);
   });
 

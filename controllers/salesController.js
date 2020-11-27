@@ -8,10 +8,12 @@ const salesController = express.Router();
 // realiza venda
 salesController.post('/', async (req, res) => {
   const itensSold = req.body;
+  
 
   try {
     // envia o array de items vendidos para um forEach que atualiza
     // a quantidade de produtos
+    // REVIEW
     await productService.updateProductsDB(itensSold, 'venda');
 
     const itensSoldAdded = await salesService.addSale(itensSold);
@@ -21,6 +23,10 @@ salesController.post('/', async (req, res) => {
       // console.log((err));
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
+            if(err.code = 'stock_problem') {
+              return res.status(404).json({ err: { code: err.code, message: err.message } });
+            }
+
   }
 });
 
@@ -38,7 +44,7 @@ salesController.get('/:id', async (req, res) => {
   const { id } = req.params;
   // Tentativa 2 - Logica de validação diretamente no controller
   if (!ObjectId.isValid(id)) {
-    res.status(404).json({ err: { code: 'not_found', message: 'Sale not found' } });
+    return res.status(404).json({ err: { code: 'not_found', message: 'Sale not found' } });
   }
 
   const sales = await salesModel.findById(id);
