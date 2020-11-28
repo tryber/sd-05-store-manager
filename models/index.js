@@ -1,6 +1,7 @@
-const { add } = require('./productModels');
+const { add, findByName } = require('./productModels');
 
 
 module.exports = {
   add,
+  findByName,
 }

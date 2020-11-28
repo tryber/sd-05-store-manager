@@ -1,3 +1,3 @@
-const createValidator = () => {
-  
+const createValidator = (name, quantity) => {
+
 } 
