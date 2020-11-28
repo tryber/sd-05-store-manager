@@ -30,7 +30,7 @@ const createProduct = async (name, quantity) => {
         message: '"quantity" must be a number',
       };
     default:
-      return await model.add(name, quantity);
+      return model.add(name, quantity);
   }
 };
 
