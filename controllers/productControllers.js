@@ -14,9 +14,9 @@ const addProduct = async (req, res) => {
 };
 
 const getAllProducts = async (_req, res) => {
-  const products = await services.product.showProducts()
+  const products = await services.product.showProducts();
   return res.status(200).json(products);
-}
+};
 
 const getProduct = async (req, res) => {
   try {
@@ -26,7 +26,7 @@ const getProduct = async (req, res) => {
   } catch (err) {
     return res.status(422).json({ err });
   }
-}
+};
 
 module.exports = {
   addProduct,

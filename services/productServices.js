@@ -38,8 +38,7 @@ const showProducts = async () =>
   model.getAll();
 
 const showProduct = async (id) => {
-  const product = await model.findById(id)
-  console.log(product)
+  const product = await model.findById(id);
   switch (true) {
     case product === null || product === {}:
       throw {
@@ -49,7 +48,7 @@ const showProduct = async (id) => {
     default:
       return product;
   }
-}
+};
 
 module.exports = {
   createProduct,

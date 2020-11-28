@@ -16,16 +16,16 @@ const findByName = async (name) =>
 
 const getAll = async () =>
   connection('products')
-  .then((products) => products.find().toArray())
-  .then((result) => ({
-    products: result
-  }));
+    .then((products) => products.find().toArray())
+    .then((result) => ({
+      products: result,
+    }));
 
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
   return connection('products')
-  .then((products) => products.findOne(ObjectId(id)));
-}
+    .then((products) => products.findOne(ObjectId(id)));
+};
 
 module.exports = {
   add,
