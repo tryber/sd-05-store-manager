@@ -31,7 +31,7 @@ const getById = async (req, res) => { // rescue(
 }; // )
 
 const create = async (req, res) => { // rescue(
-  const { itensSold } = req.body;
+  const { itensSold } = req.body; //?
   try {
     const createdSale = await service.create(itensSold);
     // console.log(createdProduct);
@@ -48,9 +48,9 @@ const create = async (req, res) => { // rescue(
 
 const update = async (req, res) => { // rescue(
   const { id } = req.params;
-  const { itensSold } = req.body;
+  const { productId, quantity } = req.body; // ?[0]
   try {
-    const updatedSale = await service.update(id, itensSold);
+    const updatedSale = await service.update(id, productId, quantity);
     res.status(200).json(updatedSale); // não seria 204?
   } catch (err) {
     if (err.code === 'invalid_data') {

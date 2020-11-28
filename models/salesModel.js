@@ -13,17 +13,19 @@ const createSales = async (itensSold) => {
   return { _id: sale.insertedId, itensSold };
 };
 
-const updateSales = async (id, itensSold) => {
+const updateSales = async (id, productId, quantity) => {
   // if (!ObjectId.isValid(id)) return null;
-  const sale = await getCollection('sales') // items sold in array na linha abaixo?
-    .then((sales) => sales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } }));
+  const sale = await getCollection('sales')
+    .then((sales) => sales.updateOne(
+      { _id: ObjectId(id), 'itensSold.productId': productId },
+      { $set: { 'intensSold.0.quantity': quantity } },
+      ));
 
   return sale;
 };
 
 const excludeSales = async (id) => getCollection('sales')
   .then((db) => db.deleteOne({ _id: ObjectId(id) }));
-  // if (!ObjectId.isValid(id)) return null;
 
 module.exports = {
   getAllSales,
