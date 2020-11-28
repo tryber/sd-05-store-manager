@@ -27,9 +27,13 @@ const update = async (id, arrayFromBody) => {
   return { _id: id, itensSold: arrayFromBody };
 };
 
+const exclude = async (id) => connection()
+  .then((db) => db.collection(theCollection).deleteOne({ _id: { $in: [ObjectId(id)] } }));
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  exclude,
 };

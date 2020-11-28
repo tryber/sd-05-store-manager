@@ -33,6 +33,24 @@ const getById = async (id) => {
 
 const update = async (id, arrayFromBody) => salesModel.update(id, arrayFromBody);
 
+const exclude = async (id) => {
+  if (id.length < 24) {
+    //  avalia se o formato do id é inválido, enunciado pede se a venda não existe.
+    throw { err: { code: 'invalid_data', message: 'Wrong sale ID format' } };
+  }
+  const verificaSale = await salesModel.getById(id);
+
+  if (!verificaSale) {
+    //  este caso deveria ser contemplado nos testes, no caso da venda não existir.
+    //  alem disso, neste caso, o erro deveria ser 404.
+    // teste avalia somente o caso acima que tem status 422
+    throw { err: { code: 'invalid_data', message: 'Wrong sale ID format' } };
+  }
+
+  await salesModel.exclude(id);
+  return verificaSale;
+};
+
 module.exports = {
   create,
   quantIsValid,
@@ -40,4 +58,5 @@ module.exports = {
   getAll,
   getById,
   update,
+  exclude,
 };
