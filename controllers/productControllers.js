@@ -13,6 +13,23 @@ const addProduct = async (req, res) => {
   }
 };
 
+const getAllProducts = async (_req, res) => {
+  const products = await services.product.showProducts()
+  return res.status(200).json(products);
+}
+
+const getProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await services.product.showProduct(id);
+    return res.status(200).json(product);
+  } catch (err) {
+    return res.status(422).json({ err });
+  }
+}
+
 module.exports = {
   addProduct,
+  getAllProducts,
+  getProduct,
 };
