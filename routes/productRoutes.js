@@ -4,7 +4,6 @@ const middlewares = require('../middlewares/index');
 
 const productRouter = Router();
 
-productRouter.post('/', controllers.product.addProduct)
+productRouter.post('/', controllers.product.addProduct);
 
-module.exports = productRouter
-
+module.exports = productRouter;
