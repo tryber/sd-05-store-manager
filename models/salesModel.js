@@ -5,11 +5,8 @@ const getCollection = require('./connection');
 const getAllSales = async () =>
   getCollection('sales').then((sales) => sales.find().toArray());
 
-const getSalesById = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
-
-  return getCollection('sales').then((db) => db.findOne(ObjectId(id)));
-};
+const getSalesById = async (id) => getCollection('sales').then((db) => db.findOne(ObjectId(id)));
+  // if (!ObjectId.isValid(id)) return null;
 
 // const getByNameAndAlbum = async ({ name, album }) => {
 //   return getCollection('songs').then((songs) =>
@@ -17,25 +14,22 @@ const getSalesById = async (id) => {
 //   );
 // };
 
-const createSales = async ({ itemsSold }) => {
-  const sale = await getCollection('sales').then((db) => db.insertOne({ itemsSold }));
-  return { _id: sale.insertedId, itemsSold };
+const createSales = async (itensSold) => {
+  const sale = await getCollection('sales').then((db) => db.insertOne({ itensSold }));
+  return { _id: sale.insertedId, itensSold };
 };
 
-const updateSales = async ({ id, itemsSold }) => {
-  if (!ObjectId.isValid(id)) return null;
-
+const updateSales = async (id, itensSold) => {
+  // if (!ObjectId.isValid(id)) return null;
   const sale = await getCollection('sales') // items sold in array na linha abaixo?
-    .then((sales) => sales.updateOne({ _id: ObjectId(id) }, { $set: { itemsSold } }));
+    .then((sales) => sales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } }));
 
   return sale;
 };
 
-const excludeSales = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
-
-  return getCollection('sales').then((db) => db.deleteOne({ _id: ObjectId(id) }));
-};
+const excludeSales = async (id) => getCollection('sales')
+  .then((db) => db.deleteOne({ _id: ObjectId(id) }));
+  // if (!ObjectId.isValid(id)) return null;
 
 module.exports = {
   getAllSales,
