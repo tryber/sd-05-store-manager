@@ -9,9 +9,10 @@ const add = (name, quantity) =>
       quantity,
     }));
 
-const findByName = async (name) => {
-  await connection('products').then((product) => product.find({ name: { $eq: `${name}` } }).toArray());
-};
+const findByName = async (name) =>
+  connection('products').then((product) =>
+    product.find({ name: { $eq: `${name}` } }).toArray(),
+  );
 
 module.exports = {
   add,
