@@ -50,8 +50,37 @@ const showProduct = async (id) => {
   }
 };
 
+const updateById = async (name, quantity, id) => {
+  const product = await model.findById(id);
+
+  switch (true) {
+    case product === null || product === {}:
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      };
+    case name.length < 5:
+      throw {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long',
+      };
+    case +quantity < 1:
+      throw {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1',
+      };
+    case typeof quantity !== 'number':
+      throw {
+        code: 'invalid_data',
+        message: '"quantity" must be a number',
+      };
+    default:
+      return model.update(name, quantity, id);
+  }
+};
 module.exports = {
   createProduct,
   showProducts,
   showProduct,
+  updateById,
 };

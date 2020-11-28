@@ -11,8 +11,7 @@ const add = (name, quantity) =>
     }));
 
 const findByName = async (name) =>
-  connection('products').then((product) =>
-    product.find({ name: { $eq: `${name}` } }).toArray());
+  connection('products').then((product) => product.find({ name: { $eq: `${name}` } }).toArray());
 
 const getAll = async () =>
   connection('products')
@@ -23,8 +22,13 @@ const getAll = async () =>
 
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
-  return connection('products')
-    .then((products) => products.findOne(ObjectId(id)));
+  return connection('products').then((products) => products.findOne(ObjectId(id)));
+};
+
+const update = (name, quantity, id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection('products').then((product) =>
+    product.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 };
 
 module.exports = {
@@ -32,4 +36,5 @@ module.exports = {
   findByName,
   getAll,
   findById,
+  update,
 };
