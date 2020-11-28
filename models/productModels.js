@@ -11,8 +11,7 @@ const add = (name, quantity) =>
 
 const findByName = async (name) =>
   connection('products').then((product) =>
-    product.find({ name: { $eq: `${name}` } }).toArray(),
-  );
+    product.find({ name: { $eq: `${name}` } }).toArray());
 
 module.exports = {
   add,
