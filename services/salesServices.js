@@ -1,4 +1,4 @@
-const salesServices = require('../models/salesModel');
+const salesModel = require('../models/salesModel');
 const productServices = require('./productServices');
 
 const quantIsValid = async (quantity) => {
@@ -15,10 +15,26 @@ const productIdIsValid = async (productId) => {
   return true;
 };
 
-const create = async (arrayFromBody) => salesServices.create(arrayFromBody);
+const create = async (arrayFromBody) => salesModel.create(arrayFromBody);
+
+const getAll = async () => salesModel.getAll();
+
+const getById = async (id) => {
+  if (id.length < 24) {
+    throw { err: { code: 'not_found', message: 'Sale not found' } };
+  }
+
+  const saida = await salesModel.getById(id);
+  if (!saida) {
+    throw { err: { code: 'not_found', message: 'Sale not found' } };
+  }
+  return saida;
+};
 
 module.exports = {
   create,
   quantIsValid,
   productIdIsValid,
+  getAll,
+  getById,
 };

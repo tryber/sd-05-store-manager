@@ -19,8 +19,25 @@ const create = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  const saida = await salesServices.getAll();
+  res.status(200).json(saida);
+};
+
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const saida = await salesServices.getById(id);
+    res.status(200).json(saida);
+  } catch (err) {
+    res.status(404).json(err);
+  }
+};
+
 module.exports = {
   create,
+  getAll,
+  getById,
 };
 
 //  https://itnext.io/why-async-await-in-a-foreach-is-not-working-5f13118f90d

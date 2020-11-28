@@ -26,9 +26,9 @@ app.delete('/products/:id', productController.exclude);
 
 app.post('/sales', salesController.create);
 
-// app.get('/sales', salesController.getAll)
+app.get('/sales', salesController.getAll);
 
-// app.get('/sales/:id', salesController.getById);
+app.get('/sales/:id', salesController.getById);
 
 app.listen(PORT, () => {
   console.log(`Estou ouvindo a porta ${PORT}`);
