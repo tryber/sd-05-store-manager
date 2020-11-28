@@ -27,43 +27,43 @@ const getById = async (id) => {
   return sales;
 };
 
-const create = async (itemsSold) => {
-  if (!itemsSold.productId || !itemsSold.quantity) {
+const create = async (itensSold) => {
+  if (!itensSold.productId || !itensSold.quantity) {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (itemsSold.quantity <= 0) {
+  if (itensSold.quantity <= 0) {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (!ObjectId.isValid(itemsSold.productId)) {
+  if (!ObjectId.isValid(itensSold.productId)) {
     throw {
       code: 'invalid_data', message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (typeof itemsSold.quantity !== 'number' || !Number.isInteger(itemsSold.quantity)) {
+  if (typeof itensSold.quantity !== 'number' || !Number.isInteger(itensSold.quantity)) {
     throw {
       code: 'invalid_data',
       message: '"Wrong product ID or invalid quantity',
     };
   }
-  const saleExists = await model.getSalesById(id);
-  if (saleExists) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong product ID or invalid quantity',
-    };
-  }
-  const newProduct = await model.createProducts(itemsSold);
+  // const saleExists = await model.getSalesById(id);
+  // if (saleExists) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong product ID or invalid quantity',
+  //   };
+  // }
+  const newSale = await model.createSales(itensSold);
 
-  return newProduct;
+  return newSale;
 };
 
-const update = async (id, itemsSold) => {
+const update = async (id, itensSold) => {
   if (!id) {
     throw {
       code: 'invalid_data',
@@ -76,38 +76,38 @@ const update = async (id, itemsSold) => {
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (!itemsSold) {
+  if (!itensSold) {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (!itemsSold.productId || !itemsSold.quantity) {
+  if (!itensSold.productId || !itensSold.quantity) {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (itemsSold.quantity <= 0) {
+  if (itensSold.quantity <= 0) {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (!ObjectId.isValid(itemsSold.productId)) {
+  if (!ObjectId.isValid(itensSold.productId)) {
     throw {
       code: 'invalid_data', message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (typeof itemsSold.quantity !== 'number' || !Number.isInteger(itemsSold.quantity)) {
+  if (typeof itensSold.quantity !== 'number' || !Number.isInteger(itensSold.quantity)) {
     throw {
       code: 'invalid_data',
       message: '"Wrong product ID or invalid quantity',
     };
   }
-  model.updateProducts(id, itemsSold);
+  model.updateProducts(id, itensSold);
 
-  return { id, itemsSold };
+  return { id, itensSold };
 };
 
 const exclude = async (id) => {
@@ -118,21 +118,21 @@ const exclude = async (id) => {
   }
   if (!ObjectId.isValid(id)) {
     throw {
-      code: 'invalid_data', message: 'Wrong sale ID format'
+      code: 'invalid_data', message: 'Wrong sale ID format',
     };
   }
 
-  const { _id, itemsSold } = await model.getSalesById(id);
+  const { _id, itensSold } = await model.getSalesById(id);
 
-  if (!id || !itemsSold) {
+  if (!id || !itensSold) {
     throw {
-      code: 'invalid_data', message: 'Wrong sale ID format'
+      code: 'invalid_data', message: 'Wrong sale ID format',
     };
   }
 
   await model.excludeProducts(id);
 
-  return { _id, itemsSold };
+  return { _id, itensSold };
 };
 
 module.exports = {
