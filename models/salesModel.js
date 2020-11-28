@@ -19,7 +19,7 @@ const updateSales = async (id, productId, quantity) => {
     .then((sales) => sales.updateOne(
       { _id: ObjectId(id), 'itensSold.productId': productId },
       { $set: { 'intensSold.0.quantity': quantity } },
-      ));
+    ));
 
   return sale;
 };

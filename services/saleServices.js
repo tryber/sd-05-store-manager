@@ -121,8 +121,9 @@ const update = async (id, productId, quantity) => {
   return {
     _id: id,
     itensSold: [
-      {productId, quantity},
-  ]};
+      { productId, quantity },
+    ],
+  };
 };
 
 const exclude = async (id) => {
