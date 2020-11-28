@@ -13,16 +13,9 @@ const add = (name, quantity) =>
 const findByName = async (name) => {
   return connection('products')
     .then((product) => {
-      return product.find({ name: { $eq: `${name}` } });
+      return product.find({ name: { $eq: `${name}` } }).toArray();
     })
-    .then(async (result) => {
-      if (!result) {
-        console.log('sim')
-        return false;
-      }
-      console.log('não')
-      return true;
-    });
+
 };
 
 module.exports = {

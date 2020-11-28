@@ -1,13 +1,17 @@
-const model = require('../models/index')
+const services = require('../services/index');
 
 const addProduct = async (req, res) => {
-  const { name, quantity } = req.body;
-  const product = await model.add(name, quantity);
-  const test = await model.findByName(name)
-  console.log(test)
-  return res.status(201).send(product);
-}
+  try {
+    const { name, quantity } = req.body;
+    const product = await services.product.createProduct(name, quantity);
+    console.log(product);
+    return res.status(201).json(product);
+  } catch (err) {
+    return res.status(422).json({ err });
+  }
+  return res.status(500).json({ message: 'Algo deu ruim no product Controller' });
+};
 
 module.exports = {
   addProduct,
-}
+};
