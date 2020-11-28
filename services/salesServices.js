@@ -31,10 +31,13 @@ const getById = async (id) => {
   return saida;
 };
 
+const update = async (id, arrayFromBody) => salesModel.update(id, arrayFromBody);
+
 module.exports = {
   create,
   quantIsValid,
   productIdIsValid,
   getAll,
   getById,
+  update,
 };

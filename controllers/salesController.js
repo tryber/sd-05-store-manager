@@ -34,10 +34,26 @@ const getById = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const arrayFromBody = req.body;
+    const { productId, quantity } = arrayFromBody[0];
+    await salesServices.quantIsValid(quantity);
+    await salesServices.productIdIsValid(productId);
+    await salesServices.getById(id);
+    const saida = await salesServices.update(id, arrayFromBody);
+    res.status(200).json(saida);
+  } catch (err) {
+    res.status(422).json(err);
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
 
 //  https://itnext.io/why-async-await-in-a-foreach-is-not-working-5f13118f90d

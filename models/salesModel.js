@@ -18,8 +18,18 @@ const getAll = async () => {
 const getById = async (id) => connection()
   .then((db) => db.collection(theCollection).findOne({ _id: { $in: [ObjectId(id)] } }));
 
+const update = async (id, arrayFromBody) => {
+  await connection()
+    .then((db) => db.collection(theCollection).updateOne(
+      { _id: { $in: [ObjectId(id)] } },
+      { $set: { itensSold: arrayFromBody } },
+    ));
+  return { _id: id, itensSold: arrayFromBody };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
