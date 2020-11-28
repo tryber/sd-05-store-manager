@@ -1,7 +1,7 @@
-const storeModel = require('../models/storeModel');
+const productModel = require('../models/productModel');
 
 const isValid = async (name, quantity) => {
-  const check = await storeModel.productExistsByName(name);
+  const check = await productModel.productExistsByName(name);
 
   if (!name || name.length < 5) {
     throw { err: { code: 'invalid_data', message: '"name" length must be at least 5 characters long' } };
@@ -19,25 +19,25 @@ const isValid = async (name, quantity) => {
   return true;
 };
 
-const create = async (name, quantity) => storeModel.create(name, quantity);
+const create = async (name, quantity) => productModel.create(name, quantity);
 
-const getAll = async () => storeModel.getAll();
+const getAll = async () => productModel.getAll();
 
 const getById = async (id) => {
   if (id.length < 24) {
     throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
   }
 
-  const saida = await storeModel.getById(id);
+  const saida = await productModel.getById(id);
   if (!saida) {
     throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
   }
   return saida;
 };
 
-const update = async (id, name, quantity) => storeModel.update(id, name, quantity);
+const update = async (id, name, quantity) => productModel.update(id, name, quantity);
 
-const exclude = async (id) => storeModel.exclude(id);
+const exclude = async (id) => productModel.exclude(id);
 
 module.exports = {
   isValid,
