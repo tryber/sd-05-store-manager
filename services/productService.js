@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const model = require('../model/productModel');
 
 const create = async (name, quantity) => {
@@ -63,7 +64,8 @@ const update = async (id, name, quantity) => {
     };
   }
 
-  return model.update(id, name, quantity);
+  await model.update(id, name, quantity);
+  return { _id: ObjectId(id), name, quantity };
 };
 
 const getAllProducts = async () => {

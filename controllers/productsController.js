@@ -40,15 +40,15 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, quantity } = req.params;
-    const updatedProduct = await productService.update(id, name, quantity);
-    return res.status(200).json(updatedProduct);
+    const { name, quantity } = req.body;
+    const product = await productService.update(id, name, quantity);
+    return res.status(200).json(product);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
     console.error(err);
-    return res.status(500).json({ message: 'Algo deu errado' });
+    res.status(500).json({ message: 'Algo deu errado' });
   }
 });
 
