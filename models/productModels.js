@@ -31,10 +31,17 @@ const update = (name, quantity, id) => {
     product.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 };
 
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection('products').then((product) =>
+    product.deleteOne({ _id: ObjectId(id) }));
+};
+
 module.exports = {
   add,
   findByName,
   getAll,
   findById,
   update,
+  exclude,
 };
