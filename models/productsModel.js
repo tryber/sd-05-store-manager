@@ -18,15 +18,17 @@ const getById = async (id) =>
 const findById = async (id) =>
   getCollection('products').then((products) => products.findOne(ObjectId(id)));
 
+// prettier-ignore
 const updateById = async (id, name, quantity) =>
   getCollection('products').then((products) =>
-    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+// prettier-ignore
 
 module.exports = {
   create,
+  findById,
   findByName,
   getAll,
-  findById,
+  getById,
   updateById,
 };

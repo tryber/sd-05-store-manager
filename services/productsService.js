@@ -10,13 +10,6 @@ const validationData = (name, quantity) => {
     };
   }
 
-  // if (chosenProduct) {
-  //   throw {
-  //     code: 'invalid_data',
-  //     message: 'Product already exists',
-  //   };
-  // }
-
   if (+quantity < 1) {
     throw {
       code: 'invalid_data',
@@ -34,12 +27,7 @@ const validationData = (name, quantity) => {
 const create = async (name, quantity) => {
   const productAlreadyExists = await productModel.findByName(name);
 
-  // if (name.length < 5) {
-  //   throw {
-  //     code: 'invalid_data',
-  //     message: '"name" length must be at least 5 characters long',
-  //   };
-  // }
+  validationData(name, quantity);
 
   if (productAlreadyExists) {
     throw {
@@ -47,22 +35,6 @@ const create = async (name, quantity) => {
       message: 'Product already exists',
     };
   }
-
-  // if (+quantity < 1) {
-  //   throw {
-  //     code: 'invalid_data',
-  //     message: '"quantity" must be larger than or equal to 1',
-  //   };
-  // }
-
-  // if (typeof quantity !== 'number') {
-  //   throw {
-  //     code: 'invalid_data',
-  //     message: '"quantity" must be a number',
-  //   };
-  // }
-
-  validationData(name, quantity);
 
   return productModel.create(name, quantity);
 };
@@ -92,7 +64,7 @@ const getAll = async () => productModel.getAll();
 const updateById = async (id, name, quantity) => {
   validationData(name, quantity);
   await productModel.updateById(id, name, quantity);
-  // console.log(updatedProduct);
+
   return { _id: ObjectId(id), name, quantity };
 };
 
