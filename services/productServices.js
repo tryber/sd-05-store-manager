@@ -1,7 +1,7 @@
 const model = require('../models/index');
 
 const createProduct = async (name, quantity) => {
-  const doesItExists = await model.findByName(name).then((result) => {
+  const doesItExists = await model.product.findByName(name).then((result) => {
     if (result.length === 0) {
       return false;
     }
@@ -30,15 +30,15 @@ const createProduct = async (name, quantity) => {
         message: '"quantity" must be a number',
       };
     default:
-      return model.add(name, quantity);
+      return model.product.add(name, quantity);
   }
 };
 
 const showProducts = async () =>
-  model.getAll();
+  model.product.getAll();
 
 const showProduct = async (id) => {
-  const product = await model.findById(id);
+  const product = await model.product.findById(id);
   switch (true) {
     case product === null || product === {}:
       throw {
@@ -51,7 +51,7 @@ const showProduct = async (id) => {
 };
 
 const updateById = async (name, quantity, id) => {
-  const product = await model.findById(id);
+  const product = await model.product.findById(id);
 
   switch (true) {
     case product === null || product === {}:
@@ -75,11 +75,11 @@ const updateById = async (name, quantity, id) => {
         message: '"quantity" must be a number',
       };
     default:
-      return model.update(name, quantity, id);
+      return model.product.update(name, quantity, id);
   }
 };
 
-const excludeById = async (id) => model.exclude(id);
+const excludeById = async (id) => model.product.exclude(id);
 
 module.exports = {
   createProduct,

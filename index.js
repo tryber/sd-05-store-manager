@@ -13,6 +13,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/products', routes.product);
+app.use('/sales', routes.sales);
 
 app.listen(PORT, () => {
   console.log(`O PAI TÁ ON NA PORTA ${PORT}`);
