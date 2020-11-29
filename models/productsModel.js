@@ -12,23 +12,25 @@ const findByName = async (name) =>
 
 const getAll = async () => getCollection('products').then((products) => products.find().toArray());
 
-const getById = async (id) =>
-  getCollection('products').then((products) => products().findOne(ObjectId(id)));
+// const getById = async (id) =>
+//   getCollection('products').then((products) => products.findOne(ObjectId(id)));
 
-const findById = async (id) =>
-  getCollection('products').then((products) => products.findOne(ObjectId(id)));
+const findById = async (id) => getCollection('products').then((res) => res.findOne(ObjectId(id)));
 
 // prettier-ignore
 const updateById = async (id, name, quantity) =>
   getCollection('products').then((products) =>
     products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
-// prettier-ignore
+
+const remove = async (id) =>
+  getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   create,
   findById,
   findByName,
   getAll,
-  getById,
+  // getById,
+  remove,
   updateById,
 };

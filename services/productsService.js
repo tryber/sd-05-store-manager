@@ -24,6 +24,16 @@ const validationData = (name, quantity) => {
     };
   }
 };
+
+const isThisIdValid = async (id, productDoesExist) => {
+  if (!ObjectId.isValid(id) || !productDoesExist) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+};
+
 const create = async (name, quantity) => {
   const productAlreadyExists = await productModel.findByName(name);
 
@@ -36,27 +46,46 @@ const create = async (name, quantity) => {
     };
   }
 
-  return productModel.create(name, quantity);
+  const newProduct = await productModel.create(name, quantity);
+
+  return newProduct;
 };
 
-const getById = async (id) => {
-  const productDoesExist = await productModel.findById(id);
+// const getById = async (id) => {
+//   if (!ObjectId.isValid(id)) {
+//     throw {
+//       code: 'invalid_data',
+//       message: 'Wrong id format',
+//     };
+//   }
+//   const productDoesExist = await productModel.getById(id);
+//   // await isThisIdValid(id, productDoesExist);
+//   if (!productDoesExist) {
+//     throw {
+//       code: 'invalid_data',
+//       message: 'Wrong id format',
+//     };
+//   }
 
-  if (!ObjectId.isValid(id) || !productDoesExist) {
+//   return productDoesExist;
+// };
+
+const findById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  const product = await productModel.findById(id);
+  if (!product) {
     throw {
       code: 'invalid_data',
       message: 'Wrong id format',
     };
   }
 
-  // if (!productDoesExist) {
-  //   throw {
-  //     code: 'invalid_data',
-  //     message: 'Wrong id format',
-  //   };
-  // }
-
-  return productDoesExist;
+  return product;
 };
 
 const getAll = async () => productModel.getAll();
@@ -64,18 +93,24 @@ const getAll = async () => productModel.getAll();
 const updateById = async (id, name, quantity) => {
   validationData(name, quantity);
   await productModel.updateById(id, name, quantity);
+  const updatedProduct = { _id: ObjectId(id), name, quantity };
 
-  return { _id: ObjectId(id), name, quantity };
+  return updatedProduct;
 };
 
 const remove = async (id) => {
+  const productDoesExist = await productModel.getById(id);
+  await isThisIdValid(id, productDoesExist);
   const deletedProduct = await productModel.remove(id);
+  // await console.log(deletedProduct);
   return deletedProduct;
 };
 
 module.exports = {
   create,
   getAll,
-  getById,
+  findById,
+  // getById,
+  remove,
   updateById,
 };
