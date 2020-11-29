@@ -17,9 +17,16 @@ const getById = async (id) => {
   return getCollection('products').then((products) => products.findOne(ObjectId(id)));
 };
 
+const update = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollection('products').then((products) =>
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+};
+
 module.exports = {
   create,
   getById,
+  update,
   hasProduct,
   getAllProducts,
 };

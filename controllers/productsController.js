@@ -2,39 +2,54 @@ const { Router } = require('express');
 
 const productService = require('../services/productService');
 
-const products = Router();
+const router = Router();
 
-products.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { name, quantity } = req.body;
     const newProduct = await productService.create(name, quantity);
-    res.status(201).json(newProduct);
+    return res.status(201).json(newProduct);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
     console.error(err);
-    res.status(500).json('Algo deu errado');
+    return res.status(500).json('Algo deu errado');
   }
 });
 
-products.get('/', async (_req, res) => {
-  const productList = await productService.getAllProducts();
-  return res.status(200).json({ productList });
+router.get('/', async (_req, res) => {
+  const products = await productService.getAllProducts();
+  return res.status(200).json({ products });
 });
 
-products.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const product = await productService.getProductById(id);
-    res.status(200).json(product);
+    return res.status(200).json(product);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
     console.error(err);
-    res.status(500).json('Algo deu errado');
+    return res.status(500).json('Algo deu errado');
   }
 });
 
-module.exports = products;
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.params;
+    const updatedProduct = await productService.update(id, name, quantity);
+    return res.status(200).json(updatedProduct);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+    console.error(err);
+    return res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
+module.exports = router;
