@@ -68,6 +68,11 @@ const updateById = async (id, name, quantity) => {
   return { _id: ObjectId(id), name, quantity };
 };
 
+const remove = async (id) => {
+  const deletedProduct = await productModel.remove(id);
+  return deletedProduct;
+};
+
 module.exports = {
   create,
   getAll,
