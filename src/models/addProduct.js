@@ -1,14 +1,16 @@
-const mongoCollection = require('./mongo');
+const getCollection = require('./mongo');
 
-const register = async (name, quantity) =>
-  mongoCollection('products')
-    .then((product) => product.insertOne({ name, quantity }))
-    .then((result) => ({ _id: result.insertId, name, quantity }));
+const create = async (name, quantity) => {
+  const product = await getCollection('products').then((collection) =>
+    collection.insertOne({ name, quantity }),
+  );
+  return { _id: product.insertedId, name, quantity };
+};
 
-const checkProduct = async (productName) =>
-  mongoCollection('products').then((product) => product.findOne({ name: productName }));
+const findByName = async (name) =>
+  getCollection('products').then((collection) => collection.findOne({ name }));
 
 module.exports = {
-  register,
-  checkProduct,
+  create,
+  findByName,
 };
