@@ -33,6 +33,24 @@ const create = async (name, quantity) => {
   return model.create(name, quantity);
 };
 
+const getAll = async () => {
+  const products = await model.getAll();
+  return products;
+};
+
+const getById = async (id) => {
+  const product = await model.getById(id);
+  if (!product) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return product;
+};
+
 module.exports = {
   create,
+  getAll,
+  getById,
 };
