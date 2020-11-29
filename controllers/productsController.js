@@ -52,4 +52,16 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await productService.remove(id);
+    res.status(200).json(product);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+  }
+});
+
 module.exports = router;

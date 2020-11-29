@@ -68,6 +68,17 @@ const update = async (id, name, quantity) => {
   return { _id: ObjectId(id), name, quantity };
 };
 
+const remove = async (id) => {
+  const product = await model.remove(id);
+  if (!product) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return product;
+};
+
 const getAllProducts = async () => {
   const productList = await model.getAllProducts();
   return productList;
@@ -88,6 +99,7 @@ const getProductById = async (id) => {
 module.exports = {
   create,
   update,
+  remove,
   getAllProducts,
   getProductById,
 };
