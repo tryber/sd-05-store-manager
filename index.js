@@ -2,6 +2,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 const controllers = require('./controllers');
 
+const PORT = 3000;
 const app = express();
 
 app.use(express.json());
@@ -13,4 +14,4 @@ app.get('/', (request, response) => {
 
 app.use('/products', controllers.products);
 
-app.listen(PORT, )
+app.listen(PORT, () => console.log('Servidor operando'));
