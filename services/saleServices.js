@@ -2,14 +2,14 @@ const { ObjectId } = require('mongodb');
 const model = require('../models/salesModel');
 const productModel = require('../models/productsModel');
 
-const getAll = async () => await model.getAllSales();
+const getAll = async () => model.getAllSales();
 
 const getById = async (id) => {
-  if (!id) {
-    throw {
-      code: 'not_found', message: 'Sale not found',
-    };
-  }
+  // if (!id) {
+  //   throw {
+  //     code: 'not_found', message: 'Sale not found',
+  //   };
+  // }
   if (!ObjectId.isValid(id)) {
     throw {
       code: 'not_found', message: 'Sale not found',
@@ -36,30 +36,27 @@ const create = async (itensSold) => {
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  if (!itensSold.productId || !itensSold.quantity) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong product ID or invalid quantity',
-    };
-  }
-  if (itensSold.quantity <= 0) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong product ID or invalid quantity',
-    };
-  }
-  if (!ObjectId.isValid(itensSold.productId)) {
-    throw {
-      code: 'invalid_data', message: 'Wrong product ID or invalid quantity',
-    };
-  }
-  if (typeof itensSold.quantity !== 'number' || !Number.isInteger(itensSold.quantity)) {
-    throw {
-      code: 'invalid_data',
-      message: '"Wrong product ID or invalid quantity',
-    };
-  }
-  // const saleExists = await model.getSalesById(id);
+
+  // const {productId, quantity} = itensSold;
+
+  // if (quantity <= 0) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong product ID or invalid quantity',
+  //   };
+  // }
+  // if (!ObjectId.isValid(productId)) {
+  //   throw {
+  //     code: 'invalid_data', message: 'Wrong product ID or invalid quantity',
+  //   };
+  // }
+  // if (typeof itensSold.quantity !== 'number' || !Number.isInteger(itensSold.quantity)) {
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: '"Wrong product ID or invalid quantity',
+  //   };
+  // }
+  // // const saleExists = await model.getSalesById(id);
   // if (saleExists) {
   //   throw {
   //     code: 'invalid_data',
@@ -105,21 +102,21 @@ const update = async (id, productId, quantity) => {
   if (typeof quantity !== 'number' || !Number.isInteger(quantity)) {
     throw {
       code: 'invalid_data',
-      message: '"Wrong product ID or invalid quantity',
+      message: 'Wrong product ID or invalid quantity',
     };
   }
   const saleExists = await model.getSalesById(id);
   if (!saleExists) {
     throw {
       code: 'invalid_data',
-      message: '"Wrong product ID or invalid quantity',
+      message: 'Wrong product ID or invalid quantity',
     };
   }
   const productExists = await productModel.getProductsById(productId);
   if (!productExists) {
     throw {
       code: 'invalid_data',
-      message: '"Wrong product ID or invalid quantity',
+      message: 'Wrong product ID or invalid quantity',
     };
   }
   await model.updateProducts(id, productId, quantity);
@@ -153,7 +150,8 @@ const exclude = async (id) => {
   // }
 
   const excludedSale = await model.excludeSales(id);
-  if (!excludeSale) {
+  
+  if (!excludedSale) {
     throw {
       code: 'invalid_data', message: 'Wrong sale ID format',
     };
