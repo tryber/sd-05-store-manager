@@ -25,8 +25,17 @@ const validationData = (name, quantity) => {
   }
 };
 
-const isThisIdValid = async (id, productDoesExist) => {
-  if (!ObjectId.isValid(id) || !productDoesExist) {
+const isThisIdValid = (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+};
+
+const doesProductExist = (productDoesExist) => {
+  if (!productDoesExist) {
     throw {
       code: 'invalid_data',
       message: 'Wrong id format',
@@ -35,9 +44,8 @@ const isThisIdValid = async (id, productDoesExist) => {
 };
 
 const create = async (name, quantity) => {
-  const productAlreadyExists = await productModel.findByName(name);
-
   validationData(name, quantity);
+  const productAlreadyExists = await productModel.findByName(name);
 
   if (productAlreadyExists) {
     throw {
@@ -52,23 +60,9 @@ const create = async (name, quantity) => {
 };
 
 const getById = async (id) => {
-  if (!ObjectId.isValid(id)) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong id format',
-    };
-  }
-
+  await isThisIdValid(id);
   const productDoesExist = await productModel.getById(id);
-
-  if (!productDoesExist) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong id format',
-    };
-  }
-
-  // await isThisIdValid(id, productDoesExist);
+  await doesProductExist(productDoesExist);
 
   return productDoesExist;
 };
@@ -84,9 +78,11 @@ const updateById = async (id, name, quantity) => {
 };
 
 const remove = async (id) => {
+  await isThisIdValid(id);
   const productDoesExist = await productModel.getById(id);
-  await isThisIdValid(id, productDoesExist);
+  await doesProductExist(productDoesExist);
   const deletedProduct = await productModel.remove(id);
+
   return deletedProduct;
 };
 

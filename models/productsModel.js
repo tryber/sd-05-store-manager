@@ -5,7 +5,7 @@ const getCollection = require('./get-collection');
 const create = async (name, quantity) =>
   getCollection('products')
     .then((products) => products.insertOne({ name, quantity }))
-    .then((res) => ({ _id: res.insertId, name, quantity }));
+    .then((res) => ({ _id: res.insertedId, name, quantity }));
 
 const findByName = async (name) =>
   getCollection('products').then((products) => products.findOne({ name }));
