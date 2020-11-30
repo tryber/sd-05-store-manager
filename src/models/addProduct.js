@@ -20,8 +20,7 @@ const getById = async (id) => {
 const update = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) return null;
   const products = await getCollection('products').then((product) =>
-    product.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    product.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
   return products;
 };
 
