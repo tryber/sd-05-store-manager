@@ -150,7 +150,7 @@ const exclude = async (id) => {
   // }
 
   const excludedSale = await model.excludeSales(id);
-  
+
   if (!excludedSale) {
     throw {
       code: 'invalid_data', message: 'Wrong sale ID format',

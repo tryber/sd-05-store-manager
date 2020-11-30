@@ -3,9 +3,9 @@ const { ObjectId } = require('mongodb');
 const getCollection = require('./connection');
 
 const getAllSales = async () =>
-  await getCollection('sales').then((sales) => sales.find().toArray());
+  getCollection('sales').then((sales) => sales.find().toArray());
 
-const getSalesById = async (id) => await getCollection('sales')
+const getSalesById = async (id) => getCollection('sales')
   .then((db) => db.findOne(ObjectId(id)));
 
 const createSales = async (itensSold) => {
@@ -24,9 +24,9 @@ const updateSales = async (id, productId, quantity) => {
 };
 
 const excludeSales = async (id) => {
-const deleted = await getCollection('sales')
-  .then((db) => db.deleteOne({ _id: ObjectId(id) }));
-return deleted.value; 
+  const deleted = await getCollection('sales')
+    .then((db) => db.deleteOne({ _id: ObjectId(id) }));
+  return deleted.value; 
 };
 
 module.exports = {

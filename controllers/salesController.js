@@ -34,7 +34,7 @@ const getById = async (req, res) => { // rescue(
 
 const create = async (req, res) => { // rescue(
   const itensSold = req.body; // ?
-    try {
+  try {
     const createdSale = await service.create(itensSold);
     // console.log(createdProduct);
     res.status(200).json(createdSale);
