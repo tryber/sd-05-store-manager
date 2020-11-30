@@ -12,5 +12,6 @@ app.get('/', (request, response) => {
 });
 
 app.use('/products', controllers.products);
+app.use('/sales', controllers.sales);
 
 app.listen(PORT, () => console.log('Servidor operando'));
