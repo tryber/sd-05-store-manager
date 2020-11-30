@@ -24,10 +24,18 @@ const update = async (id, name, quantity) => {
   return products;
 };
 
+const delProduct = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  const excludeProd = await getCollection('products').then((product) =>
+    product.deleteOne({ _id: ObjectId(id) }));
+  return excludeProd;
+};
+
 module.exports = {
   create,
   findByName,
   getAll,
   getById,
   update,
+  delProduct,
 };

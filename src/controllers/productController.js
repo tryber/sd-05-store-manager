@@ -18,6 +18,18 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await service.delProduct(id);
+    return res.status(200).json(product);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+  }
+});
+
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
