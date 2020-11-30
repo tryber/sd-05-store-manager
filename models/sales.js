@@ -22,7 +22,7 @@ const getSaleById = async (id) => {
 };
 
 const updateSale = async (id, itensSold) => {
-  const db = await connection;
+  const db = await connection();
   await db.collection('sales').updateOne({ _id: ObjectId(id) }, { $set: { itensSold } });
   return { _id: id, itensSold };
 };
