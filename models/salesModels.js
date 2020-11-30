@@ -10,7 +10,7 @@ const getAll = async () =>
 
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
-  return connection('sales').then((products) => products.findOne({ _id: `${id}` })); // rever isso aqui pq o ObjectId não está funcionando
+  return connection('sales').then((products) => products.findOne({ _id: ObjectId(id) }));
 };
 
 const addSale = (sales) =>
@@ -24,8 +24,18 @@ const addSale = (sales) =>
       itensSold: sales,
     }));
 
+const update = (sales, id) => {
+  if (!ObjectId.isValid(id)) return null;
+  connection('sales').then((sale) =>
+    sale.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sales } }));
+};
+
+const exclude = (id) => connection('sales').then((sale) => sale.deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   getAll,
   findById,
   addSale,
+  update,
+  exclude,
 };

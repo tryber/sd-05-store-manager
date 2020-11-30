@@ -28,8 +28,31 @@ const createSell = async (req, res) => {
   }
 };
 
+const updateSell = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sales = req.body;
+    await services.sales.updateById(sales, id);
+    return res.status(200).json({ _id: id, itensSold: sales });
+  } catch (err) {
+    return res.status(422).json({ err });
+  }
+};
+
+const excludeSell = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sale = await services.sales.excludeById(id);
+    return res.status(200).json(sale);
+  } catch (err) {
+    return res.status(422).json({ err });
+  }
+};
+
 module.exports = {
   getAll,
   getOne,
   createSell,
+  updateSell,
+  excludeSell,
 };

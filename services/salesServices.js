@@ -27,8 +27,34 @@ const sell = async (sales) => {
   return model.sales.addSale(sales);
 };
 
+const updateById = async (sales, id) => {
+  sales.forEach(({ quantity }) => {
+    if (+quantity < 1 || typeof quantity !== 'number') {
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      };
+    }
+  });
+  return model.sales.update(sales, id);
+};
+
+const excludeById = async (id) => {
+  const sale = await model.sales.findById(id);
+  if (!sale) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+  await model.sales.exclude(id);
+  return sale;
+};
+
 module.exports = {
   getSales,
   showSale,
   sell,
+  updateById,
+  excludeById,
 };
