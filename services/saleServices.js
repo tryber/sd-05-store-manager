@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const model = require('../models/salesModel');
 const productModel = require('../models/productsModel');
 
-const getAll = async () => model.getAllSales();
+const getAll = async () => await model.getAllSales();
 
 const getById = async (id) => {
   if (!id) {
@@ -30,6 +30,12 @@ const getById = async (id) => {
 
 const create = async (itensSold) => {
   // criar um map com todos itens e testá-los
+  if (!itensSold) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
   if (!itensSold.productId || !itensSold.quantity) {
     throw {
       code: 'invalid_data',
@@ -138,17 +144,22 @@ const exclude = async (id) => {
     };
   }
 
-  const { _id, itensSold } = await model.getSalesById(id);
+  // const { _id, itensSold } = await model.getSalesById(id);
 
-  if (!_id || !itensSold) {
+  // if (!_id || !itensSold) {
+  //   throw {
+  //     code: 'invalid_data', message: 'Wrong sale ID format',
+  //   };
+  // }
+
+  const excludedSale = await model.excludeSales(id);
+  if (!excludeSale) {
     throw {
       code: 'invalid_data', message: 'Wrong sale ID format',
     };
   }
 
-  await model.excludeSales(id);
-
-  return { _id, itensSold };
+  return excludedSale;
 };
 
 module.exports = {

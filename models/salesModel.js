@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 const getCollection = require('./connection');
 
 const getAllSales = async () =>
-  getCollection('sales').then((sales) => sales.find().toArray());
+  getCollection('sales').then((sales) => sales.find().toArray()); 
 
 const getSalesById = async (id) => getCollection('sales').then((db) => db.findOne(ObjectId(id)));
 // if (!ObjectId.isValid(id)) return null;
@@ -24,8 +24,11 @@ const updateSales = async (id, productId, quantity) => {
   return sale;
 };
 
-const excludeSales = async (id) => getCollection('sales')
+const excludeSales = async (id) => {
+const deleted = await getCollection('sales')
   .then((db) => db.deleteOne({ _id: ObjectId(id) }));
+return deleted.value; 
+};
 
 module.exports = {
   getAllSales,
