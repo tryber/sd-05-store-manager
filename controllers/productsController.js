@@ -37,34 +37,19 @@ productRouter.get('/', async (req, res) => {
   }
 });
 
-// productRouter.get('/:id', async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     const product = await productService.getById(id);
-
-//     return res.status(200).json(product);
-//   } catch (err) {
-//     // throwError(err, res);
-//     if (err.code === 'invalid_data') {
-//       return res.status(422).json({ err });
-//     }
-//     res.status(500).json({ message: 'Algo deu errado' });
-//   }
-// });
-
 productRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
-  // console.log(id);
+  console.log(id);
+
   try {
-    const product = await productService.findById(id);
-    // console.log(product);
+    const product = await productService.getById(id);
+    console.log(product);
     return res.status(200).json(product);
   } catch (err) {
+    // throwError(err, res);
     if (err.code === 'invalid_data') {
-      return res.status(422).json({ err: { code: err.code, message: err.message } });
+      return res.status(422).json({ err });
     }
-    console.error(err);
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });
@@ -88,7 +73,7 @@ productRouter.put('/:id', async (req, res) => {
 
 productRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
-
+  // console.log(id);
   try {
     const deletedProduct = await productService.remove(+id);
     // console.log(deletedProduct);

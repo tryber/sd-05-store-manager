@@ -5,17 +5,15 @@ const getCollection = require('./get-collection');
 const create = async (name, quantity) =>
   getCollection('products')
     .then((products) => products.insertOne({ name, quantity }))
-    .then((result) => ({ _id: result.insertId, name, quantity }));
+    .then((res) => ({ _id: res.insertId, name, quantity }));
 
 const findByName = async (name) =>
   getCollection('products').then((products) => products.findOne({ name }));
 
 const getAll = async () => getCollection('products').then((products) => products.find().toArray());
 
-// const getById = async (id) =>
-//   getCollection('products').then((products) => products.findOne(ObjectId(id)));
-
-const findById = async (id) => getCollection('products').then((res) => res.findOne(ObjectId(id)));
+const getById = async (id) =>
+  getCollection('products').then((products) => products.findOne(ObjectId(id)));
 
 // prettier-ignore
 const updateById = async (id, name, quantity) =>
@@ -27,10 +25,9 @@ const remove = async (id) =>
 
 module.exports = {
   create,
-  findById,
   findByName,
   getAll,
-  // getById,
+  getById,
   remove,
   updateById,
 };

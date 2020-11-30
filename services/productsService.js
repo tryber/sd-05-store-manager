@@ -51,41 +51,26 @@ const create = async (name, quantity) => {
   return newProduct;
 };
 
-// const getById = async (id) => {
-//   if (!ObjectId.isValid(id)) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
-//   const productDoesExist = await productModel.getById(id);
-//   // await isThisIdValid(id, productDoesExist);
-//   if (!productDoesExist) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
-
-//   return productDoesExist;
-// };
-
-const findById = async (id) => {
+const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw {
       code: 'invalid_data',
       message: 'Wrong id format',
     };
   }
-  const product = await productModel.findById(id);
-  if (!product) {
+
+  const productDoesExist = await productModel.getById(id);
+
+  if (!productDoesExist) {
     throw {
       code: 'invalid_data',
       message: 'Wrong id format',
     };
   }
 
-  return product;
+  // await isThisIdValid(id, productDoesExist);
+
+  return productDoesExist;
 };
 
 const getAll = async () => productModel.getAll();
@@ -102,15 +87,13 @@ const remove = async (id) => {
   const productDoesExist = await productModel.getById(id);
   await isThisIdValid(id, productDoesExist);
   const deletedProduct = await productModel.remove(id);
-  // await console.log(deletedProduct);
   return deletedProduct;
 };
 
 module.exports = {
   create,
   getAll,
-  findById,
-  // getById,
+  getById,
   remove,
   updateById,
 };
