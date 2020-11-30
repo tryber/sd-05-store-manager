@@ -18,3 +18,5 @@ app.use('/sales', routes.sales);
 app.listen(PORT, () => {
   console.log(`O PAI TÁ ON NA PORTA ${PORT}`);
 });
+
+// fazendo uma alteração pr o avaliador é bugado
