@@ -2,8 +2,9 @@ const rescue = require('express-rescue');
 const services = require('../services/productsServices');
 //
 const addProduct = rescue(async (req, res) => {
-  const { name, quantaty } = req.body;
-  const product = await services.createProduct(name, quantaty);
+  const { name, quantity } = req.body;
+  const product = await services.createProduct(name, quantity);
+
   if (product.err) {
     return res.status(422).json({ err: product.err });
   }

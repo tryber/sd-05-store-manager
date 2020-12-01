@@ -1,6 +1,6 @@
 const productsModels = require('../models/productsModels');
 
-const createProduct = async (name, quantaty) => {
+const createProduct = async (name, quantity) => {
   if (name.length < 5) {
     return {
       err: {
@@ -10,20 +10,20 @@ const createProduct = async (name, quantaty) => {
     };
   }
 
-  if (quantaty <= 0) {
+  if (quantity <= 0) {
     return {
       err: {
         code: 'invalid_data',
-        message: '"quantaty" must be larger than or equal to 1',
+        message: '"quantity" must be larger than or equal to 1',
       },
     };
   }
 
-  if (typeof quantaty === 'string') {
+  if (typeof quantity === 'string') {
     return {
       err: {
         code: 'invalid_data',
-        message: '"quantaty" must be a number',
+        message: '"quantity" must be a number',
       },
     };
   }
@@ -38,7 +38,15 @@ const createProduct = async (name, quantaty) => {
     };
   }
 
-  return productsModels.create({ name, quantaty });
+  if (!name || !quantity) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Name and quantity are required',
+      },
+    };
+  }
+  return productsModels.create({ name, quantity });
 };
 
 const getAllProducts = async () => productsModels.getAll();
@@ -50,7 +58,7 @@ const getByIdProducts = async (id) => {
     return {
       err: {
         code: 'invalid_data',
-        message: 'Wrond id format',
+        message: 'Wrong id format',
       },
     };
   }

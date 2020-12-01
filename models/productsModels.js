@@ -13,22 +13,22 @@ const getById = async (id) => {
 
 const getByName = async (name) => getConnection('products').then((products) => products.findOne({ name }));
 
-const create = async ({ name, quantaty }) =>
+const create = async ({ name, quantity }) =>
   getConnection('products').then((products) =>
-    products.insertOne({ name, quantaty })
+    products.insertOne({ name, quantity })
       .then((results) => ({
         _id: results.insertedId,
         name,
-        quantaty,
+        quantity,
       })));
 
 const exclude = async (id) =>
   (ObjectId.isValid(id) ? getConnection('products').then((products) =>
     products.deleteOne({ _id: ObjectId(id) })) : null);
 
-const update = async (id, name, quantaty) => {
+const update = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) return;
-  await getConnection('products').then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: name, quantaty }));
+  await getConnection('products').then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: name, quantity }));
 };
 
 module.exports = {
