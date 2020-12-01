@@ -1,7 +1,7 @@
 const express = require('express');
 
 const bodyParser = require('body-parser');
-const productsController = require('./controller/productsController')
+const productsController = require('./controller/productsController');
 
 const app = express();
 
