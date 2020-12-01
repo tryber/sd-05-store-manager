@@ -5,9 +5,9 @@ const service = require('../services/productsService');
 const products = Router();
 
 products.get('/', async (_req, res) => {
-  const products = await service.getAll();
+  const Allproducts = await service.getAll();
 
-  res.status(200).json(products);
+  res.status(200).json(Allproducts);
 });
 
 products.get('/:id', rescue(async (req, res) => {
@@ -21,14 +21,13 @@ products.post('/', async (req, res) => {
     const { name, quantity } = req.body;
 
     const newProduct = await service.create(name, quantity);
-  
+
     res.status(201).json(newProduct);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json(err);
     }
   }
-
 });
 
 module.exports = products;

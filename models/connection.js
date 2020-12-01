@@ -12,6 +12,6 @@ const getCollection = async (collectionName) => {
   connection = connection || (await MongoClient.connect(MONGO_DB_URL));
 
   return connection.db(DB_NAME).collection(collectionName);
-}
+};
 
 module.exports = getCollection;

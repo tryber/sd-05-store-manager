@@ -1,4 +1,3 @@
-const products = require('../controllers/productsController');
 const model = require('../models/productsModel');
 
 const getAll = async () => model.getAll();
