@@ -1,5 +1,5 @@
 require('dotenv').config({
-  path: process.env.NODE_ENV === 'test' ? './.env.testing' : './.env',
+  path: process.env.NODE_ENV === 'test' ? './.env.testing' : './.envKyle',
 });
 
 const express = require('express');
