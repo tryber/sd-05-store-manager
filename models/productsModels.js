@@ -5,11 +5,9 @@ const getAll = async () =>
   getConnection('products').then((products) =>
     products.find({}).toArray());
 
-const getById = async (id) => {
-  console.log(id);
-  return getConnection('products').then((products) =>
+const getById = async (id) =>
+  getConnection('products').then((products) =>
     ((ObjectId.isValid(id)) ? products.findOne({ _id: ObjectId(id) }) : null));
-};
 
 const getByName = async (name) => getConnection('products').then((products) => products.findOne({ name }));
 

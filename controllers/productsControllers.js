@@ -12,9 +12,9 @@ const addProduct = rescue(async (req, res) => {
 });
 //
 const getAll = rescue(async (_req, res) => {
-  const allProducts = await services.getAllProducts();
+  const products = await services.getAllProducts();
 
-  res.status(200).json({ allProducts });
+  res.status(200).json({ products });
 });
 //
 const getById = rescue(async (req, res) => {
