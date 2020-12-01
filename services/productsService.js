@@ -5,8 +5,8 @@ const getAll = async () => model.getAll();
 const getById = async (id) => {
   const product = await model.getById(id);
 
-  if (product) {
-    throw { code: 'not_found', message: `Product with ID ${id} was not found.` };
+  if (!product) {
+    throw { code: 'invalid_data', message: 'Wrong id format' };
   }
 
   return product;

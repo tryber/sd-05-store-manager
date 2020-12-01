@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const rescue = require('express-rescue');
 const service = require('../services/productsService');
 
 const products = Router();
@@ -10,11 +9,19 @@ products.get('/', async (_req, res) => {
   res.status(200).json(Allproducts);
 });
 
-products.get('/:id', rescue(async (req, res) => {
-  const product = await service.getById(req.params.id);
+products.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  res.status(200).json(product);
-}));
+    const product = await service.getById(id);
+
+    res.status(200).json(product);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json(err);
+    }
+  }
+});
 
 products.post('/', async (req, res) => {
   try {
