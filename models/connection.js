@@ -9,9 +9,7 @@ const DB_NAME = 'StoreManager';
 let connection = null;
 
 module.exports = async (collection) => {
-  connection =
-    connection ||
-    (await MongoClient.connect(MONGO_DB_URL, {
+  connection = connection || (await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }));
