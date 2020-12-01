@@ -32,4 +32,10 @@ const updateProduct = async (id, name, quantity) => {
   return { _id: Object(id), name, quantity };
 };
 
-module.exports = { create, getProductByName, getProducts, updateProduct };
+const removeProduct = async (id) => {
+  const newProduct = await getCollection(productsEnums.table).then((db) =>
+    db.deleteOne({ _id: ObjectId(id) }));
+  return newProduct;
+};
+
+module.exports = { create, getProductByName, getProducts, updateProduct, removeProduct };

@@ -19,8 +19,6 @@ const getProductsById = async (req, res, _next) => {
 };
 
 const updateProduct = async (req, res, _next) => {
-  console.log('to aqui');
-
   const { id } = req.params;
   const { name, quantity } = req.body;
   const updatedProduct = await Products.updateProduct(id, name, quantity);
@@ -30,4 +28,13 @@ const updateProduct = async (req, res, _next) => {
   res.status(200).send(updatedProduct);
 };
 
-module.exports = { create, getProductsById, updateProduct };
+const removeProduct = async (req, res, _next) => {
+  const { id } = req.params;
+  const removedProduct = await Products.removeProduct(id);
+  if (removedProduct.error) {
+    return res.status(422).send({ err: removedProduct.error });
+  }
+  res.status(200).send(removedProduct);
+};
+
+module.exports = { create, getProductsById, updateProduct, removeProduct };

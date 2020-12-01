@@ -37,4 +37,11 @@ const updateProduct = async (id, name, quantity) => {
   const updatedProduct = await Products.updateProduct(id, name, quantity);
   return updatedProduct;
 };
-module.exports = { create, getAllProducts, updateProduct };
+
+const removeProduct = async (id) => {
+  if (id && !ObjectId.isValid(id)) return { error: prodError.error.invalidId };
+  const removedProduct = await Products.removeProduct(id);
+  return removedProduct;
+};
+
+module.exports = { create, getAllProducts, updateProduct, removeProduct };
