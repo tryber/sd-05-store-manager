@@ -9,13 +9,16 @@ const insert = async (name, quantity) =>
 const getAll = async () => connection('products').then((products) => products.find({}).toArray());
 
 const getById = async (id) =>
-  connection('products').then((products) =>
-    ObjectId.isValid(id) ? products.findOne({ _id: ObjectId(id) }) : null,
-  );
+  connection('products').then((products) => {
+    if (ObjectId.isValid(id)) {
+      return products.findOne({ _id: ObjectId(id) });
+    }
+    return null;
+  });
 
 const getByName = async (name) => {
   const found = await connection('products').then((products) => products.findOne({ name: name }));
-  return !found ? false : true;
+  return found;
 };
 
 const update = async (id, name, quantity) => {

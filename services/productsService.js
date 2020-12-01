@@ -12,12 +12,12 @@ const model = require('../models/productsModel');
   }
 } */
 
-const getAll = async () => await model.getAll();
+const getAll = async () => model.getAll();
 
 const getById = async (id) => {
   const product = await model.getById(id);
   if (!product) {
-    throw { err: { code: 'invalid_data', message: `Wrong id format` } };
+    throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
   }
 
   return product;
@@ -45,7 +45,7 @@ const insert = async (name, quantity) => {
 const update = async (id, name, quantity) => {
   if (name.length < 5) {
     throw {
-      err: { code: 'invalid_data', message: '"name" length must be at least 5 characters long'},
+      err: { code: 'invalid_data', message: '"name" length must be at least 5 characters long' },
     };
   }
   if (quantity <= 0) {
@@ -56,7 +56,7 @@ const update = async (id, name, quantity) => {
   }
   const product = await model.update(id, name, quantity);
   if (!product) {
-    throw { err: { code: 'invalid_data', message: `Wrong id format` } };
+    throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
   }
   return product;
 };
@@ -64,7 +64,7 @@ const update = async (id, name, quantity) => {
 const exclude = async (id) => {
   const product = await model.exclude(id);
   if (!product) {
-    throw { err: { code: 'invalid_data', message: `Wrong id format` } };
+    throw { err: { code: 'invalid_data', message: 'Wrong id forma' } };
   }
   return product;
 };
