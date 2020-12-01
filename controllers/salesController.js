@@ -8,7 +8,7 @@ const getAll = async (req, res) => { // rescue(
   try {
     // const sales = await service.getAll();
     const sales = await model.getAllSales();
-    console.log(sales);
+    // console.log(sales);
     res.status(200).json({ sales });
   } catch (err) {
     console.error(err);
@@ -20,7 +20,7 @@ const getById = async (req, res) => { // rescue(
   const { id } = req.params;
   try {
     const sale = await service.getById(id);
-    console.log(sale);
+    // console.log(sale);
     res.status(200).json(sale);
   } catch (err) {
     // console.log(err);
@@ -51,6 +51,7 @@ const create = async (req, res) => { // rescue(
 const update = async (req, res) => { // rescue(
   const { id } = req.params;
   const { productId, quantity } = req.body[0]; // ?[0]
+  // console.log(id, productId, quantity);
   try {
     const updatedSale = await service.update(id, productId, quantity);
     res.status(200).json(updatedSale); // não seria 204?
@@ -72,7 +73,7 @@ const remove = async (req, res) => { // rescue(
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
-    // console.error(err.message);
+    console.error(err.message);
     res.status(500).json({ message: 'Algo deu errado no REMOVE' });
   }
 }; // )

@@ -29,7 +29,6 @@ const getById = async (id) => {
 };
 
 const create = async (itensSold) => {
-  // criar um map com todos itens e testá-los
   if (!itensSold) {
     throw {
       code: 'invalid_data',
@@ -37,25 +36,15 @@ const create = async (itensSold) => {
     };
   }
 
-  // const {productId, quantity} = itensSold;
+  itensSold.forEach(p => {
+    if(!ObjectId.isValid(p.productId) || p.quantity <= 0 || typeof p.quantity !== 'number'){
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      };
+    }
+  });
 
-  // if (quantity <= 0) {
-  //   throw {
-  //     code: 'invalid_data',
-  //     message: 'Wrong product ID or invalid quantity',
-  //   };
-  // }
-  // if (!ObjectId.isValid(productId)) {
-  //   throw {
-  //     code: 'invalid_data', message: 'Wrong product ID or invalid quantity',
-  //   };
-  // }
-  // if (typeof itensSold.quantity !== 'number' || !Number.isInteger(itensSold.quantity)) {
-  //   throw {
-  //     code: 'invalid_data',
-  //     message: '"Wrong product ID or invalid quantity',
-  //   };
-  // }
   // // const saleExists = await model.getSalesById(id);
   // if (saleExists) {
   //   throw {
@@ -119,14 +108,15 @@ const update = async (id, productId, quantity) => {
       message: 'Wrong product ID or invalid quantity',
     };
   }
-  await model.updateProducts(id, productId, quantity);
-
-  return {
+  await model.updateSales(id, productId, quantity);
+  const updated = {
     _id: id,
     itensSold: [
       { productId, quantity },
     ],
-  };
+  }; 
+  // console.log(updated);
+  return updated;
 };
 
 const exclude = async (id) => {
@@ -150,13 +140,13 @@ const exclude = async (id) => {
   // }
 
   const excludedSale = await model.excludeSales(id);
-
+  console.log(excludedSale);
   if (!excludedSale) {
     throw {
       code: 'invalid_data', message: 'Wrong sale ID format',
     };
   }
-
+  console.log(excludedSale);
   return excludedSale;
 };
 
