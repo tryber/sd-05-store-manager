@@ -18,7 +18,7 @@ const getProductsById = async (req, res, _next) => {
   res.status(200).send(products);
 };
 
-const updateProduct = async (req, res, _netx) => {
+const updateProduct = async (req, res, _next) => {
   console.log('to aqui');
 
   const { id } = req.params;

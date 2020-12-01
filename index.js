@@ -9,10 +9,11 @@ const Products = require('./controller/Products.controller');
 const app = express();
 app.use(bodyParser.json());
 
-const logThings = (req, res) => {
-  console.log(req.method, req.path);
-};
-app.use(logThings);
+// const logThings = (req, res, next) => {
+//   console.log(req.method, req.path);
+//   next();
+// };
+// app.use(logThings);
 
 app.get('/products/', Products.getProductsById);
 app.post('/products', Products.create);
