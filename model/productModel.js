@@ -14,7 +14,9 @@ const getAllProducts = async () =>
 
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
-  return getCollection('products').then((products) => products.findOne(ObjectId(id)));
+  const product = await getCollection('products').then((products) =>
+    products.findOne(ObjectId(id)));
+  return product;
 };
 
 const update = async (id, name, quantity) => {
@@ -31,11 +33,26 @@ const remove = async (id) => {
   return deletedProduct;
 };
 
+const modifyStock = async (productId, quantity, type) => {
+  const id = ObjectId(productId);
+  if (type === 'sold') {
+    const solded = await getCollection('products').then((products) =>
+      products.updateOne({ _id: id }, { $inc: { quantity: -quantity } }));
+    return solded;
+  }
+  if (type === 'cancel') {
+    const cancel = await getCollection('products').then((products) =>
+      products.updateOne({ _id: id }, { $inc: { quantity } }));
+    return cancel;
+  }
+};
+
 module.exports = {
   create,
   update,
   remove,
   getById,
   hasProduct,
+  modifyStock,
   getAllProducts,
 };
