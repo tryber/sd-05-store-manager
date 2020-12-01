@@ -65,8 +65,23 @@ const getByIdProducts = async (id) => {
   return product;
 };
 
+const deleteProduct = async (id) => {
+  const product = await productsModels.exclude(id);
+
+  if (product === null) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+  return product;
+};
+
 module.exports = {
   getAllProducts,
   getByIdProducts,
   createProduct,
+  deleteProduct,
 };

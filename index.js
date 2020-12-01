@@ -15,6 +15,7 @@ app.get('/', (request, response) => {
 app.get('/products', productsController.getAll);
 app.get('/products/:id', productsController.getById);
 app.post('/products', productsController.addProduct);
+app.delete('/products/:id', productsController.deleteProduct);
 
 app.use((err, _req, res, _next) => {
   // if (err) {
