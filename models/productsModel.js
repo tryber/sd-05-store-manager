@@ -17,15 +17,14 @@ const getById = async (id) =>
   });
 
 const getByName = async (name) => {
-  const found = await connection('products').then((products) => products.findOne({ name: name }));
+  const found = await connection('products').then((products) => products.findOne({ name }));
   return found;
 };
 
 const update = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) return;
   connection('products').then((products) =>
-    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
   const updatedProduct = { _id: id, name, quantity };
   return updatedProduct;
 };
@@ -33,8 +32,7 @@ const update = async (id, name, quantity) => {
 const exclude = async (id) => {
   if (ObjectId.isValid(id)) {
     const deletedProduct = connection('products').then((products) =>
-      products.findOne({ _id: ObjectId(id) }),
-    );
+      products.findOne({ _id: ObjectId(id) }));
     connection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
     return deletedProduct;
   }
