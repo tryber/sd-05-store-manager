@@ -30,4 +30,11 @@ const getAllProducts = async (id) => {
   return allProducts;
 };
 
-module.exports = { create, getAllProducts };
+const updateProduct = async (id, name, quantity) => {
+  const productValid = isValid(name, quantity);
+  if (id && !ObjectId.isValid(id)) return { error: prodError.error.invalidId };
+  if (productValid.error) return productValid;
+  const updatedProduct = await Products.updateProduct(id, name, quantity);
+  return updatedProduct;
+};
+module.exports = { create, getAllProducts, updateProduct };

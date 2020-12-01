@@ -26,4 +26,10 @@ const create = async (name, quantity) => {
   return { _id: newProduct.insertedId, name, quantity };
 };
 
-module.exports = { create, getProductByName, getProducts };
+const updateProduct = async (id, name, quantity) => {
+  await getCollection(productsEnums.table)
+    .then((db) => db.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+  return { _id: Object(id), name, quantity };
+};
+
+module.exports = { create, getProductByName, getProducts, updateProduct };

@@ -18,4 +18,16 @@ const getProductsById = async (req, res, _next) => {
   res.status(200).send(products);
 };
 
-module.exports = { create, getProductsById };
+const updateProduct = async (req, res, _netx) => {
+  console.log('to aqui');
+
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const updatedProduct = await Products.updateProduct(id, name, quantity);
+  if (updatedProduct.error) {
+    return res.status(422).send({ err: updatedProduct.error });
+  }
+  res.status(200).send(updatedProduct);
+};
+
+module.exports = { create, getProductsById, updateProduct };
