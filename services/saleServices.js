@@ -36,8 +36,8 @@ const create = async (itensSold) => {
     };
   }
 
-  itensSold.forEach(p => {
-    if(!ObjectId.isValid(p.productId) || p.quantity <= 0 || typeof p.quantity !== 'number'){
+  itensSold.forEach((p) => {
+    if (!ObjectId.isValid(p.productId) || p.quantity <= 0 || typeof p.quantity !== 'number') {
       throw {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
@@ -114,7 +114,7 @@ const update = async (id, productId, quantity) => {
     itensSold: [
       { productId, quantity },
     ],
-  }; 
+  };
   // console.log(updated);
   return updated;
 };

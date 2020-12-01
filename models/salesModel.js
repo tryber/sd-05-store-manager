@@ -26,7 +26,7 @@ const updateSales = async (id, productId, quantity) => {
 const excludeSales = async (id) => {
   const deleted = await getCollection('sales')
     .then((db) => db.deleteOne({ _id: ObjectId(id) }));
-  console.log(deleted)
+  // console.log(deleted);
   return deleted;
 };
 
