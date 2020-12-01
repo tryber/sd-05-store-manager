@@ -35,9 +35,9 @@ const exclude = async (id) => connection()
 
 module.exports = {
   create,
-  productExistsByName,
+  exclude,
   getAll,
   getById,
+  productExistsByName,
   update,
-  exclude,
 };

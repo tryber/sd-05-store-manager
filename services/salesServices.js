@@ -51,12 +51,60 @@ const exclude = async (id) => {
   return verificaSale;
 };
 
+const checkStock = async (arrayFromBody, excludeOption = null) => {
+  const objectCheck = [];
+  arrayFromBody.forEach(({ productId }) => {
+    objectCheck.push(productServices.getById(productId));
+  });
+  const withoutPromise = await Promise.all(objectCheck);
+  const arrayFinalStock = [];
+  arrayFromBody.forEach(({ quantity }, index) => {
+    const stock = (excludeOption !== null) ? withoutPromise[index]
+      .quantity + quantity : withoutPromise[index].quantity - quantity;
+
+    if (stock < 0) {
+      throw { err: { code: 'stock_problem', message: 'Such amount is not permitted to sell' } };
+    }
+    arrayFinalStock.push(stock);
+  });
+
+  const modified = withoutPromise.map((_item, index) => {
+    const item = { ..._item }; // ref1
+    item.quantity = arrayFinalStock[index];
+    return item;
+  });
+
+  return modified;
+};
+
+const fixProductsQuantitiyAfterSale = async (id, arrayFromBody, productsFinalStock) => {
+  const promise = [];
+  if (arrayFromBody === null) {
+    const arrayUpdate = await checkStock(productsFinalStock.itensSold, true);
+    arrayUpdate.forEach(({ _id, name, quantity }) => {
+      promise.push(productServices.update(_id, name, quantity));
+    });
+    return Promise.all(promise);
+    //  contempla o exclude
+  }
+
+  //  contempla o update e o create
+  productsFinalStock.forEach(({ _id, name, quantity }) => {
+    promise.push(productServices.update(_id, name, quantity));
+  });
+  return Promise.all(promise);
+};
+
 module.exports = {
+  checkStock,
   create,
-  quantIsValid,
-  productIdIsValid,
+  exclude,
+  fixProductsQuantitiyAfterSale,
   getAll,
   getById,
+  productIdIsValid,
+  quantIsValid,
   update,
-  exclude,
 };
+
+//  https://stackoverflow.com/questions/35637770/how-to-avoid-no-param-reassign-when-setting-a-property-on-a-dom-object

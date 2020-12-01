@@ -40,10 +40,10 @@ const update = async (id, name, quantity) => productModel.update(id, name, quant
 const exclude = async (id) => productModel.exclude(id);
 
 module.exports = {
-  isValid,
   create,
+  exclude,
   getAll,
   getById,
+  isValid,
   update,
-  exclude,
 };

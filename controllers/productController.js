@@ -51,8 +51,8 @@ const exclude = async (req, res) => {
 
 module.exports = {
   create,
+  exclude,
   getAll,
   getById,
   update,
-  exclude,
 };
