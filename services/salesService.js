@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const model = require('../models/salesModel');
 
 const create = async (salesArray) => {
@@ -29,14 +28,6 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const sale = await model.getById(id);
-  if (!ObjectId.isValid(id)) {
-    throw {
-      err: {
-        code: 'not_found',
-        message: 'Sale not found',
-      },
-    };
-  }
   if (!sale) {
     throw {
       code: 'not_found',
