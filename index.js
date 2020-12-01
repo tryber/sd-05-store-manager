@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const productsController = require('./controllers/productsController');
+const errorMiddleware = require('./middlewares/error');
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.get('/', (request, response) => {
 });
 
 app.use('/products', productsController);
+
+app.use(errorMiddleware);
 
 const PORT = 3000;
 

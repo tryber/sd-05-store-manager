@@ -1,40 +1,29 @@
 const { Router } = require('express');
+const rescue = require('express-rescue');
 const service = require('../services/productsService');
 
 const products = Router();
 
 products.get('/', async (_req, res) => {
-  const Allproducts = await service.getAll();
+  const allProducts = await service.getAll();
 
-  res.status(200).json(Allproducts);
+  res.status(200).json(allProducts);
 });
 
-products.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
+products.get('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
 
-    const product = await service.getById(id);
+  const product = await service.getById(id);
 
-    res.status(200).json(product);
-  } catch (err) {
-    if (err.code === 'invalid_data') {
-      return res.status(422).json(err);
-    }
-  }
-});
+  res.status(200).json(product);
+}));
 
-products.post('/', async (req, res) => {
-  try {
-    const { name, quantity } = req.body;
+products.post('/', rescue(async (req, res) => {
+  const { name, quantity } = req.body;
 
-    const newProduct = await service.create(name, quantity);
+  const newProduct = await service.create(name, quantity);
 
-    res.status(201).json(newProduct);
-  } catch (err) {
-    if (err.code === 'invalid_data') {
-      return res.status(422).json(err);
-    }
-  }
-});
+  res.status(201).json(newProduct);
+}));
 
 module.exports = products;
