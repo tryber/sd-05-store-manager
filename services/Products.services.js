@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const Products = require('../models/Products.models');
 const prodError = require('../enumerators/Products.enums');
 
@@ -23,4 +24,10 @@ const create = async (name, quantity) => {
   return newProduct;
 };
 
-module.exports = { create };
+const getAllProducts = async (id) => {
+  if (id && !ObjectId.isValid(id)) return { error: prodError.error.invalidId };
+  const allProducts = await Products.getProducts(id);
+  return allProducts;
+};
+
+module.exports = { create, getAllProducts };

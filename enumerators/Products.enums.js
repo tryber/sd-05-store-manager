@@ -17,6 +17,10 @@ const error = {
     code: 'invalid_data',
     message: 'Product already exists',
   },
+  invalidId: {
+    code: 'invalid_data',
+    message: 'Wrong id format',
+  },
 };
 
 module.exports = {
