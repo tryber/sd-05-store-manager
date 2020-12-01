@@ -13,13 +13,13 @@ app.get('/', (request, response) => {
 });
 
 app.get('/products', productsController.getAll);
-
 app.get('/products/:id', productsController.getById);
+app.post('/products', productsController.addProduct);
 
-app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(500).json({ message: 'algo deu errado' });
-});
+// app.use((err, _req, res, _next) => {
+//   console.error(err);
+//   res.status(500).json({ message: 'algo deu errado' });
+// });
 
 const PORT = process.env.PORT || 3000;
 

@@ -1,4 +1,4 @@
-const { objectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
 
 const getAll = async () =>
@@ -7,7 +7,7 @@ const getAll = async () =>
 
 const getById = async (id) =>
   getConnection('sales').then((sales) =>
-    (objectId.isValid(id) ? sales.findOne({ _id: objectId(id) }) : null));
+    (ObjectId.isValid(id) ? sales.findOne({ _id: ObjectId(id) }) : null));
 
 const create = async ({ sale }) =>
   getConnection('sales').then((sales) =>
@@ -19,12 +19,12 @@ const create = async ({ sale }) =>
 
 const exclude = async (id) => {
   getConnection('sales').then((sales) =>
-    sales.deleteOne({ _id: objectId(id) }));
+    sales.deleteOne({ _id: ObjectId(id) }));
 };
 
 const update = async (id, sale) => {
-  if (!objectId.isValid(id)) return;
-  await getConnection('products').then((sales) => sales.updateOne({ _id: objectId(id) }, { $set: sale }));
+  if (!ObjectId.isValid(id)) return;
+  await getConnection('products').then((sales) => sales.updateOne({ _id: ObjectId(id) }, { $set: sale }));
 };
 
 module.exports = {

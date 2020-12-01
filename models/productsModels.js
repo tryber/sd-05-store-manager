@@ -1,15 +1,19 @@
-const { objectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
 
 const getAll = async () =>
   getConnection('products').then((products) =>
     products.find({}).toArray());
 
-const getById = async (id) =>
-  getConnection('products').then((products) =>
-    (objectId.isValid(id) ? products.findOne({ _id: objectId(id) }) : null));
+const getById = async (id) => {
+  console.log(id);
+  return getConnection('products').then((products) =>
+    ((ObjectId.isValid(id)) ? products.findOne({ _id: ObjectId(id) }) : null));
+};
 
-const create = async (name, quantaty) =>
+const getByName = async (name) => getConnection('products').then((products) => products.findOne({ name }));
+
+const create = async ({ name, quantaty }) =>
   getConnection('products').then((products) =>
     products.insertOne({ name, quantaty })
       .then((results) => ({
@@ -18,14 +22,13 @@ const create = async (name, quantaty) =>
         quantaty,
       })));
 
-const exclude = async (id) => {
-  getConnection('products').then((products) =>
-    products.deleteOne({ _id: objectId(id) }));
-};
+const exclude = async (id) =>
+  (ObjectId.isValid(id) ? getConnection('products').then((products) =>
+    products.deleteOne({ _id: ObjectId(id) })) : null);
 
 const update = async (id, name, quantaty) => {
-  if (!objectId.isValid(id)) return;
-  await getConnection('products').then((products) => products.updateOne({ _id: objectId(id) }, { $set: name, quantaty }));
+  if (!ObjectId.isValid(id)) return;
+  await getConnection('products').then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: name, quantaty }));
 };
 
 module.exports = {
@@ -34,6 +37,7 @@ module.exports = {
   create,
   exclude,
   update,
+  getByName,
 };
 
 // A tabela de produtos deverá ter o seguinte nome: products
