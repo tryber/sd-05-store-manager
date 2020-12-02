@@ -24,10 +24,15 @@ const update = async (id, name, quantity) => {
     products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 };
 
+const remove = async (id) =>
+  getCollection('products')
+    .then((product) => product.deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   getAll,
   getById,
   create,
   getByName,
   update,
+  remove,
 };

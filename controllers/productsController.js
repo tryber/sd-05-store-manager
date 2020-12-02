@@ -35,4 +35,14 @@ products.put('/:id', rescue(async (req, res) => {
   res.status(200).json({ _id: id, name, quantity });
 }));
 
+products.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const product = await service.getById(id);
+
+  await service.remove(id);
+
+  res.status(200).json(product);
+}));
+
 module.exports = products;
