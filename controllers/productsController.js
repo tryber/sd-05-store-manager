@@ -26,4 +26,13 @@ products.post('/', rescue(async (req, res) => {
   res.status(201).json(newProduct);
 }));
 
+products.put('/:id', rescue(async (req, res) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+
+  await service.update(id, name, quantity);
+
+  res.status(200).json({ _id: id, name, quantity });
+}));
+
 module.exports = products;

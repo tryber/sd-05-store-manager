@@ -17,9 +17,17 @@ const create = async (name, quantity) =>
     .then((product) => product.insertOne({ name, quantity }))
     .then((result) => ({ _id: result.insertedId, name, quantity }));
 
+const update = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  return getCollection('products').then((products) =>
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   getByName,
+  update,
 };
