@@ -29,8 +29,8 @@ routerProducts.get('/', async (_req, res) => {
 routerProducts.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await productsService.findId(id);
-    res.status(200).json(product);
+    const Findproduct = await productsService.findId(id);
+    res.status(200).json(Findproduct);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
@@ -43,13 +43,26 @@ routerProducts.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name, quantity } = req.body;
-    const product = await productsService.updateProduct(id, name, quantity);
-    res.status(200).json(product);
+    const productUpdated = await productsService.updateProduct(id, name, quantity);
+    res.status(200).json(productUpdated);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
     }
     console.log(err.message);
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
+routerProducts.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const productDelected = await productsService.deleteProduct(id);
+    res.status(200).json(productDelected);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });

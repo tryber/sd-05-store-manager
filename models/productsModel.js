@@ -27,10 +27,15 @@ const updateProduct = async (id, name, quantity) => {
   return { _id: id, name, quantity };
 };
 
+const deleteProduct = async (id) =>
+  getCollection('products')
+    .then((product) => product.deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   create,
   findName,
   AllProducts,
   findId,
   updateProduct,
+  deleteProduct,
 };

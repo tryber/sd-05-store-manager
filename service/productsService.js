@@ -64,9 +64,20 @@ const updateProduct = async (id, name, quantity) => {
   return productsModel.updateProduct(id, name, quantity);
 };
 
+const deleteProduct = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return productsModel.deleteProduct(id);
+};
+
 module.exports = {
   create,
   AllProducts,
   findId,
   updateProduct,
+  deleteProduct,
 };
