@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const productsController = require('./controllers/productsControllers');
+const validateProduct = require('./middlewares/validateProduct');
 
 app.use(bodyParser.json());
 // const rescue = require('express-rescue');
@@ -12,21 +13,17 @@ app.get('/', (request, response) => {
   response.send();
 });
 
+app.post('/products', validateProduct, productsController.addProduct);
 app.get('/products', productsController.getAll);
 app.get('/products/:id', productsController.getById);
-app.post('/products', productsController.addProduct);
 app.delete('/products/:id', productsController.deleteProduct);
+app.put('/products/:id', validateProduct, productsController.updateProduct, productsController.getById);
 
 app.use((err, _req, res, _next) => {
-  // if (err) {
-  //   return res.status(err).json(
-  //     { err: {
-  //       code: 'err.code',
-  //       message: 'err.message',
-  //     },
-  //     },
-  //   );
-  // }
+  console.log(err);
+  if (err) {
+    return res.status(422).json(err);
+  }
   res.status(500).json({ message: `algo deu errado ${err.message}` });
 });
 

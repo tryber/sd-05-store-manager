@@ -1,13 +1,12 @@
 const rescue = require('express-rescue');
 const services = require('../services/productsServices');
-//
+
 const addProduct = rescue(async (req, res) => {
   const { name, quantity } = req.body;
+  // if (err) {
+  //   return res.status(422).json({ err });
+  // }
   const product = await services.createProduct(name, quantity);
-
-  if (product.err) {
-    return res.status(422).json({ err: product.err });
-  }
   res.status(201).json(product);
 });
 //
@@ -38,9 +37,20 @@ const deleteProduct = rescue(async (req, res) => {
   }
 });
 
+const updateProduct = rescue(async (req, _res, next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  await services.update(id, name, quantity);
+  // if (product === null) {
+  //   return res.status(422).json({ err: product.err });
+  // }
+  next();
+});
+
 module.exports = {
   getAll,
   getById,
   addProduct,
   deleteProduct,
+  updateProduct,
 };

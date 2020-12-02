@@ -1,53 +1,6 @@
 const productsModels = require('../models/productsModels');
 
-const createProduct = async (name, quantity) => {
-  if (name.length < 5) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: '"name" length must be at least 5 characters long',
-      },
-    };
-  }
-
-  if (quantity <= 0) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be larger than or equal to 1',
-      },
-    };
-  }
-
-  if (typeof quantity === 'string') {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be a number',
-      },
-    };
-  }
-
-  const nameExists = await productsModels.getByName(name);
-  if (nameExists) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Product already exists',
-      },
-    };
-  }
-
-  if (!name || !quantity) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Name and quantity are required',
-      },
-    };
-  }
-  return productsModels.create({ name, quantity });
-};
+const createProduct = async (name, quantity) => productsModels.create({ name, quantity });
 
 const getAllProducts = async () => productsModels.getAll();
 
@@ -79,9 +32,23 @@ const deleteProduct = async (id) => {
   return product;
 };
 
+const update = async (id, name, quantity) => {
+  const product = await productsModels.update(id, name, quantity);
+  if (product === null) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+  // return product;
+};
+
 module.exports = {
   getAllProducts,
   getByIdProducts,
   createProduct,
   deleteProduct,
+  update,
 };
