@@ -23,7 +23,7 @@ product.post('/', async (req, res) => {
 
 product.get('/', async (_req, res) => {
   const getAll = await pService.getAll();
-  return res.status(200).json(getAll);
+  return res.status(200).json({ products: getAll });
 });
 
 product.get('/:id', async (req, res) => {

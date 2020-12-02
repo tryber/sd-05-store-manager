@@ -10,10 +10,9 @@ const nameProd = async (name) =>
   storeCollection('products')
     .then((product) => product.findOne({ name }));
 
-const getAll = async () => {
+const getAll = async () =>
   storeCollection('products')
     .then((product) => product.find().toArray());
-};
 
 const prodById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
