@@ -21,7 +21,7 @@ sales.get('/:id', async (req, res) => {
 
 sales.post('/', async (req, res) => {
   try {
-    const body = req.body;
+    const { body } = req;
     const newSale = await service.insert(body);
     res.status(200).json(newSale);
   } catch (err) {
@@ -29,8 +29,25 @@ sales.post('/', async (req, res) => {
   }
 });
 
-module.exports = sales;
+sales.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { body } = req;
+    const newSale = await service.update(id, body);
+    res.status(200).json(newSale);
+  } catch (err) {
+    return res.status(422).json(err);
+  }
+});
 
-/* 5fc6c87bbdb7571b3be46687
-5fc7c38765ddc9712005e7e9
-5fc7c59c8bf31481b95a71bb */
+sales.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sale = await service.exclude(id);
+    res.status(200).json(sale);
+  } catch (err) {
+    return res.status(422).json(err);
+  }
+});
+
+module.exports = sales;
