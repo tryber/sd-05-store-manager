@@ -3,6 +3,8 @@ const connection = require('../models/connection');
 const {
   register,
   list,
+  update,
+  prodDelete,
 } = require('../models/product.model');
 
 const getCollection = async (name) => connection(name);
@@ -46,7 +48,34 @@ const registerProduct = async (req, _res, next) => {
   }
 };
 
+const updateProduct = async (req, _res, next) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+  try {
+    const { error } = REGISTER_SCHEMA.validate({ name, quantity });
+    if (error) throw new Error(error.details[0].message);
+    req.data = await update({ id, name, quantity });
+    next();
+  } catch ({ message }) {
+    next({ ...INVALID_DATA, message });
+  }
+};
+
+const deleteProduct = async (req, _res, next) => {
+  const { id } = req.params;
+  try {
+    const data = await prodDelete(id);
+    if (!data) throw new Error('Wrong id format');
+    req.data = data;
+    next();
+  } catch ({ message }) {
+    next({ ...INVALID_DATA, message });
+  }
+};
+
 module.exports = {
   registerProduct,
   listProduct,
+  updateProduct,
+  deleteProduct,
 };

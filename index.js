@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const {
   registerProduct,
   listProduct,
+  updateProduct,
+  deleteProduct,
 } = require('./services/product.service');
 
 const app = express();
@@ -24,6 +26,14 @@ app.get('/products/:id', listProduct, (req, res) => {
 
 app.post('/products', registerProduct, (req, res) => {
   res.status(201).json(req.data);
+});
+
+app.put('/products/:id', updateProduct, (req, res) => {
+  res.status(200).json(req.data);
+});
+
+app.delete('/products/:id', deleteProduct, (req, res) => {
+  res.status(200).json(req.data);
 });
 
 const errorMiddleware = (err, _res, req, _next) => {

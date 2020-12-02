@@ -10,7 +10,7 @@ const register = async ({ name, quantity }) => {
     return response;
   } catch (error) {
     console.error(error);
-    return { name, quantity, _id: -1 };
+    return null;
   }
 };
 
@@ -23,10 +23,40 @@ const list = async ({ id }) => {
   } catch (error) {
     console.error(error);
     return [];
-  };
+  }
+};
+
+const update = async ({ id, ...data }) => {
+  try {
+    const collection = await getCollection('products');
+    await collection.updateOne(
+      { _id: ObjectID(id) },
+      { $set: data },
+    );
+    return { id, ...data };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const prodDelete = async (id) => {
+  try {
+    const collection = await getCollection('products');
+    const product = await list({ id });
+    if (!await collection.deleteOne({ _id: ObjectID(id) })) {
+      throw new Error('Object dont exists');
+    }
+    return product;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 
 module.exports = {
   register,
   list,
+  update,
+  prodDelete,
 };
