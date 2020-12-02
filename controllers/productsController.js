@@ -39,4 +39,19 @@ routerProducts.get('/:id', async (req, res) => {
   }
 });
 
+routerProducts.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const product = await productsService.updateProduct(id, name, quantity);
+    res.status(200).json(product);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.log(err.message);
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
 module.exports = routerProducts;
