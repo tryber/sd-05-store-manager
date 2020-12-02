@@ -21,9 +21,25 @@ const prodById = async (id) => {
   return prod;
 };
 
+const update = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) return null;
+  const prod = await storeCollection('products').then((products) =>
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+  return prod;
+};
+
+const deleteProd = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  const prodExcluido = await storeCollection('products').then((product) =>
+    product.deleteOne({ _id: ObjectId(id) }));
+  return prodExcluido;
+};
+
 module.exports = {
   getAll,
   create,
+  update,
   nameProd,
   prodById,
+  deleteProd,
 };

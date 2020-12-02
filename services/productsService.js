@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const pModel = require('../models/productsModel');
 
 const validation = async (name, quantity) => {
@@ -57,9 +58,40 @@ const prodById = async (id) => {
   return data;
 };
 
+const update = async (id, name, quantity) => {
+  const produtoOk = await validation(name, quantity);
+  if (!produtoOk) return false;
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  await pModel.update(id, name, quantity);
+  return { _id: ObjectId(id), name, quantity };
+};
+
+const deleteProd = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  const prodExcluido = await pModel.deleteProd(id);
+  if (!prodExcluido) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return prodExcluido;
+};
+
 module.exports = {
   create,
   getAll,
+  update,
   prodById,
-  validation,
+  deleteProd,
 };

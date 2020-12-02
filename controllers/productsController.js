@@ -40,4 +40,33 @@ product.get('/:id', async (req, res) => {
   }
 });
 
+product.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const pUpdate = await pService.update(id, name, quantity);
+    res.status(200).json(pUpdate);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
+product.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pDelete = await pService.deleteProd(id);
+    return res.status(200).json(pDelete);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno aiaiai' });
+  }
+});
+
 module.exports = product;
