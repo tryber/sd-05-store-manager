@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const salesService = require('../services/salesService');
 
 const service = require('../services/salesService');
 
@@ -33,6 +34,20 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ err: { code: err.code, message: err.message } });
     }
     res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { productId, quantity } = req.body[0];
+  try {
+    const updateSale = await salesService.update(id, productId, quantity);
+    return res.status(200).json(updateSale);
+  } catch (err) {
+    console.log(err);
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
   }
 });
 

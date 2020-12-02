@@ -13,8 +13,22 @@ const getById = async (id) => {
   return getCollection('sales').then((product) => product.findOne(ObjectId(id)));
 };
 
+const update = async (id, productId, quantity) =>
+  getCollection('sales').then((sales) => {
+    return sales.updateOne(
+      {
+        _id: ObjectId(id),
+        'itensSold.productId': productId,
+      },
+      {
+        $set: { 'itensSold.$.quantity': quantity },
+      },
+    );
+  });
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
