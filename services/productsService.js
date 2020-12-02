@@ -1,8 +1,12 @@
 const pModel = require('../models/productsModel');
 
-const getAll = async () => pModel.getAll();
-
 const validation = async (name, quantity) => {
+  if (typeof name !== 'string') {
+    throw {
+      code: 'invalid_data',
+      message: 'product name must be a string',
+    };
+  }
   if (name.length <= 5) {
     throw {
       code: 'invalid_data',
@@ -40,7 +44,22 @@ const create = async (name, quantity) => {
   return novoProd;
 };
 
+const getAll = async () => pModel.getAll();
+
+const prodById = async (id) => {
+  const data = await pModel.prodById(id);
+  if (!data) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return data;
+};
+
 module.exports = {
   create,
   getAll,
+  prodById,
+  validation,
 };
