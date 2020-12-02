@@ -13,7 +13,8 @@ const create = async (items) =>
 // const getAll = async () =>
 // getCollection('sales').then((sales) => sales.find().toArray());
 
-// const getById = async (id) => getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
+// const getById = async (id) =>
+// getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
 
 // // prettier-ignore
 // const updateById = async (id, quantity) =>
