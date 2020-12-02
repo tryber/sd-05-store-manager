@@ -3,7 +3,7 @@ const { getByName } = require('../models/productsModels');
 
 module.exports = rescue(async (req, _res, next) => {
   const { name, quantity } = req.body;
-  console.log(name);
+
   if (name.length < 5) {
     next({
       err: {
