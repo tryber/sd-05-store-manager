@@ -14,7 +14,7 @@ const getById = async (id) => {
 };
 
 const update = async (id, productId, quantity) =>
-  getCollection('sales').then((sales) => 
+  getCollection('sales').then((sales) =>
     sales.updateOne(
       {
         _id: ObjectId(id),
@@ -23,7 +23,7 @@ const update = async (id, productId, quantity) =>
       {
         $set: { 'itensSold.$.quantity': quantity },
       },
-    )
+    ),
   );
 
 module.exports = {
