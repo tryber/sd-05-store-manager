@@ -10,9 +10,9 @@ const register = async ({ name, quantity }) => {
   } catch (error) {
     console.error(error);
     return { name, quantity, _id: -1 };
-  };
+  }
 };
 
 module.exports = {
   register,
-}
+};

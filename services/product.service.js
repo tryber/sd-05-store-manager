@@ -12,7 +12,7 @@ const REGISTER_SCHEMA = Joi.object({
 const INVALID_DATA = {
   code: 'invalid_data',
   status: 422,
-}
+};
 
 const registerProduct = async (req, _res, next) => {
   const { name, quantity } = req.body;

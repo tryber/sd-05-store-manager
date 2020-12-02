@@ -14,5 +14,5 @@ module.exports = async (collection) => {
     return await connection.db(DB_NAME).collection(collection);
   } catch {
     await client.close();
-  };
+  }
 };
