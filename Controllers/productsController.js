@@ -2,15 +2,15 @@ const { Router } = require('express');
 
 const service = require('../Service/productsService');
 
-const products = Router();
+const productss = Router();
 
-products.get('/', async (_req, res) => {
+productss.get('/', async (_req, res) => {
   const products = await service.getAll();
 
   res.status(200).json({ products });
 });
 
-products.post('/', async (req, res) => {
+productss.post('/', async (req, res) => {
   try {
     const { name, quantity } = req.body;
     const newProduct = await service.create(name, quantity);
@@ -25,7 +25,7 @@ products.post('/', async (req, res) => {
   }
 });
 
-products.get('/:id', async (req, res) => {
+productss.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -41,12 +41,12 @@ products.get('/:id', async (req, res) => {
   }
 });
 
-products.put('/:id', async (req, res) => {
+productss.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name, quantity } = req.body;
 
-    const updateProduct = await service.update({ id, name, quantity });
+    const updateProduct = await service.update(id, name, quantity);
     res.status(200).json(updateProduct);
   } catch (error) {
     if (error.err.code === 'invalid_data') {
@@ -57,7 +57,7 @@ products.put('/:id', async (req, res) => {
   }
 });
 
-products.delete('/:id', async (req, res) => {
+productss.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const removeProduct = await service.remove(id);
@@ -71,4 +71,4 @@ products.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = products;
+module.exports = productss;

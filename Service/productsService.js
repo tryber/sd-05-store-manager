@@ -13,11 +13,21 @@ const getAll = async () => model.getAll();
 
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
-    throw { code: 'invalid_data', message: 'Wrong id format' };
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
   }
   const product = await model.getById(id);
   if (!product) {
-    throw { code: 'invalid_data', message: 'Wrong id format' };
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
   }
   return product;
 };
@@ -92,7 +102,7 @@ const update = async (id, name, quantity) => {
       },
     };
   }
-  if (!Number(quantity)) {
+  if (!Number.isInteger(quantity)) {
     throw {
       err: {
         code: 'invalid_data',
@@ -106,7 +116,12 @@ const update = async (id, name, quantity) => {
 const remove = async (id) => {
   const product = await model.exclude(id);
   if (!product) {
-    throw { code: 'invalid_data', message: 'Wrong id format' };
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
   }
   return product;
 };

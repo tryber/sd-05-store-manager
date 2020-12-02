@@ -19,11 +19,10 @@ const create = async (name, quantity) =>
     .then((product) => product.insertOne({ name, quantity }))
     .then((result) => ({ _id: result.insertedId, name, quantity }));
 
-const update = async ({ id, name, quantity }) => {
-  if (!ObjectId.isValid(id)) return null;
-
-  return getCollection('products')
+const update = async (id, name, quantity) => {
+  getCollection('products')
     .then((product) => product.updateOne(({ _id: ObjectId(id) }, { $set: { name, quantity } })));
+  return { _id: id, name, quantity };
 };
 
 const exclude = async (id) => {
