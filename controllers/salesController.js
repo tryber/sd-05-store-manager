@@ -32,4 +32,12 @@ sales.delete('/:id', rescue(async (req, res) => {
   res.status(200).json(removedSale);
 }));
 
+sales.put('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+
+  await service.update(id, req.body);
+
+  res.status(200).json({ _id: id, itensSold: req.body });
+}));
+
 module.exports = sales;

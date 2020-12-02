@@ -20,9 +20,17 @@ const remove = async (id) => {
   return getCollection('sales').then((collection) => collection.deleteOne({ _id: ObjectId(id) }));
 };
 
+const update = async (id, itensSold) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  getCollection('sales')
+    .then((collection) => collection.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } }));
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   remove,
+  update,
 };

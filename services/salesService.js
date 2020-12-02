@@ -36,9 +36,30 @@ const remove = async (id) => {
   return model.remove(id);
 };
 
+const update = async (id, itensSold) => {
+  const sale = await model.getById(id);
+
+  if (!sale) {
+    throw { code: 'invalid_data', message: 'Wrong sale ID format' };
+  }
+
+  itensSold.forEach((item) => {
+    if (item.quantity < 1) {
+      throw { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' };
+    }
+
+    if (typeof item.quantity === 'string') {
+      throw { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' };
+    }
+  });
+
+  return model.update(id, itensSold);
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   remove,
+  update,
 };
