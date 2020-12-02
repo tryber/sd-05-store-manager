@@ -1,15 +1,11 @@
-const { ObjectId } = require('mongodb');
+// const { ObjectId } = require('mongodb');
 
 const saleModel = require('../models/salesModel');
 
 const productService = require('./productsService');
 
 const validationData = (item) => {
-  if (
-    item.quantity < 1 ||
-    typeof item.quantity !== 'number'
-    // || !ObjectId.isValid(item.productId)
-  ) {
+  if (item.quantity < 1 || typeof item.quantity !== 'number') {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
@@ -29,7 +25,7 @@ const validationData = (item) => {
 const create = async (items) => {
   await productService.updateDB(items);
   items.forEach((item) => validationData(item));
-  itemsSold = saleModel.create(items);
+  const itemsSold = saleModel.create(items);
   return itemsSold;
 };
 
