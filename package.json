@@ -1,5 +1,5 @@
 {
-  "name": "sd-0x-store-manager",
+  "name": "y",
   "version": "1.0.0",
   "description": "Simple CRUD to sales and products",
   "main": "index.js",
@@ -37,5 +37,8 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1",
     "typescript": "^4.0.5"
+  },
+  "directories": {
+    "test": "test"
   }
 }
