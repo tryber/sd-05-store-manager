@@ -4,11 +4,6 @@ const productService = require('../services/productsService');
 
 const productRouter = Router();
 
-// const throwError = (err, res) => {
-//   if (err.code === 'invalid_data') res.status(422).json({ err });
-//   res.status(500).json({ message: 'Algo deu errado' });
-// };
-
 productRouter.post('/', async (req, res) => {
   const { name, quantity } = req.body;
 
@@ -17,7 +12,6 @@ productRouter.post('/', async (req, res) => {
 
     res.status(201).json(newProduct);
   } catch (err) {
-    // throwError(err, res);
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
     }
@@ -31,7 +25,7 @@ productRouter.get('/', async (req, res) => {
 
     res.status(200).json({ products });
   } catch (err) {
-    return res.status(500).json({ message: 'Algo deu errado' });
+    res.status(500).json({ message: 'Algo deu errado' });
   }
 });
 
@@ -41,9 +35,8 @@ productRouter.get('/:id', async (req, res) => {
   try {
     const product = await productService.getById(id);
 
-    return res.status(200).json(product);
+    res.status(200).json(product);
   } catch (err) {
-    // throwError(err, res);
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
     }
@@ -70,17 +63,16 @@ productRouter.put('/:id', async (req, res) => {
 
 productRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  // console.log(id);
+
   try {
     const deletedProduct = await productService.remove(id);
-    // console.log(deletedProduct);
+
     res.status(200).json(deletedProduct);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
     }
     res.status(500).json({ message: 'Algo deu errado' });
-    // throwError(err, res);
   }
 });
 

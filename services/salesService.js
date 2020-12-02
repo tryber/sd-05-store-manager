@@ -2,8 +2,14 @@ const { ObjectId } = require('mongodb');
 
 const saleModel = require('../models/salesModel');
 
-const validationData = (itens) => {
-  if (+itens.quantity < 1 || typeof itens.quantity !== 'number') {
+const productService = require('./productsService');
+
+const validationData = (item) => {
+  if (
+    item.quantity < 1 ||
+    typeof item.quantity !== 'number'
+    // || !ObjectId.isValid(item.productId)
+  ) {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
@@ -11,66 +17,66 @@ const validationData = (itens) => {
   }
 };
 
-const isThisIdValid = async (id, saleDoesExist) => {
-  if (!ObjectId.isValid(id) || !saleDoesExist) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong sale ID format',
-    };
-  }
+// const isThisIdValid = async (id, saleDoesExist) => {
+//   if (!ObjectId.isValid(id) || !saleDoesExist) {
+//     throw {
+//       code: 'invalid_data',
+//       message: 'Wrong sale ID format',
+//     };
+//   }
+// };
+
+const create = async (items) => {
+  await productService.updateDB(items);
+  items.forEach((item) => validationData(item));
+  itemsSold = saleModel.create(items);
+  return itemsSold;
 };
 
-const create = async (itens) => {
-  validationData(itens);
+// const getById = async (id) => {
+//   if (!ObjectId.isValid(id)) {
+//     throw {
+//       code: 'invalid_data',
+//       message: 'Wrong id format',
+//     };
+//   }
 
-  const newSale = await saleModel.create(itens);
-  console.log(newSale);
-  return newSale;
-};
+//   const saleDoesExist = await saleModel.getById(id);
 
-const getById = async (id) => {
-  if (!ObjectId.isValid(id)) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong id format',
-    };
-  }
+//   if (!saleDoesExist) {
+//     throw {
+//       code: 'invalid_data',
+//       message: 'Wrong id format',
+//     };
+//   }
 
-  const saleDoesExist = await saleModel.getById(id);
+//   // await isThisIdValid(id, saleDoesExist);
 
-  if (!saleDoesExist) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong id format',
-    };
-  }
+//   return saleDoesExist;
+// };
 
-  // await isThisIdValid(id, saleDoesExist);
+// const getAll = async () => saleModel.getAll();
 
-  return saleDoesExist;
-};
+// const updateById = async (id, quantity) => {
+//   validationData(quantity);
+//   await saleModel.updateById(id, quantity);
+//   const updatedsale = { _id: ObjectId(id), quantity };
 
-const getAll = async () => saleModel.getAll();
+//   return updatedsale;
+// };
 
-const updateById = async (id, quantity) => {
-  validationData(quantity);
-  await saleModel.updateById(id, quantity);
-  const updatedsale = { _id: ObjectId(id), quantity };
-
-  return updatedsale;
-};
-
-const remove = async (id) => {
-  const saleDoesExist = await saleModel.getById(id);
-  await isThisIdValid(id, saleDoesExist);
-  const deletedsale = await saleModel.remove(id);
-  return deletedsale;
-};
+// const remove = async (id) => {
+//   const saleDoesExist = await saleModel.getById(id);
+//   await isThisIdValid(id, saleDoesExist);
+//   const deletedsale = await saleModel.remove(id);
+//   return deletedsale;
+// };
 
 module.exports = {
   create,
-  getAll,
-  getById,
-  remove,
-  updateById,
+  // create,
+  // getAll,
+  // getById,
+  // remove,
+  // updateById,
 };
