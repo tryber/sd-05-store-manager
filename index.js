@@ -1,39 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {
-  registerProduct,
-  listProduct,
-  updateProduct,
-  deleteProduct,
-} = require('./services/product.service');
+
+const productsRouter = require('./controllers/products.controller');
+const salesRouter = require('./controllers/sales.controller');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use('/products', productsRouter);
+app.use('/sales', salesRouter);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();
-});
-
-app.get('/products', listProduct, (req, res) => {
-  res.status(200).json(req.data);
-});
-
-app.get('/products/:id', listProduct, (req, res) => {
-  res.status(200).json(req.data);
-});
-
-app.post('/products', registerProduct, (req, res) => {
-  res.status(201).json(req.data);
-});
-
-app.put('/products/:id', updateProduct, (req, res) => {
-  res.status(200).json(req.data);
-});
-
-app.delete('/products/:id', deleteProduct, (req, res) => {
-  res.status(200).json(req.data);
 });
 
 const errorMiddleware = (err, _res, req, _next) => {
