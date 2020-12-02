@@ -4,11 +4,11 @@ const service = require('../services/productsService');
 
 const products = Router();
 
-products.get('/', async (_req, res) => {
+products.get('/', rescue(async (_req, res) => {
   const allProducts = await service.getAll();
 
-  res.status(200).json(allProducts);
-});
+  res.status(200).json({ products: allProducts });
+}));
 
 products.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
