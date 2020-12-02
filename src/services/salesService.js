@@ -13,8 +13,8 @@ const create = async (salesField) => {
 };
 
 const getAll = async () => {
-  const sales = await model.getAll();
-  return sales;
+  const salesLint = await model.getAll();
+  return salesLint;
 };
 
 const getById = async (id) => {
