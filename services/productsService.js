@@ -1,16 +1,6 @@
 const model = require('../models/productsModel');
 
-/* const catchError = (name, quantity) => {
-  if (name.length < 5) {
-    throw { code: "invalid_data", message: "\"name\ length must be at least 5 characters long" }
-  }
-  if (quantity <= 0) {
-    throw { code: "invalid_data", message: "\"quantity\ must be larger the or equal to 1" }
-  }
-  if (typeof quantity === 'string') {
-    throw { code: "invalid_data", message: "\"quantity\ must be a number" }
-  }
-} */
+const catchError = require('./catchError');
 
 const getAll = async () => model.getAll();
 
@@ -28,32 +18,12 @@ const insert = async (name, quantity) => {
   if (found) {
     throw { err: { code: 'invalid_data', message: 'Product already exists' } };
   }
-  if (name.length < 5) {
-    throw {
-      err: { code: 'invalid_data', message: '"name" length must be at least 5 characters long' },
-    };
-  }
-  if (quantity <= 0) {
-    throw { err: { code: 'invalid_data', message: '"quantity" must be larger than or equal to 1' } };
-  }
-  if (typeof quantity === 'string') {
-    throw { err: { code: 'invalid_data', message: '"quantity" must be a number' } };
-  }
+  catchError(name, quantity);
   return model.insert(name, quantity);
 };
 
 const update = async (id, name, quantity) => {
-  if (name.length < 5) {
-    throw {
-      err: { code: 'invalid_data', message: '"name" length must be at least 5 characters long' },
-    };
-  }
-  if (quantity <= 0) {
-    throw { err: { code: 'invalid_data', message: '"quantity" must be larger than or equal to 1' } };
-  }
-  if (typeof quantity === 'string') {
-    throw { err: { code: 'invalid_data', message: '"quantity" must be a number' } };
-  }
+  catchError(name, quantity);
   const product = await model.update(id, name, quantity);
   if (!product) {
     throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
@@ -64,7 +34,7 @@ const update = async (id, name, quantity) => {
 const exclude = async (id) => {
   const product = await model.exclude(id);
   if (!product) {
-    throw { err: { code: 'invalid_data', message: 'Wrong id forma' } };
+    throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
   }
   return product;
 };
