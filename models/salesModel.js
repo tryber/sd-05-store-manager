@@ -19,8 +19,7 @@ const getById = async (id) =>
 const update = async (id, array) => {
   if (!ObjectId.isValid(id)) return;
   connection('sales').then((sales) =>
-    sales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: array } }),
-  );
+    sales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: array } }));
   const updatedProduct = { _id: id, itensSold: array };
   return updatedProduct;
 };
@@ -28,8 +27,7 @@ const update = async (id, array) => {
 const exclude = async (id) => {
   if (ObjectId.isValid(id)) {
     const deletedProduct = connection('sales').then((sales) =>
-      sales.findOne({ _id: ObjectId(id) }),
-    );
+      sales.findOne({ _id: ObjectId(id) }));
     connection('sales').then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
     return deletedProduct;
   }
