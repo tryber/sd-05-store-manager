@@ -5,9 +5,24 @@ const service = require('../Service/productsService');
 const products = Router();
 
 products.get('/', async (_req, res) => {
-  const product = await service.getAll();
+  const products = await service.getAll();
 
-  res.status(200).json(product);
+  res.status(200).json({ products });
+});
+
+products.post('/', async (req, res) => {
+  try {
+    const { name, quantity } = req.body;
+    const newProduct = await service.create(name, quantity);
+
+    res.status(201).json(newProduct);
+  } catch (error) {
+    if (error.err.code === 'invalid_data') {
+      return res.status(422).json(error);
+    }
+    console.error(error);
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
 });
 
 products.get('/:id', async (req, res) => {
@@ -18,26 +33,11 @@ products.get('/:id', async (req, res) => {
 
     res.status(200).json(product);
   } catch (error) {
-    if (error.code === 'invalid_data') {
+    if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
     }
     console.error(error);
     res.status(500).json({ message: 'Algo deu errado.' });
-  }
-});
-
-products.post('/', async (req, res) => {
-  try {
-    const { name, quantity } = req.body;
-    const newProduct = await service.create(name, quantity);
-
-    res.status(201).json(newProduct);
-  } catch (error) {
-    if (error.code === 'invalid_data') {
-      return res.status(422).json(error);
-    }
-    console.error(error);
-    res.status(500).json({ message: 'Algo deu errado' });
   }
 });
 
@@ -49,10 +49,10 @@ products.put('/:id', async (req, res) => {
     const updateProduct = await service.update({ id, name, quantity });
     res.status(200).json(updateProduct);
   } catch (error) {
-    if (error.code === 'invalid_data') {
+    if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
     }
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });
@@ -63,7 +63,7 @@ products.delete('/:id', async (req, res) => {
     const removeProduct = await service.remove(id);
     res.status(200).json(removeProduct);
   } catch (error) {
-    if (error.code === 'invalid_data') {
+    if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
     }
     console.error(error);

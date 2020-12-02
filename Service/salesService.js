@@ -1,39 +1,27 @@
-const { ObjectId } = require('mongodb');
-const model = require('../Models/productsModel');
+/* const model = require('../Models/salesModel');
 
 const getAll = async () => model.getAll();
 
-/* const getById = async (id) => {
-  const product = await model.getById(id);
-  if (!product) {
-    throw { code: 'invalid_data', message: 'Wrong id format' };
-  }
-  return product;
-}; */
-
 const getById = async (id) => {
-  if (!ObjectId.isValid(id)) {
+  const sale = await model.getById(id);
+  if (!sale) {
     throw { code: 'invalid_data', message: 'Wrong id format' };
   }
-  const product = await model.getById(id);
-  if (!product) {
-    throw { code: 'invalid_data', message: 'Wrong id format' };
-  }
-  return product;
+  return sale;
 };
 
-const create = async (name, quantity) => {
-  const productExists = await model.getByProductName({ name });
+const create = async (productId, quantity) => {
+  const saleExists = await model.getByproductId({ productId });
   if (name.length < 5) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"name" length must be at least 5 characters long',
       },
     };
   }
-  if (productExists) {
-    throw {
+  if (saleExists) {
+    return {
       err: {
         code: 'invalid_data',
         message: 'Product already exists',
@@ -41,7 +29,7 @@ const create = async (name, quantity) => {
     };
   }
   if (quantity < 0) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1',
@@ -49,7 +37,7 @@ const create = async (name, quantity) => {
     };
   }
   if (quantity === 0) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1',
@@ -57,19 +45,19 @@ const create = async (name, quantity) => {
     };
   }
   if (!Number(quantity)) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be a number',
       },
     };
   }
-  return model.create(name, quantity);
+  return model.create(productId, quantity);
 };
 
-const update = async (id, name, quantity) => {
+const update = async (productId, quantity) => {
   if (name.length < 5) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"name" length must be at least 5 characters long',
@@ -77,7 +65,7 @@ const update = async (id, name, quantity) => {
     };
   }
   if (quantity < 0) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1',
@@ -85,7 +73,7 @@ const update = async (id, name, quantity) => {
     };
   }
   if (quantity === 0) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1',
@@ -93,22 +81,22 @@ const update = async (id, name, quantity) => {
     };
   }
   if (!Number(quantity)) {
-    throw {
+    return {
       err: {
         code: 'invalid_data',
         message: '"quantity" must be a number',
       },
     };
   }
-  return model.update(id, name, quantity);
+  return model.update(productId, quantity);
 };
 
 const remove = async (id) => {
-  const product = await model.exclude(id);
-  if (!product) {
+  const sale = await model.exclude(id);
+  if (!sale) {
     throw { code: 'invalid_data', message: 'Wrong id format' };
   }
-  return product;
+  return sale;
 };
 
 module.exports = {
@@ -118,3 +106,4 @@ module.exports = {
   update,
   remove,
 };
+ */

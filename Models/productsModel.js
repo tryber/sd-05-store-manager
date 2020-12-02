@@ -7,20 +7,17 @@ const getCollection = require('./get-connection');
 const getAll = async () =>
   getCollection('products').then((product) => product.find().toArray());
 
-const getById = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
-
-  return getCollection('products').then((product) => product.findOne(ObjectId(id)));
-};
+const getById = async (id) =>
+  getCollection('products').then((product) => product.findOne(ObjectId(id)));
+// if (!ObjectId.isValid(id)) return null;
 
 const getByProductName = async ({ name }) =>
   getCollection('products').then((product) => product.findOne({ name }));
 
-const create = async (name, quantity) => {
+const create = async (name, quantity) =>
   getCollection('products')
     .then((product) => product.insertOne({ name, quantity }))
     .then((result) => ({ _id: result.insertedId, name, quantity }));
-};
 
 const update = async ({ id, name, quantity }) => {
   if (!ObjectId.isValid(id)) return null;
