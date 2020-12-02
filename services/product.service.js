@@ -1,6 +1,9 @@
 const Joi = require('@hapi/joi');
-const { register } = require('../models/product.model');
 const connection = require('../models/connection');
+const {
+  register,
+  list,
+} = require('../models/product.model');
 
 const getCollection = async (name) => connection(name);
 
@@ -12,6 +15,18 @@ const REGISTER_SCHEMA = Joi.object({
 const INVALID_DATA = {
   code: 'invalid_data',
   status: 422,
+};
+
+const listProduct = async (req, _res, next) => {
+  const { id } = req.params;
+  try {
+    const data = await list({ id });
+    if (data.length === 0) throw new Error('Wrong id format');
+    req.data = data;
+    next();
+  } catch ({ message }) {
+    next({ ...INVALID_DATA, message });
+  }
 };
 
 const registerProduct = async (req, _res, next) => {
@@ -33,4 +48,5 @@ const registerProduct = async (req, _res, next) => {
 
 module.exports = {
   registerProduct,
+  listProduct,
 };

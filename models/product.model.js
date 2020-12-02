@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const connection = require('./connection');
 
 const getCollection = async (name) => connection(name);
@@ -13,17 +14,19 @@ const register = async ({ name, quantity }) => {
   }
 };
 
-// const listById = async ({ _id }) => {
-//   try {
-//     const collection = await getCollection('products');
-//     const { ops: [response] } = await collection.findOne({ _id });
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//     return [];
-//   };
-// };
+const list = async ({ id }) => {
+  try {
+    const collection = await getCollection('products');
+    return id
+      ? await collection.findOne({ _id: ObjectID(id) })
+      : { products: await collection.find().toArray() };
+  } catch (error) {
+    console.error(error);
+    return [];
+  };
+};
 
 module.exports = {
   register,
+  list,
 };
