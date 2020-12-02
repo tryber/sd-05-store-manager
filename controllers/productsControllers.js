@@ -10,12 +10,12 @@ const addProduct = rescue(async (req, res) => {
   res.status(201).json(product);
 });
 //
-const getAll = rescue(async (_req, res) => {
+const getAllProducts = rescue(async (_req, res) => {
   const products = await services.getAllProducts();
   res.status(200).json({ products });
 });
 //
-const getById = rescue(async (req, res) => {
+const getProductById = rescue(async (req, res) => {
   const { id } = req.params;
   const product = await services.getByIdProducts(id);
   if (product.err) {
@@ -48,8 +48,8 @@ const updateProduct = rescue(async (req, _res, next) => {
 });
 
 module.exports = {
-  getAll,
-  getById,
+  getAllProducts,
+  getProductById,
   addProduct,
   deleteProduct,
   updateProduct,
