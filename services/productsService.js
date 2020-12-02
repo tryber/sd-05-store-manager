@@ -1,6 +1,6 @@
 const model = require('../models/productsModel');
 
-const getAll = async () => await model.getAll();
+const getAll = async () => model.getAll();
 
 const getById = async (id) => {
   const product = await model.getById(id);
