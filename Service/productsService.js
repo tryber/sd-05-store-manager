@@ -52,7 +52,7 @@ const create = async (name, quantity) => {
       },
     };
   }
-  return await model.create(name, quantity);
+  return model.create(name, quantity);
 };
 
 const update = async (name, quantity) => {
@@ -88,7 +88,7 @@ const update = async (name, quantity) => {
       },
     };
   }
-  return await model.update(name, quantity);
+  return model.update(name, quantity);
 };
 
 const remove = async (id) => {
