@@ -4,7 +4,7 @@ const service = require('../services/salesService');
 
 const sales = Router();
 
-sales.get('/', rescue(async (req, res) => {
+sales.get('/', rescue(async (_req, res) => {
   const allSales = await service.getAll();
 
   res.status(200).json({ sales: allSales });
@@ -22,6 +22,14 @@ sales.post('/', rescue(async (req, res) => {
   const newSales = await service.create(req.body);
 
   res.status(200).json(newSales);
+}));
+
+sales.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const removedSale = await service.remove(id);
+
+  res.status(200).json(removedSale);
 }));
 
 module.exports = sales;

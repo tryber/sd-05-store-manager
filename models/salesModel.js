@@ -14,8 +14,15 @@ const create = async (itensSold) =>
     .then((sale) => sale.insertOne({ itensSold }))
     .then((result) => ({ _id: result.insertedId, itensSold }));
 
+const remove = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  return getCollection('sales').then((collection) => collection.deleteOne({ _id: ObjectId(id) }));
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  remove,
 };
