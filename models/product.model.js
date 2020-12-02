@@ -13,6 +13,17 @@ const register = async ({ name, quantity }) => {
   }
 };
 
+// const listById = async ({ _id }) => {
+//   try {
+//     const collection = await getCollection('products');
+//     const { ops: [response] } = await collection.findOne({ _id });
+//     return response;
+//   } catch (error) {
+//     console.error(error);
+//     return [];
+//   };
+// };
+
 module.exports = {
   register,
 };

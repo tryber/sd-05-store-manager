@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const { registerProduct } = require('./services/product.service');
 
 const app = express();
-const PORT = 3000;
 
 app.use(bodyParser.json());
 
@@ -13,14 +12,14 @@ app.get('/', (request, response) => {
 });
 
 app.post('/products', registerProduct, (res, req) => {
-  req.json(res.data);
+  req.status(201).json(res.data);
 });
 
 const errorMiddleware = (err, _res, req, _next) => {
   const { status, ...data } = err;
-  req.status(status || 500).json(data);
+  req.status(status || 500).json({ err: data });
 };
 
 app.use(errorMiddleware);
 
-app.listen(PORT, () => { console.log('Estou on'); });
+app.listen(3000, () => { console.log('Estou on'); });
