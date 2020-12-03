@@ -57,4 +57,12 @@ const getProductByIdAuth = async (id) => {
 const updateProductAuth = async (id, name, quantity) =>
   productModel.updateProduct(id, name, quantity);
 
-module.exports = { createProductAuth, getAllProductsAuth, getProductByIdAuth, updateProductAuth };
+const deleteProductAuth = async (id) => productModel.deleteProduct(id);
+
+module.exports = {
+  createProductAuth,
+  getAllProductsAuth,
+  getProductByIdAuth,
+  updateProductAuth,
+  deleteProductAuth,
+};

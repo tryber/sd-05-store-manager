@@ -49,4 +49,16 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { create, allProducts, productById, update };
+const remove = async (req, res) => {
+  const { id } = req.params;
+  const product = await productService.getProductByIdAuth(id);
+
+  try {
+    await productService.deleteProductAuth(id);
+    res.status(200).json(product);
+  } catch (err) {
+    res.status(422).json({ err: { code: err.code, message: err.message } });
+  }
+};
+
+module.exports = { create, allProducts, productById, update, remove };
