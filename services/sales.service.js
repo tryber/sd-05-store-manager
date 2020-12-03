@@ -42,7 +42,7 @@ const listSales = async (req, _res, next) => {
   const { id } = req.params;
   try {
     const data = await list({ id });
-    if (!data) throw new Error('Sale not found');
+    if (!data || data.length === 0) throw new Error('Sale not found');
     req.data = data;
     next();
   } catch ({ message }) {
