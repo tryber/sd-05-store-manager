@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 let connection;
 
 const DB_NAME = 'StoreManager';
-const MONGO_DB_URL = `mongodb://mongodb:27017/${DB_NAME}`;
+const MONGO_DB_URL = `mongodb://localhost:27017/${DB_NAME}`;
 
 async function storeCollection(collectionName) {
   connection = connection || (await MongoClient.connect(MONGO_DB_URL, {

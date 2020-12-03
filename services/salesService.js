@@ -24,8 +24,45 @@ const saleById = async (id) => {
   return sale;
 };
 
+const verificaProd = (itensSold) =>
+  itensSold.some((item) => {
+    if (!ObjectId.isValid(item.productId)) {
+      return true;
+    }
+    if (item.quantity < 1 || typeof item.quantity !== 'number') {
+      return true;
+    }
+    return false;
+  });
+
+const update = async (id, itensSold) => {
+  const verItens = await verificaProd(itensSold);
+  if (verItens) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+  return sModel.update(id, itensSold);
+};
+
+const deleteProd = async (id) => {
+  const deletado = await sModel.deleteProd(id);
+
+  if (!deletado) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+
+  return deletado;
+};
+
 module.exports = {
   create,
   getAll,
+  update,
   saleById,
+  deleteProd,
 };
