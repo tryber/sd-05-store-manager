@@ -16,7 +16,7 @@ const remove = async (id) =>
 
 const getById = async (id) => getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
 
-//prettier-ignore
+// prettier-ignore
 const updateSale = async (sales, id) => {
   if (!ObjectId.isValid(id)) return null;
   getCollection('sales').then((sale) =>
