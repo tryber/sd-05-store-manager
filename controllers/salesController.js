@@ -38,12 +38,30 @@ saleRouter.get('/', async (req, res) => {
 
 saleRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
+
   try {
     const saleById = await saleService.getById(id);
     res.status(200).json(saleById);
   } catch (err) {
     if (err.code === 'not_found') {
       return res.status(404).json({ err });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
+saleRouter.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { productId, quantity } = req.body[0];
+  // console.log('updateSaleId: ', id, '\nproductId: ', productId, '\nquantity: ', quantity);
+  try {
+    const updatedSale = await saleService.updateSale(id, productId, quantity);
+    console.log(updatedSale);
+    res.status(200).json(updatedSale);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
     }
     console.error(err);
     res.status(500).json({ message: 'Algo deu errado' });

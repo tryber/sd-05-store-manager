@@ -50,7 +50,7 @@ const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw {
       code: 'not_found',
-      message: 'Wrong product ID or invalid quantity',
+      message: 'Sale not found',
     };
   }
 
@@ -64,6 +64,31 @@ const getById = async (id) => {
   }
 
   return sale;
+};
+
+const updateSale = async (id, productId, quantity) => {
+  console.log(id, productId, quantity);
+
+  if (!ObjectId.isValid(id)) {
+    console.log(`${id} is not a valid Id`);
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  if (quantity < 1 || typeof quantity !== 'number') {
+    console.log(`${quantity} is not a valid quantity`);
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+
+    console.log(`${id} is a valid Id and ${quantity} is a valid quantity`);
+    const serviceUpdate = await saleModel.updateSale(id, productId, quantity);
+    console.log('updateService: ', serviceUpdate);
+    return { _id: id, itensSold: [{ productId, quantity }] };
+  }
 };
 
 const remove = async (id) => {
@@ -88,5 +113,6 @@ module.exports = {
   create,
   getAll,
   getById,
+  updateSale,
   remove,
 };

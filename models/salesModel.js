@@ -16,9 +16,18 @@ const remove = async (id) =>
 
 const getById = async (id) => getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
 
+const updateSale = async (id, productId, quantity) =>
+  getCollection('sales').then((sales) =>
+    sales.updateOne(
+      { _id: ObjectId(id), 'itensSold.productId': productId },
+      { $set: { 'itensSold.0.quantity': quantity } },
+    ),
+  );
+
 module.exports = {
   create,
   getById,
   getAll,
+  updateSale,
   remove,
 };
