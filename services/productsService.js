@@ -1,4 +1,3 @@
-const { findProductByName } = require('../models/productsModel');
 const model = require('../models/productsModel');
 
 function showError(code, message) {
