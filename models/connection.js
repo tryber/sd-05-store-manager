@@ -8,10 +8,10 @@ const DB_NAME = 'StoreManager';
  */
 let connection = null;
 
-module.exports = {connection: async function (collectionName) {
+module.exports = { async connection(collectionName) {
   connection = connection || await MongoClient.connect(MONGO_DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
   return connection.db(DB_NAME).collection(collectionName);
-};}
+} };
