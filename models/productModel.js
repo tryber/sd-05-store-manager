@@ -22,7 +22,7 @@ const findById = async (id) => {
     });
 };
 
-const addProduct = async () => {
+const addProduct = async (name, quantity) => {
   const result = await connection()
     .then((db) => db.collection('products').insertOne({ name, quantity }))
     .catch((err) => console.log(err));

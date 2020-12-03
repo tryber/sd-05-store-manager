@@ -1,23 +1,40 @@
 const express = require('express');
-
+//https://github.com/rwillians/express-rescue
+const rescue = require('express-rescue');
+const productModel = require('../models/productModel');
+const validations = require('../middlewares/productValidations');
 const router = express.Router();
 
-const productModel = require('../models/productModel');
+router.post(
+  '/',
+  validations.validateName,
+  validations.validateDuplicatedProduct,
+  validations.validateQuantity,
+  validations.validateSale,
+  rescue(async (req, res) => {
+    const { name, quantity } = req.body;
+    const product = await productModel.addProduct(name, quantity);
+    return res.status(201).json(product);
+  }),
+);
 
-router.get('/products', async (_req, res) => {
+router.get('/', async (_req, res) => {
   const products = await productModel.getAllProducts();
   res.status(200).json({ products });
 });
 
-router.get('/produts/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   const product = await productModel.findById(req.params.id);
-  res.status(200).json({ product });
+  res.status(200).json(product);
 });
 
-router.post('/', async (req, res) => {
-  const { name, quantity } = req.body;
-  const product = await productModel.addProduct(name, quantity);
-  return res.status(201).json(product);
-});
+router.delete(
+  '/:id',
+  validations.validateSaleById,
+  rescue(async (req, _res) => {
+    const { id } = req.params;
+    await productModel.removeProduct(id);
+  }),
+);
 
 module.exports = router;
