@@ -23,11 +23,10 @@ const updateById = async (id, name, quantity) =>
 const remove = async (id) =>
   getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
 
-// prettier-ignore;
+// prettier-ignore
 const updateDB = async (item) =>
   getCollection('products').then((products) =>
-    products.updateOne({ _id: ObjectId(item.productId) }, { $inc: { quantity: -item.quantity } }),
-  );
+    products.updateOne({ _id: ObjectId(item.productId) }, { $inc: { quantity: -item.quantity } }));
 
 module.exports = {
   create,

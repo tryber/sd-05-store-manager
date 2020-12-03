@@ -1,12 +1,12 @@
-const { ObjectId } = require('mongodb');
+// const { ObjectId } = require('mongodb');
 
 const { Router } = require('express');
 
 const saleService = require('../services/salesService');
 
-const productService = require('../services/productsService');
+// const productService = require('../services/productsService');
 
-const saleModel = require('../models/salesModel');
+// const saleModel = require('../models/salesModel');
 
 const saleRouter = Router();
 

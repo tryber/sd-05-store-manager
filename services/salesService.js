@@ -4,7 +4,7 @@ const saleModel = require('../models/salesModel');
 
 const productService = require('./productsService');
 
-const productModel = require('../models/productsModel');
+// const productModel = require('../models/productsModel');
 
 const validationData = (item) => {
   if (item.quantity < 1 || typeof item.quantity !== 'number') {
@@ -15,24 +15,24 @@ const validationData = (item) => {
   }
 };
 
-const doesSaleExist = async (saleDoesExist) => {
-  console.log(`saleDoesExist: ${saleDoesExist}`);
-  if (!saleDoesExist) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong sale ID format',
-    };
-  }
-};
+// const doesSaleExist = async (saleDoesExist) => {
+//   console.log(`saleDoesExist: ${saleDoesExist}`);
+//   if (!saleDoesExist) {
+//     throw {
+//       code: 'invalid_data',
+//       message: 'Wrong sale ID format',
+//     };
+//   }
+// };
 
-const isThisIdValid = (id) => {
-  if (!ObjectId.isValid(id)) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong sale ID format',
-    };
-  }
-};
+// const isThisIdValid = (id) => {
+//   if (!ObjectId.isValid(id)) {
+//     throw {
+//       code: 'invalid_data',
+//       message: 'Wrong sale ID format',
+//     };
+//   }
+// };
 
 const create = async (items) => {
   await productService.updateDB(items);
@@ -49,13 +49,13 @@ const getAll = async () => {
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw {
-      code: 'invalid_data',
+      code: 'not_found',
       message: 'Wrong product ID or invalid quantity',
     };
   }
 
   const sale = await saleModel.getById(id);
-
+  console.log(sale);
   if (!sale) {
     throw {
       code: 'not_found',
