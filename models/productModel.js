@@ -19,4 +19,13 @@ const getProductByName = async (name) =>
 const getProductById = async (id) =>
   connection().then((db) => db.collection('products').findOne({ _id: { $in: [ObjectId(id)] } }));
 
-module.exports = { createProduct, getProductByName, getAllProducts, getProductById };
+const updateProduct = async (id, name, quantity) => {
+  await connection().then((db) =>
+    db
+      .collection('products')
+      .updateOne({ _id: { $in: [ObjectId(id)] } }, { $set: { name, quantity } }));
+
+  return { _id: id, name, quantity };
+};
+
+module.exports = { createProduct, getProductByName, getAllProducts, getProductById, updateProduct };

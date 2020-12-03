@@ -54,4 +54,7 @@ const getProductByIdAuth = async (id) => {
   return product;
 };
 
-module.exports = { createProductAuth, getAllProductsAuth, getProductByIdAuth };
+const updateProductAuth = async (id, name, quantity) =>
+  productModel.updateProduct(id, name, quantity);
+
+module.exports = { createProductAuth, getAllProductsAuth, getProductByIdAuth, updateProductAuth };
