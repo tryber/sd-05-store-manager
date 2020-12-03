@@ -1,5 +1,4 @@
 const { ObjectId } = require('mongodb');
-const { idText } = require('typescript');
 const connection = require('./connection');
 
 const getAll = async () =>
