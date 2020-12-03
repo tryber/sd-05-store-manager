@@ -1,10 +1,7 @@
 const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 
-const createProductAuth = async (name, quantity) => {
-  const checkName = await productModel.getProductByName(name);
-  const newProduct = await productModel.createProduct(name, quantity);
-
+const createProduct = async (name, quantity) => {
   if (!name) {
     throw {
       code: 'invalid_data',
@@ -29,6 +26,8 @@ const createProductAuth = async (name, quantity) => {
       message: '"quantity" must be a number',
     };
   }
+
+  const checkName = await productModel.getProductByName(name);
   if (checkName) {
     throw {
       code: 'invalid_data',
@@ -36,33 +35,33 @@ const createProductAuth = async (name, quantity) => {
     };
   }
 
+  const newProduct = await productModel.createProduct(name, quantity);
   return newProduct;
 };
 
-const getAllProductsAuth = async () => productModel.getAllProducts();
+const getAllProducts = async () => productModel.getAllProducts();
 
-const getProductByIdAuth = async (id) => {
-  const product = await productModel.getProductById(id);
-
-  if (!id || !ObjectId.isValid(id)) {
-    throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
+const getProductById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw { code: 'invalid_data', message: 'Wrong id format' };
   }
+
+  const product = await productModel.getProductById(id);
   if (!product) {
-    throw { err: { code: 'invalid_data', message: 'Wrong id format' } };
+    throw { code: 'invalid_data', message: 'Wrong id format' };
   }
 
   return product;
 };
 
-const updateProductAuth = async (id, name, quantity) =>
-  productModel.updateProduct(id, name, quantity);
+const updateProduct = async (id, name, quantity) => productModel.updateProduct(id, name, quantity);
 
-const deleteProductAuth = async (id) => productModel.deleteProduct(id);
+const deleteProduct = async (id) => productModel.deleteProduct(id);
 
 module.exports = {
-  createProductAuth,
-  getAllProductsAuth,
-  getProductByIdAuth,
-  updateProductAuth,
-  deleteProductAuth,
+  createProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
 };

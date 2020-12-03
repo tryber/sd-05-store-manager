@@ -9,27 +9,27 @@ const createProduct = async (name, quantity) => {
 };
 
 const getAllProducts = async () => {
-  const productList = connection().then((db) => db.collection('products').find({}).toArray());
-  return { products: productList };
+  const productList = await connection().then((db) => db.collection('products').find({}).toArray());
+  return productList;
 };
 
 const getProductByName = async (name) =>
   connection().then((db) => db.collection('products').findOne({ name }));
 
 const getProductById = async (id) =>
-  connection().then((db) => db.collection('products').findOne({ _id: { $in: [ObjectId(id)] } }));
+  connection().then((db) => db.collection('products').findOne({ _id: ObjectId(id) }));
 
 const updateProduct = async (id, name, quantity) => {
   await connection().then((db) =>
     db
       .collection('products')
-      .updateOne({ _id: { $in: [ObjectId(id)] } }, { $set: { name, quantity } }));
+      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
   return { _id: id, name, quantity };
 };
 
 const deleteProduct = async (id) =>
-  connection().then((db) => db.collection('products').deleteOne({ _id: { $in: [ObjectId(id)] } }));
+  connection().then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   createProduct,
