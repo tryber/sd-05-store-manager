@@ -6,8 +6,9 @@ const validateName = (req, res, next) => {
   const { name } = req.body;
 
   if (name.length < 5) {
-    return res.status(422)
-    .json(errorMessage('invalid_data', '"name" length must be at least 5 characters long'));
+    return res
+      .status(422)
+      .json(errorMessage('invalid_data', '"name" length must be at least 5 characters long'));
   }
   next();
 };

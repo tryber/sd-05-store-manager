@@ -2,16 +2,15 @@ const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const getAllProducts = async () =>
- connection()
-  .then((db) => db.collection('products').find().toArray())
-  .catch((err) => {
-    console.log(err);
-    process.exit(1);
-  });
+  connection()
+    .then((db) => db.collection('products').find().toArray())
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
+    });
 
 const findByName = async (name) =>
-  connection()
-    .then((db) => db.collection('products').findOne({ name })) 
+  connection().then((db) => db.collection('products').findOne({ name }));
 
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
@@ -26,12 +25,12 @@ const findById = async (id) => {
 const addProduct = async () => {
   const result = await connection()
     .then((db) => db.collection('products').insertOne({ name, quantity }))
-    .catch((err) => console.log(err)); 
+    .catch((err) => console.log(err));
 };
 
 const updateProduct = async (id, name, quantity) => {
-  connection().then((db) => 
-      db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }})
+  connection().then((db) =>
+    db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
   );
   return true;
 };
@@ -39,11 +38,11 @@ const updateProduct = async (id, name, quantity) => {
 const removeProduct = async (id) =>
   connection().then((db) => db.collection('products').deleteOne({ _id: Object(id) }));
 
-module.exports = { 
-  getAllProducts, 
-  findByName, 
-  findById, 
-  addProduct, 
-  updateProduct, 
-  removeProduct 
+module.exports = {
+  getAllProducts,
+  findByName,
+  findById,
+  addProduct,
+  updateProduct,
+  removeProduct,
 };
