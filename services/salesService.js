@@ -1,8 +1,10 @@
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const saleModel = require('../models/salesModel');
 
 const productService = require('./productsService');
+
+const productModel = require('../models/productsModel');
 
 const validationData = (item) => {
   if (item.quantity < 1 || typeof item.quantity !== 'number') {
@@ -13,14 +15,24 @@ const validationData = (item) => {
   }
 };
 
-// const isThisIdValid = async (id, saleDoesExist) => {
-//   if (!ObjectId.isValid(id) || !saleDoesExist) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong sale ID format',
-//     };
-//   }
-// };
+const doesSaleExist = async (saleDoesExist) => {
+  console.log(`saleDoesExist: ${saleDoesExist}`);
+  if (!saleDoesExist) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+};
+
+const isThisIdValid = (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+};
 
 const create = async (items) => {
   await productService.updateDB(items);
@@ -29,50 +41,52 @@ const create = async (items) => {
   return itemsSold;
 };
 
-// const getById = async (id) => {
-//   if (!ObjectId.isValid(id)) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
+const getAll = async () => {
+  const allSales = await saleModel.getAll();
+  return allSales;
+};
 
-//   const saleDoesExist = await saleModel.getById(id);
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
 
-//   if (!saleDoesExist) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     };
-//   }
+  const sale = await saleModel.getById(id);
 
-//   // await isThisIdValid(id, saleDoesExist);
+  if (!sale) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
 
-//   return saleDoesExist;
-// };
+  return sale;
+};
 
-// const getAll = async () => saleModel.getAll();
+const remove = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+  const removedSale = await saleModel.remove(id);
+  if (!removedSale) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
 
-// const updateById = async (id, quantity) => {
-//   validationData(quantity);
-//   await saleModel.updateById(id, quantity);
-//   const updatedsale = { _id: ObjectId(id), quantity };
-
-//   return updatedsale;
-// };
-
-// const remove = async (id) => {
-//   const saleDoesExist = await saleModel.getById(id);
-//   await isThisIdValid(id, saleDoesExist);
-//   const deletedsale = await saleModel.remove(id);
-//   return deletedsale;
-// };
+  return removedSale;
+};
 
 module.exports = {
   create,
-  // create,
-  // getAll,
-  // getById,
-  // remove,
-  // updateById,
+  getAll,
+  getById,
+  remove,
 };

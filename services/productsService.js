@@ -86,9 +86,7 @@ const remove = async (id) => {
   return deletedProduct;
 };
 
-const updateDB = async (items) => {
-  await items.forEach((item) => productModel.updateDB(item));
-};
+const updateDB = async (items) => await items.forEach((item) => productModel.updateDB(item));
 
 module.exports = {
   create,
