@@ -1,3 +1,4 @@
+const { findProductByName } = require('../models/productsModel');
 const model = require('../models/productsModel');
 
 function showError(code, message) {
@@ -31,6 +32,15 @@ const create = async (name, quantity) => {
   return model.create(name, quantity);
 };
 
+const getById = async (id) => {
+  const findProductById = await model.getById(id);
+  if (!findProductById) {
+    return showError('invalid_data', 'Wrong id format');
+  }
+  return findProductById;
+};
+
 module.exports = {
   create,
+  getById,
 };
