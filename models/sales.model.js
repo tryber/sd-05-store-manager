@@ -26,7 +26,22 @@ const list = async ({ id }) => {
   }
 };
 
+const saleDelete = async (id) => {
+  try {
+    const collection = await getCollection();
+    const sale = await list({ id });
+    if (!await collection.deleteOne({ _id: ObjectID(id) })) {
+      throw new Error('Sale dont exists');
+    }
+    return sale;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 module.exports = {
   register,
   list,
+  saleDelete,
 };

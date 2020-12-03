@@ -4,6 +4,7 @@ const Joi = require('@hapi/joi');
 const {
   register,
   list,
+  saleDelete,
 } = require('../models/sales.model');
 
 const REGISTER_SCHEMA = Joi
@@ -41,7 +42,7 @@ const listSales = async (req, _res, next) => {
   const { id } = req.params;
   try {
     const data = await list({ id });
-    if (data.length === 0) throw new Error('Sale not found');
+    if (!data) throw new Error('Sale not found');
     req.data = data;
     next();
   } catch ({ message }) {
@@ -49,7 +50,20 @@ const listSales = async (req, _res, next) => {
   }
 };
 
+const deleteSale = async (req, _res, next) => {
+  const { id } = req.params;
+  try {
+    const data = await saleDelete(id);
+    if (!data) throw new Error('Wrong sale ID format');
+    req.data = data;
+    next();
+  } catch ({ message }) {
+    next({ ...INVALID_DATA, message });
+  }
+};
+
 module.exports = {
   registerSales,
   listSales,
+  deleteSale,
 };
