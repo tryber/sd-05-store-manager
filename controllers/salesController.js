@@ -53,12 +53,10 @@ saleRouter.get('/:id', async (req, res) => {
 
 saleRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { productId, quantity } = req.body[0];
-  // console.log('updateSaleId: ', id, '\nproductId: ', productId, '\nquantity: ', quantity);
+  const sales = req.body;
   try {
-    const updatedSale = await saleService.updateSale(id, productId, quantity);
-    console.log(updatedSale);
-    res.status(200).json(updatedSale);
+    await saleService.updateSale(sales, id);
+    res.status(200).json({ _id: id, itensSold: sales });
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });

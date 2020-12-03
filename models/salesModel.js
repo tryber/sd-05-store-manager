@@ -16,13 +16,12 @@ const remove = async (id) =>
 
 const getById = async (id) => getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
 
-const updateSale = async (id, productId, quantity) =>
+const updateSale = async (sales, id) => {
+  if (!ObjectId.isValid(id)) return null;
   getCollection('sales').then((sales) =>
-    sales.updateOne(
-      { _id: ObjectId(id), 'itensSold.productId': productId },
-      { $set: { 'itensSold.0.quantity': quantity } },
-    ),
+    sales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sales } }),
   );
+};
 
 module.exports = {
   create,

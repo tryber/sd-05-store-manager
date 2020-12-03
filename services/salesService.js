@@ -4,7 +4,7 @@ const saleModel = require('../models/salesModel');
 
 const productService = require('./productsService');
 
-// const productModel = require('../models/productsModel');
+const productModel = require('../models/productsModel');
 
 const validationData = (item) => {
   if (item.quantity < 1 || typeof item.quantity !== 'number') {
@@ -14,25 +14,6 @@ const validationData = (item) => {
     };
   }
 };
-
-// const doesSaleExist = async (saleDoesExist) => {
-//   console.log(`saleDoesExist: ${saleDoesExist}`);
-//   if (!saleDoesExist) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong sale ID format',
-//     };
-//   }
-// };
-
-// const isThisIdValid = (id) => {
-//   if (!ObjectId.isValid(id)) {
-//     throw {
-//       code: 'invalid_data',
-//       message: 'Wrong sale ID format',
-//     };
-//   }
-// };
 
 const create = async (items) => {
   await productService.updateDB(items);
@@ -66,29 +47,26 @@ const getById = async (id) => {
   return sale;
 };
 
-const updateSale = async (id, productId, quantity) => {
-  console.log(id, productId, quantity);
+const updateSale = async (sales, id) => {
+  sales.forEach(({ quantity }) => {
+    if (+quantity < 1 || typeof quantity !== 'number') {
+      console.log(`${quantity} is not a valid quantity`);
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      };
+    }
+  });
+  // };
+  // if (!ObjectId.isValid(id)) {
+  //   console.log(`${id} is not a valid Id`);
+  //   throw {
+  //     code: 'invalid_data',
+  //     message: 'Wrong product ID or invalid quantity',
+  //   };
+  // }
 
-  if (!ObjectId.isValid(id)) {
-    console.log(`${id} is not a valid Id`);
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong product ID or invalid quantity',
-    };
-  }
-
-  if (quantity < 1 || typeof quantity !== 'number') {
-    console.log(`${quantity} is not a valid quantity`);
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong product ID or invalid quantity',
-    };
-
-    console.log(`${id} is a valid Id and ${quantity} is a valid quantity`);
-    const serviceUpdate = await saleModel.updateSale(id, productId, quantity);
-    console.log('updateService: ', serviceUpdate);
-    return { _id: id, itensSold: [{ productId, quantity }] };
-  }
+  return saleModel.updateSale(sales, id);
 };
 
 const remove = async (id) => {
