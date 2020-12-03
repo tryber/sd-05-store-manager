@@ -16,11 +16,11 @@ const remove = async (id) =>
 
 const getById = async (id) => getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
 
+//prettier-ignore
 const updateSale = async (sales, id) => {
   if (!ObjectId.isValid(id)) return null;
-  getCollection('sales').then((sales) =>
-    sales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sales } }),
-  );
+  getCollection('sales').then((sale) =>
+    sale.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sales } }));
 };
 
 module.exports = {
