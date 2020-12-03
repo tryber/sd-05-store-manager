@@ -4,8 +4,6 @@ const saleModel = require('../models/salesModel');
 
 const productService = require('./productsService');
 
-const productModel = require('../models/productsModel');
-
 const validationData = (item) => {
   if (item.quantity < 1 || typeof item.quantity !== 'number') {
     throw {
@@ -76,6 +74,7 @@ const remove = async (id) => {
       message: 'Wrong sale ID format',
     };
   }
+
   const removedSale = await saleModel.remove(id);
   if (!removedSale) {
     throw {
