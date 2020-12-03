@@ -4,10 +4,10 @@ const service = require('../Service/salesService');
 
 const saless = Router();
 
-/* saless.get('/', async (_req, res) => {
+saless.get('/', async (_req, res) => {
   const sales = await service.getAll();
 
-  res.status(200).json({ itensSold });
+  res.status(200).json({ sales });
 });
 
 saless.get('/:id', async (req, res) => {
@@ -24,18 +24,16 @@ saless.get('/:id', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Algo deu errado.' });
   }
-}); */
+});
 
 saless.post('/', async (req, res) => {
   try {
-    // const { productId, quantity } = req.body;
-    const body = req.body;
+    const { body } = req;
     // console.log(productId)
     const newSale = await service.create(body);
-    
     res.status(200).json(newSale);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
 
     if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
@@ -45,12 +43,12 @@ saless.post('/', async (req, res) => {
   }
 });
 
-/* saless.put('/:id', async (req, res) => {
+saless.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, quantity } = req.body;
+    const { body } = req;
 
-    const updateSale = await service.update(id, name, quantity);
+    const updateSale = await service.update(id, body);
     res.status(200).json(updateSale);
   } catch (error) {
     if (error.err.code === 'invalid_data') {
@@ -73,6 +71,6 @@ saless.delete('/:id', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Algo deu errado' });
   }
-}); */
+});
 
 module.exports = saless;

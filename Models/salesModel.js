@@ -2,8 +2,9 @@ const { ObjectId } = require('mongodb');
 
 const getCollection = require('./get-connection');
 
-const getAll = async () =>
-  getCollection('sales').then((sale) => sale.find().toArray());
+const getAll = async (body) =>
+  getCollection('sales')
+    .then((sale) => sale.find().toArray({ body }));
 
 const getById = async (id) =>
   getCollection('sales').then((sale) => sale.findOne(ObjectId(id)));
@@ -11,19 +12,15 @@ const getById = async (id) =>
 const getBySale = async ({ productId }) =>
   getCollection('sales').then((sale) => sale.findOne({ productId }));
 
-const create = async (body) => 
+const create = async (body) =>
   getCollection('sales')
-    .then((sale) => sale.insertOne(body))
-    .then((result) => {
-      result.ops[0]
-      console.log(result.ops)
-    })
+    .then((sale) => sale.insertOne({ itensSold: body }))
+    .then((result) => result.ops[0]);
 
-const update = async (id, productId, quantity) => {
+const update = async (id, body) =>
   getCollection('sales')
-    .then((sale) => sale.updateOne(({ _id: ObjectId(id) }, { $set: { productId, quantity } })));
-  return { _id: id, productId, quantity };
-};
+    .then((sale) => sale.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: body } }))
+    .then(() => ({ _id: id, itensSold: body }));
 
 const exclude = async (id) => {
   if (!ObjectId.isValid(id)) return null;
