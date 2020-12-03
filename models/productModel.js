@@ -26,23 +26,18 @@ const findById = async (id) => {
 const addProduct = async () => {
   const result = await connection()
     .then((db) => db.collection('products').insertOne({ name, quantity }))
-    .catch((err) => {
-      throw err,
-    });
+    .catch((err) => console.log(err)); 
 };
 
 const updateProduct = async (id, name, quantity) => {
-  connection()
-    .then((db) => 
-    db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }})
-    );
+  connection().then((db) => 
+      db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }})
+  );
   return true;
 };
 
 const removeProduct = async (id) =>
-  connection(
-    .then((db) => db.collection('products').deleteOne({ _id: Object(id) }));
-  );
+  connection().then((db) => db.collection('products').deleteOne({ _id: Object(id) }));
 
 module.exports = { 
   getAllProducts, 

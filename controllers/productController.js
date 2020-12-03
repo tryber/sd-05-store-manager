@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const productModel = require('../models/product');
+const productModel = require('../models/productModel');
 
-router.get('/products', async (req, res) => {
+router.get('/products', async (_req, res) => {
   const products = await productModel.getAllProducts();
   res.status(200).json({ products });
 });

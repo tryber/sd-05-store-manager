@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const productController = require('./controllers/productController');
 
 const app = express();
 
@@ -10,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/', (request, response) => {
   response.send();
 });
+
+app.use('/products', productController)
 
 app.listen(3000, () => {
   console.log("Listening on port 3000");
