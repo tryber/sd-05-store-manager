@@ -15,4 +15,14 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { create };
+const allProducts = async (_req, res) => {
+  const productList = await productService.getAllProductsAuth();
+
+  try {
+    res.status(200).json(productList);
+  } catch (err) {
+    res.status(500).json({ message: 'Something went badly...' });
+  }
+};
+
+module.exports = { create, allProducts };

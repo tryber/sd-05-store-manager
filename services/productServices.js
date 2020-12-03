@@ -38,4 +38,6 @@ const createProductAuth = async (name, quantity) => {
   return newProduct;
 };
 
-module.exports = { createProductAuth };
+const getAllProductsAuth = async () => productModel.getAllProducts();
+
+module.exports = { createProductAuth, getAllProductsAuth };
