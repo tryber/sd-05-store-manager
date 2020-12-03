@@ -10,6 +10,10 @@ const create = async (name, quantity) =>
     .then((products) => products.insertOne({ name, quantity }))
     .then((result) => ({ _id: result.insertedId, name, quantity }));
 
+const update = async (id, name, quantity) =>
+  getCollection('products')
+    .then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+
 const getAll = async () =>
   getCollection('products')
     .then((products) => products.find().toArray());
@@ -23,4 +27,5 @@ module.exports = {
   findProductByName,
   getAll,
   getById,
+  update,
 };

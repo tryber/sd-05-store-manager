@@ -10,7 +10,7 @@ function showError(code, message) {
   };
 }
 
-const create = async (name, quantity) => {
+const dataFormat = async (name, quantity) => {
   if (typeof name !== 'string' || name.length < 5) {
     return showError('invalid_data', '"name" length must be at least 5 characters long');
   }
@@ -23,6 +23,15 @@ const create = async (name, quantity) => {
     return showError('invalid_data', '"quantity" must be a number');
   }
 
+  return true;
+};
+
+const create = async (name, quantity) => {
+  const formatIsOK = await dataFormat(name, quantity);
+  if (formatIsOK !== true) {
+    return formatIsOK;
+  }
+
   const findExisting = await model.findProductByName(name);
 
   if (findExisting) {
@@ -30,6 +39,17 @@ const create = async (name, quantity) => {
   }
 
   return model.create(name, quantity);
+};
+
+const update = async (id, name, quantity) => {
+  const formatIsOK = await dataFormat(name, quantity);
+
+  if (formatIsOK !== true) {
+    return formatIsOK;
+  }
+
+  await model.update(id, name, quantity);
+  return ({ _id: ObjectId(id), name, quantity });
 };
 
 const getById = async (id) => {
@@ -40,12 +60,15 @@ const getById = async (id) => {
   const findProductById = await model.getById(id);
 
   if (!findProductById) {
+    console.log('queeee');
     return showError('invalid_data', 'Wrong id format');
   }
   return findProductById;
 };
 
 module.exports = {
+  dataFormat,
   create,
   getById,
+  update,
 };
