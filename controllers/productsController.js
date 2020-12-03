@@ -8,7 +8,6 @@ const productsRouter = Router();
 
 productsRouter.post('/', rescue(async (req, res) => {
   const { name, quantity } = req.body;
-  const { id } = req.params;
 
   const response = await services.create(name, quantity);
 
@@ -16,7 +15,7 @@ productsRouter.post('/', rescue(async (req, res) => {
     return res.status(422).json(response);
   }
 
-  return res.status(201).json({ id, name, quantity });
+  return res.status(201).json(response);
 }));
 
 productsRouter.get('/', rescue(async (req, res) => {
@@ -30,7 +29,6 @@ productsRouter.get('/:id', rescue(async (req, res) => {
 
   const response = await services.getById(id);
   if (response.err && response.err.code === 'invalid_data') {
-    console.log(response.err);
     return res.status(422).json(response);
   }
   return res.status(200).json(response);
