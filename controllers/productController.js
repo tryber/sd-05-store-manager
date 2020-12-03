@@ -24,4 +24,18 @@ router.post(
   }),
 );
 
+// 2 - Listar todos produtos e por id
+router.get(
+  '/',
+  rescue(async (_req, res) => {
+    const products = await productsModel.findAll();
+    res.status(200).json({ products });
+  }),
+);
+
+router.get(
+  '/:id',
+  productsValidate.
+)
+
 module.exports = router;

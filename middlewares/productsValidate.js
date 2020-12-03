@@ -1,4 +1,5 @@
 const crudModel = require('../models/crudModel');
+const productsModel = require('../models/productsModel');
 const errMsg = require('./erroResponse');
 
 const validaName = async (req, res, next) => {
@@ -27,7 +28,21 @@ const validaQtd = async (req, res, next) => {
   next();
 };
 
+const validaId = async (req, res, next) => {
+  const { id } = req.params;
+  const product = await productsModel.findById(id);
+
+  if (!product) {
+    return res.status(422).json(errMsg('invalid_data', 'Wrong id format'));
+  }
+
+  req.product = product;
+
+  next();
+};
+
 module.exports = {
   validaName,
   validaQtd,
+  validaId,
 };

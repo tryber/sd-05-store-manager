@@ -17,8 +17,13 @@ const findById = async (id, collection) => {
     .then((db) => db.collection(collection).findOne(ObjectId(id)));
 };
 
+const findAll = async (collection) =>
+  connection()
+    .then((db) => db.collection(collection).find().toArray());
+
 module.exports = {
   createData,
   findByName,
   findById,
+  findAll,
 };
