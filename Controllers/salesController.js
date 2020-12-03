@@ -1,16 +1,16 @@
-/* const { Router } = require('express');
+const { Router } = require('express');
 
 const service = require('../Service/salesService');
 
-const sales = Router();
+const saless = Router();
 
-sales.get('/', async (_req, res) => {
-  const sale = await service.getAll();
+/* saless.get('/', async (_req, res) => {
+  const sales = await service.getAll();
 
-  res.status(200).json(sale);
+  res.status(200).json({ itensSold });
 });
 
-sales.get('/:id', async (req, res) => {
+saless.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -18,22 +18,26 @@ sales.get('/:id', async (req, res) => {
 
     res.status(200).json(sale);
   } catch (error) {
-    if (error.code === 'invalid_data') {
-      return res.status(422).json(error);
+    if (error.err.code === 'not_found') {
+      return res.status(404).json(error);
     }
     console.error(error);
     res.status(500).json({ message: 'Algo deu errado.' });
   }
-});
+}); */
 
-sales.post('/', async (req, res) => {
+saless.post('/', async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
-    const newSale = await service.create(productId, quantity);
-
-    res.status(201).json(newSale);
+    // const { productId, quantity } = req.body;
+    const body = req.body;
+    // console.log(productId)
+    const newSale = await service.create(body);
+    
+    res.status(200).json(newSale);
   } catch (error) {
-    if (error.code === 'invalid_data') {
+    console.log(error.message)
+
+    if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
     }
     console.error(error);
@@ -41,35 +45,34 @@ sales.post('/', async (req, res) => {
   }
 });
 
-sales.put('/:id', async (req, res) => {
+/* saless.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { productId, quantity } = req.body;
+    const { name, quantity } = req.body;
 
-    const updateSale = await service.update({ id, productId, quantity });
+    const updateSale = await service.update(id, name, quantity);
     res.status(200).json(updateSale);
   } catch (error) {
-    if (error.code === 'invalid_data') {
+    if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
     }
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });
 
-sales.delete('/:id', async (req, res) => {
+saless.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const removeSale = await service.remove(id);
     res.status(200).json(removeSale);
   } catch (error) {
-    if (error.code === 'invalid_data') {
+    if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
     }
     console.error(error);
     res.status(500).json({ message: 'Algo deu errado' });
   }
-});
+}); */
 
-module.exports = sales;
- */
+module.exports = saless;

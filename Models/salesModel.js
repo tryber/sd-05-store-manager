@@ -1,32 +1,28 @@
-/* const { ObjectId } = require('mongodb');
-
-// const product = require('../Controllers/productsController');
+const { ObjectId } = require('mongodb');
 
 const getCollection = require('./get-connection');
 
 const getAll = async () =>
   getCollection('sales').then((sale) => sale.find().toArray());
 
-const getById = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
+const getById = async (id) =>
+  getCollection('sales').then((sale) => sale.findOne(ObjectId(id)));
 
-  return getCollection('sales').then((sale) => sale.findOne(ObjectId(id)));
-};
-
-const getByproductId = async ({ productId }) =>
+const getBySale = async ({ productId }) =>
   getCollection('sales').then((sale) => sale.findOne({ productId }));
 
-const create = async (productId, quantity) => {
+const create = async (body) => 
   getCollection('sales')
-    .then((sale) => sale.insertOne({ productId, quantity }))
-    .then((result) => ({ _id: result.insertedId, productId, quantity }));
-};
+    .then((sale) => sale.insertOne(body))
+    .then((result) => {
+      result.ops[0]
+      console.log(result.ops)
+    })
 
-const update = async ({ id, productId, quantity }) => {
-  if (!ObjectId.isValid(id)) return null;
-
-  return getCollection('sales')
+const update = async (id, productId, quantity) => {
+  getCollection('sales')
     .then((sale) => sale.updateOne(({ _id: ObjectId(id) }, { $set: { productId, quantity } })));
+  return { _id: id, productId, quantity };
 };
 
 const exclude = async (id) => {
@@ -42,6 +38,5 @@ module.exports = {
   create,
   update,
   exclude,
-  getByproductId,
+  getBySale,
 };
- */
