@@ -11,6 +11,7 @@ router.post(
   validations.validateDuplicatedProduct,
   validations.validateQuantity,
   validations.validateSale,
+  validations.validateSaleById,
   rescue(async (req, res) => {
     const { name, quantity } = req.body;
     const product = await productModel.addProduct(name, quantity);
