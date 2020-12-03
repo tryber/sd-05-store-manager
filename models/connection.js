@@ -9,7 +9,7 @@ const connection = () => {
     .then( connected => connected.db(DB_NAME))
     .catch((err) => {
       console.log(err);
-      throw err;
+      process.exit(1);
     });
 };
 
