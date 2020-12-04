@@ -26,7 +26,7 @@ productsRouter.get('/:id', async (req, res) => {
     const { id } = req.params;
     // console.log('id no controller => ', id);
     const products = await services.getProduct(id);
-    res.status(200).json({ products });
+    res.status(200).json(products);
   } catch (error) {
     if (error.err.code === 'invalid_data') {
       return res.status(422).json(error);
