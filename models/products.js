@@ -10,8 +10,12 @@ const createProduct = async (name, quantity) =>
     .then((db) => db.insertOne({ name, quantity }))
     .then((result) => ({ _id: result.insertedId, name, quantity }));
 
-const updateProduct = async (_id, _name, _quantity) =>
-  connection('products').then((db) => db.updateOne(ObjectId(_id)));
+const updateProduct = async (id, name, quantity) => {
+  connection('products').then((db) =>
+    db.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
+  );
+  return { _id: id, name, quantity };
+};
 
 const deleteProduct = async ({ _id }) =>
   connection('products').then((db) => db.deleteOne({ _id: ObjectId(_id) }));

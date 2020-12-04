@@ -34,13 +34,22 @@ productsRouter.get('/:id', async (req, res) => {
     res.status(500).json({ message: 'Deu ruim' });
   }
 });
-/*
-productsRouter.put('/', async (req, res) => {
-  const { _id, name, quantity } = req.body;
-  await services.update(_id, name, quantity);
-  res.status(200).json({ message: 'Update' });
+
+productsRouter.put('/:id', async (req, res) => {
+  try {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+    const updated = await services.update(id, name, quantity);
+    res.status(200).json(updated);
+  } catch (error) {
+    if (error.err.code === 'invalid_data') {
+      return res.status(422).json(error);
+    }
+    res.status(500).json({ message: 'Deu ruim' });
+  }
 });
 
+/*
 productsRouter.delete('/', async (req, res) => {
   const id = req.body._id;
   await services.remove(id);

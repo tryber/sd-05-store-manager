@@ -42,7 +42,27 @@ const create = async (name, quantity) => {
   return model.createProduct(name, quantity);
 };
 
-const update = async (_id, name, quantity) => model.updateProduct(_id, name, quantity);
+const update = async (id, name, quantity) => {
+  if (name.length < 5) {
+    console.log(name);
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long',
+      },
+    };
+  }
+  if (typeof quantity === 'string') {
+    throw { err: { code: 'invalid_data', message: '"quantity" must be a number' } };
+  }
+  if (quantity <= 0) {
+    throw {
+      err: { code: 'invalid_data', message: '"quantity" must be larger than or equal to 1' },
+    };
+  }
+
+  return model.updateProduct(id, name, quantity);
+};
 
 const remove = async (_id) => model.deleteProduct(_id);
 
