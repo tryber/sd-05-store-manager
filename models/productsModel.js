@@ -30,7 +30,7 @@ const findAll = async () => {
 
 const productUpdate = async (id, name, quantity) => {
   const db = await connection('products');
-  const actProduct = await db.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } },);
+  const actProduct = await db.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
   return actProduct;
 };
 
