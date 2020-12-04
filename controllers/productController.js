@@ -35,7 +35,27 @@ router.get(
 
 router.get(
   '/:id',
-  productsValidate.
-)
+  productsValidate.validaId, rescue(async (req, res) => {
+    const { product } = req.product;
 
+    res.status(200).json(product);
+  }),
+);
+
+// 3 - Atualizar produtos pelo id
+router.put(
+  '/:id',
+  productsValidate.validaId,
+  productsValidate.validaName,
+  rescue(async (req, res) => {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+
+    await productsModel.productUpdate(id, name, quantity);
+
+    const productUpdate = await productsModel.findById(id);
+
+    res.status(200).json(productUpdate);
+  }),
+);
 module.exports = router;

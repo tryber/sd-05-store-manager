@@ -12,12 +12,21 @@ const findById = async (id) => {
     .then((db) => db.collection('products').findOne(ObjectId(id)));
 };
 
-const findAll = async (collection) =>
+const findAll = async (collection) => {
   connection()
     .then((db) => db.collection(collection).find().toArray());
+};
+
+const productUpdate = async (id, name, quantity) =>
+  connection()
+    .then((db) => db.collection('products').updateOne(
+      { _id: ObjectId(id) },
+      { $set: { name, quantity } },
+    ));
 
 module.exports = {
   findById,
   findByName,
   findAll,
+  productUpdate,
 };
