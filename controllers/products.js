@@ -34,7 +34,7 @@ productsRouter.get('/:id', async (req, res) => {
     res.status(500).json({ message: 'Deu ruim' });
   }
 });
-/* 
+/*
 productsRouter.put('/', async (req, res) => {
   const { _id, name, quantity } = req.body;
   await services.update(_id, name, quantity);

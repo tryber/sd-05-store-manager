@@ -2,15 +2,13 @@ const express = require('express');
 
 const bodyParse = require('body-parser');
 
-const modelProduct = require('./models/products');
-
 const controllerProduct = require('./controllers/products');
 
 const app = express();
 
 app.use(bodyParse.json());
 
-/* 
+/*
 app.post('/', async (req, resp) => {
   console.log(req.body);
   await modelProduct.pushProduct(req.body.name, req.body.quantity);
