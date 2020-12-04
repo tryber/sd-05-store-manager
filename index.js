@@ -4,6 +4,8 @@ const bodyParse = require('body-parser');
 
 const controllerProduct = require('./controllers/products');
 
+const controllerSales = require('./controllers/sales');
+
 const app = express();
 
 app.use(bodyParse.json());
@@ -22,5 +24,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/products', controllerProduct);
+
+app.use('/sales', controllerSales);
 
 app.listen(3000, () => console.log('Lisen on 3000 ....'));
