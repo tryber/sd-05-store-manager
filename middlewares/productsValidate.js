@@ -1,4 +1,4 @@
-const crudModel = require('../models/crudModel');
+// const crudModel = require('../models/crudModel');
 const productsModel = require('../models/productsModel');
 const errMsg = require('./erroResponse');
 
@@ -7,7 +7,7 @@ const validaName = async (req, res, next) => {
   if (name.length < 5) {
     return res.status(422).json(errMsg('invalid_data', '"name" length must be at least 5 characters long'));
   }
-  const product = await crudModel.findByName('products', name);
+  const product = await productsModel.findByName('products', name);
   if (product) {
     return res.status(422).json(errMsg('invalid_data', 'Product already exists'));
   }

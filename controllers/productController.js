@@ -1,9 +1,9 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const { Router } = require('express');
+
 const productsValidate = require('../middlewares/productsValidate');
 
-const router = Router();
+const router = express.Router();
 
 const prodValidate = require('../middlewares/productsValidate');
 
@@ -19,7 +19,7 @@ router.post(
   prodValidate.validaQtd,
   rescue(async (req, res) => {
     const { name, quantity } = req.body;
-    const product = await productsModel.addProduct(name, quantity);
+    const product = await productsModel.createData(name, quantity);
     res.status(201).json(product);
   }),
 );
