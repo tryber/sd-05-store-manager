@@ -18,7 +18,7 @@ router.post(
   rescue(async (req, res) => {
     const sale = req.body;
     const newsale = await salesModel.createSale(sale);
-    res.status(201).json(newsale);
+    res.status(200).json(newsale);
   }),
 );
 
