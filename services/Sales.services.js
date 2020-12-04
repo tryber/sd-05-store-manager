@@ -33,7 +33,7 @@ const isValid = async (items) => {
 
 const getSales = async (id) => {
   if (id && !ObjectId.isValid(id)) {
-    return salesEnums.error.isInvalid;
+    return salesEnums.error.notFound;
   }
   const allSales = await SalesModel.getSales(id);
   return allSales;

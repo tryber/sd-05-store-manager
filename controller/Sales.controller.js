@@ -1,11 +1,15 @@
 const SalesServices = require('../services/Sales.services');
+const { error } = require('../enumerators/Sales.enums');
 
 const getSales = async (req, res, _net) => {
   const { id } = req.params;
   const sales = await SalesServices.getSales(id);
   let resCode = 200;
-  if (sales.err) {
+  if (sales.err && sales.err.code === error.isInvalid.err.code) {
     resCode = 422;
+  }
+  if (sales.err && sales.err.code === error.notFound.err.code) {
+    resCode = 404;
   }
   res.status(resCode).send(sales);
 };
