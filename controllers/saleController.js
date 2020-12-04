@@ -6,7 +6,7 @@ const router = express.Router();
 
 const salesValidate = require('../middlewares/salesValidate');
 const { deleteSale } = require('../models/salesModel');
-const { erroMsg } = require('../middlewares/erroResponse');
+const erroMsg = require('../middlewares/erroResponse');
 
 // Controler chamando diretamente a model sem intermédio do services
 
