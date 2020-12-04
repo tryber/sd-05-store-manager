@@ -2,7 +2,8 @@ const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
 
 const getAll = async () => getConnection('products').then(
-  (products) => products.find({}).toArray());
+  (products) => products.find({}).toArray(),
+);
 
 const getById = async (id) => getConnection('products').then((products) =>
   ((ObjectId.isValid(id)) ? products.findOne({ _id: ObjectId(id) }) : null));

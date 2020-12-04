@@ -1,7 +1,6 @@
 // salevalidate
-const rescue = require('express-rescue');
 // const { ObjectId } = require('mongodb');
-const { getByIdProducts } = require('../services/productsServices');
+// const { getByIdProducts } = require('../services/productsServices');
 
 module.exports = async (req, _res, next) => {
   req.body.forEach(async ({ /* productID, */ quantity }) => {
