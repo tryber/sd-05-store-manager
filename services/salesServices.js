@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
+const productServices = require('./productServices');
 
 const createSales = async (itensSold) => {
   if (!itensSold) {
@@ -49,4 +50,40 @@ const getSalesById = async (id) => {
   return itemSold;
 };
 
-module.exports = { createSales, getAllSales, getSalesById };
+const updateSales = async (id, itensSold) => salesModel.updateSales(id, itensSold);
+// functions for update validation
+const validateSales = async (quantity) => {
+  if (quantity <= 0 || typeof quantity === 'string') {
+    throw { err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' } };
+  }
+
+  return true;
+};
+const validateProduct = async (productId) => {
+  await productServices.getProductById(productId);
+  return true;
+};
+
+const deleteSales = async (id) => {
+  if (!id || id.length < 24) {
+    throw { code: 'invalid_data', message: 'Wrong sale ID format' };
+  }
+  const checkSales = await salesModel.getSalesById(id);
+
+  if (!checkSales) {
+    throw { code: 'invalid_data', message: 'Wrong sale ID format' };
+  }
+
+  await salesModel.deleteSales(id);
+  return checkSales;
+};
+
+module.exports = {
+  createSales,
+  getAllSales,
+  getSalesById,
+  updateSales,
+  validateSales,
+  validateProduct,
+  deleteSales,
+};

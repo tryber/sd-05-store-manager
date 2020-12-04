@@ -38,4 +38,32 @@ const salesById = async (req, res) => {
   }
 };
 
-module.exports = { create, allSales, salesById };
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const itensSold = req.body;
+    const { productId, quantity } = itensSold[0];
+
+    await salesService.validateSales(quantity);
+    await salesService.validateProduct(productId);
+    await salesService.getSalesById(id);
+
+    const editSale = await salesService.updateSales(id, itensSold);
+    res.status(200).json(editSale);
+  } catch (err) {
+    res.status(422).json({ err: { code: err.code, message: err.message } });
+  }
+};
+
+const remove = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleteItem = await salesService.deleteSales(id);
+    res.status(200).json(deleteItem);
+  } catch (err) {
+    res.status(422).json({ err: { code: err.code, message: err.message } });
+  }
+};
+
+module.exports = { create, allSales, salesById, update, remove };
