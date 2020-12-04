@@ -7,7 +7,8 @@ const validaName = async (req, res, next) => {
   if (name.length < 5) {
     return res.status(422).json(errMsg('invalid_data', '"name" length must be at least 5 characters long'));
   }
-  const product = await productsModel.findByName('products', name);
+  const product = await productsModel.findByName(name);
+
   if (product) {
     return res.status(422).json(errMsg('invalid_data', 'Product already exists'));
   }
@@ -19,10 +20,8 @@ const validaQtd = async (req, res, next) => {
   if (quantity <= 0) {
     return res.status(422).json(errMsg('invalid_data', '"quantity" must be larger than or equal to 1'));
   }
-  // if (isNaN(quantity)) {
-  //   return res.status(422).json(errMsg('invalid_data', '"quantity" must be a number'));
-  // }
-  if (typeof quantity !== 'number') {
+
+  if (quantity && !Number.isInteger(quantity)) {
     return res.status(422).json(errMsg('invalid_data', '"quantity" must be a number'));
   }
   next();

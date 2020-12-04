@@ -1,3 +1,3 @@
 const erroMsg = (code, message) => ({ err: { code, message } });
 
-module.exports = { erroMsg };
+module.exports = erroMsg;

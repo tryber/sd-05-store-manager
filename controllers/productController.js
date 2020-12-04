@@ -5,8 +5,6 @@ const productsValidate = require('../middlewares/productsValidate');
 
 const router = express.Router();
 
-const prodValidate = require('../middlewares/productsValidate');
-
 const productsModel = require('../models/productsModel');
 
 // Controler chamando diretamente a model sem intermédio do services
@@ -16,7 +14,7 @@ const productsModel = require('../models/productsModel');
 router.post(
   '/',
   productsValidate.validaName,
-  prodValidate.validaQtd,
+  productsValidate.validaQtd,
   rescue(async (req, res) => {
     const { name, quantity } = req.body;
     const product = await productsModel.createData(name, quantity);
@@ -36,7 +34,8 @@ router.get(
 router.get(
   '/:id',
   productsValidate.validaId, rescue(async (req, res) => {
-    const { product } = req.product;
+    const { id } = req.params;
+    const product = await productsModel.findById(id);
 
     res.status(200).json(product);
   }),
@@ -46,6 +45,7 @@ router.get(
 router.put(
   '/:id',
   productsValidate.validaId,
+  productsValidate.validaQtd,
   productsValidate.validaName,
   rescue(async (req, res) => {
     const { name, quantity } = req.body;
