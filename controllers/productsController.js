@@ -49,7 +49,6 @@ routerProducts.put('/:id', async (req, res) => {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
     }
-    console.log(err.message);
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });
