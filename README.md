@@ -234,7 +234,7 @@ O projeto deve rodar na porta `http://localhost:3000`
 
 ![Criar produtos](./public/criarProdutos.png)
 
-## Validações importantes:
+### Validações importantes:
 
 - `name` deve ser uma _string_ com mais de 5 caracteres e deve ser único;
 
