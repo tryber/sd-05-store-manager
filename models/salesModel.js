@@ -19,6 +19,13 @@ const findAllSale = async () => {
     .then((db) => db.collection('sales').find().toArray());
 };
 
+const saleUpdate = async (id, product) =>
+  connection()
+    .then((db) => db.collection('sales').updateOne(
+      { _id: ObjectId(id) },
+      { $set: { itensSold: product } },
+));
+
 const deleteSale = async (id) =>
   connection()
     .then((db) => db.collection('sales')
@@ -30,4 +37,5 @@ module.exports = {
   createSale,
   findAllSale,
   deleteSale,
+  saleUpdate,
 };

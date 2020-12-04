@@ -4,8 +4,9 @@ const salesModel = require('../models/salesModel');
 
 const router = express.Router();
 
-const saleValidaQtd = require('../middlewares/salesValidate');
 const salesValidate = require('../middlewares/salesValidate');
+const { deleteSale } = require('../models/salesModel');
+const { erroMsg } = require('../middlewares/erroResponse');
 
 // Controler chamando diretamente a model sem intermédio do services
 
@@ -32,43 +33,50 @@ router.get(
 
 router.get(
   '/:id',
-  salesValidate.validaId, rescue(async (req, res) => {
-    const { product } = req.product;
+  salesValidate.idExists, rescue(async (req, res) => {
+    const { sale } = req;
 
-    res.status(200).json(product);
+    res.status(200).json(sale);
   }),
 );
 
-// 3 - Atualizar produtos pelo id
+// 3 - Atualizar vendas pelo id
 router.put(
   '/:id',
-  salesValidate.validaId,
-  salesValidate.validaName,
+  salesValidate.saleValidaQtd,
   rescue(async (req, res) => {
-    const { name, quantity } = req.body;
     const { id } = req.params;
+    const soldSale = await salesModel.findByIdSale(id);
 
-    await productsModel.productUpdate(id, name, quantity);
+    if (!soldSale) {
+      return res.status(422).json(erroMsg('invalid_data', 'Wrong id format'));
+    }
 
-    const productUpdate = await productsModel.findById(id);
+    const saleBody = req.body;
+    await salesModel.saleUpdate(id, saleBody);
 
-    res.status(200).json(productUpdate);
+    const sale = await salesModel.findByIdSale(id);
+
+    res.status(200).json(sale);
   }),
 );
 
-// 4 - Deletar um produto por id
+// 4 - Deletar uma venda por id
 
 router.delete(
   '/:id',
-  salesValidate.validaId,
   rescue(async (req, res) => {
     const { id } = req.params;
 
-    await productsModel.deleteProduct(id);
+    const excludeSale = await salesModel.findByIdSale(id);
 
-    const deleteProduct = req.product;
+    if (!excludeSale) {
+      res.status(422).json(erroMsg('invalid_data', 'Wrong sale ID format'));
+    }
 
-    res.status(200).json(deleteProduct);
+    await salesModel.deleteSale(id);
+
+    res.status(200).json(deleteSale);
   }),
 );
 

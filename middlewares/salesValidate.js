@@ -1,4 +1,4 @@
-// const salesModel = require('../models/salesModel');
+const salesModel = require('../models/salesModel');
 // const productsModel = require('../models/productsModel');
 const errMsg = require('./erroResponse');
 
@@ -19,6 +19,20 @@ const saleValidaQtd = async (req, res, next) => {
   next();
 };
 
+const idExists = async (req, res, next) => {
+  const { id } = req.params;
+  const sale = await salesModel.findByIdSale(id);
+
+  if (!sale) {
+    return res.status(404).json(errMsg('not_found', 'Sale not found'));
+  }
+
+  req.sale = sale;
+
+  next();
+};
+
 module.exports = {
   saleValidaQtd,
+  idExists,
 };
