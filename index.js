@@ -23,5 +23,7 @@ app.delete('/products/:id', productController.remove);
 
 // 'sales' collection endpoints
 app.post('/sales', salesController.create);
+app.get('/sales', salesController.allSales);
+app.get('/sales/:id', salesController.salesById);
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}...`));
