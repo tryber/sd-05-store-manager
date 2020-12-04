@@ -18,7 +18,8 @@ const exclude = async (id) => (ObjectId.isValid(id) ? getConnection('products')
 const update = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) return;
   await getConnection('products').then((products) => products.updateOne(
-    { _id: ObjectId(id) }, { $set: { name, quantity } }));
+    { _id: ObjectId(id) }, { $set: { name, quantity } },
+  ));
 };
 
 module.exports = {
