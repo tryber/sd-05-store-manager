@@ -22,7 +22,16 @@ const createSale = async (items) => {
   return { _id: newSale.insertedId, ...sales };
 };
 
+const updateSale = async (id, saleProducts) => {
+  const newSale = { itensSold: saleProducts };
+  await getCollection(salesEnums.table).then((db) => {
+    db.updateOne({ _id: ObjectID(id) }, { $set: newSale });
+  });
+  return { _id: ObjectID(id), ...newSale };
+};
+
 module.exports = {
   getSales,
   createSale,
+  updateSale,
 };

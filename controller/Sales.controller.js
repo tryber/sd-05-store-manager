@@ -1,7 +1,7 @@
 const SalesServices = require('../services/Sales.services');
 const { error } = require('../enumerators/Sales.enums');
 
-const getSales = async (req, res, _net) => {
+const getSales = async (req, res, _next) => {
   const { id } = req.params;
   const sales = await SalesServices.getSales(id);
   let resCode = 200;
@@ -16,15 +16,25 @@ const getSales = async (req, res, _net) => {
 
 const createSale = async (req, res, _next) => {
   const newSale = await SalesServices.createSale(req.body);
-  let resCode;
+  let resCode = 200;
   if (newSale.err) {
     resCode = 422;
-    return res.status(422).send(newSale);
   }
-  res.status(resCode || 200).json(newSale);
+  res.status(resCode).json(newSale);
+};
+
+const updateSale = async (req, res, _next) => {
+  const { id } = req.params;
+  const itensSold = req.body;
+  const updatedSale = await SalesServices.updateSale(id, itensSold);
+  if (updatedSale.err) {
+    res.status(422).send(updatedSale);
+  }
+  res.status(200).send(updatedSale);
 };
 
 module.exports = {
   getSales,
   createSale,
+  updateSale,
 };

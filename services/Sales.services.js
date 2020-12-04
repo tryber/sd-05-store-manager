@@ -46,7 +46,16 @@ const createSale = async (items) => {
   return newSale;
 };
 
+const updateSale = async (id, itensSold) => {
+  const itens = await isValid(itensSold);
+  console.log(itens);
+  if (itens.err) return itens;
+  const updatedItens = await SalesModel.updateSale(id, itensSold);
+  return updatedItens;
+};
+
 module.exports = {
   getSales,
   createSale,
+  updateSale,
 };

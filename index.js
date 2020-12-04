@@ -24,6 +24,7 @@ app.delete('/products/:id', Products.removeProduct);
 app.get('/sales/', Sales.getSales);
 app.post('/sales/', Sales.createSale);
 app.get('/sales/:id', Sales.getSales);
+app.put('/sales/:id', Sales.updateSale);
 
 // não remova esse endpoint, e para o avaliador funcionar
 // Ok Jean, não vou remover esse endpoint...
