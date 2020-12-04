@@ -58,4 +58,21 @@ router.put(
     res.status(200).json(productUpdate);
   }),
 );
+
+// 4 - Deletar um produto por id
+
+router.delete(
+  '/:id',
+  productsValidate.validaId,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+
+    await productsModel.deleteProduct(id);
+
+    const deleteProduct = req.product;
+
+    res.status(200).json(deleteProduct);
+  }),
+);
+
 module.exports = router;
