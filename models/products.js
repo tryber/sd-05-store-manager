@@ -16,7 +16,7 @@ const updateProduct = async (id, name, quantity) => {
   return { _id: id, name, quantity };
 };
 
-const deleteProduct = async ({ _id }) =>
-  connection('products').then((db) => db.deleteOne({ _id: ObjectId(_id) }));
+const deleteProduct = async (id) =>
+  connection('products').then((db) => db.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = { getAll, createProduct, getById, updateProduct, deleteProduct };

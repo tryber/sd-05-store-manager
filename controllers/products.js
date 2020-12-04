@@ -49,11 +49,17 @@ productsRouter.put('/:id', async (req, res) => {
   }
 });
 
-/*
-productsRouter.delete('/', async (req, res) => {
-  const id = req.body._id;
-  await services.remove(id);
-  res.status(200).json({ message: 'Deleted' });
-}); */
+productsRouter.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await services.remove(id);
+    res.status(200).json(deleted);
+  } catch (error) {
+    if (error.err.code === 'invalid_data') {
+      return res.status(422).json(error);
+    }
+    res.status(500).json({ message: 'Deu ruim' });
+  }
+});
 
 module.exports = productsRouter;
