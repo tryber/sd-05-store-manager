@@ -15,6 +15,7 @@ const {
   getAllSales,
   getSaleById,
   deleteSale,
+  updateSale,
 } = require('./controllers/saleControllers');
 
 const app = express();
@@ -23,6 +24,8 @@ app.use(bodyParser.json());
 app.get('/', (request, response) => {
   response.send();
 });
+
+app.put('/sales/:id', validateSale, updateSale, getSaleById);
 app.get('/sales/:id', getSaleById);
 app.post('/sales', validateSale, createSale);
 app.post('/products', validateProduct, addProduct);
@@ -35,7 +38,7 @@ app.delete('/sales/:id', deleteSale);
 
 app.use((err, _req, res, _next) => {
   if (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(422).json({ err });
   }
   res.status(500).json({ message: `algo deu errado ${err.message}` });

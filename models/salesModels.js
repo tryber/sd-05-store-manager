@@ -16,9 +16,15 @@ const getById = async (id) => getConnection('sales').then((sales) => (ObjectId.i
 const exclude = async (id) => getConnection('sales')
   .then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
 
+const update = async (id, itensSold) => {
+  if (!ObjectId.isValid(id)) return;
+  await getConnection('sales').then((sales) => sales.updateMany({ _id: ObjectId(id) }, { $set: { itensSold } }));
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   exclude,
+  update,
 };
