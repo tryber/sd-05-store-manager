@@ -1,0 +1,53 @@
+const { ObjectId } = require('mongodb');
+const { salesEnums } = require('../enumerators');
+const SalesModel = require('../models/Sales.models');
+const { getProducts } = require('../models/Products.models');
+
+const isItemValid = (item) => {
+  if (!Number(item.quantity) || item.quantity < 1) {
+    return salesEnums.error.isInvalid;
+  }
+  if (!ObjectId.isValid(item.productId)) {
+    return salesEnums.error.isInvalid;
+  }
+  return item;
+};
+
+const isValid = async (items) => {
+  let data = [];
+  for (let prod = 0; prod < items.length; prod += 1) {
+    const product = items[prod];
+    const item = isItemValid(product);
+    if (item.err) {
+      data = item;
+      return item;
+    }
+    const findItem = await getProducts(product.productId);
+    if (!findItem.name) {
+      data = salesEnums.error.isInvalid;
+      return salesEnums.error.isInvalid;
+    }
+    data.push(product);
+  }
+  return data;
+};
+
+const getSales = async (id) => {
+  if (id && !ObjectId.isValid(id)) {
+    return salesEnums.error.isInvalid;
+  }
+  const allSales = await SalesModel.getSales(id);
+  return allSales;
+};
+
+const createSale = async (items) => {
+  const saleValid = await isValid(items);
+  if (saleValid.err) return saleValid;
+  const newSale = await SalesModel.createSale(items);
+  return newSale;
+};
+
+module.exports = {
+  getSales,
+  createSale,
+};

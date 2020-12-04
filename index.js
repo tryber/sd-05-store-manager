@@ -5,6 +5,7 @@ require('dotenv').config({
 const express = require('express');
 const bodyParser = require('body-parser');
 const Products = require('./controller/Products.controller');
+const Sales = require('./controller/Sales.controller');
 
 const app = express();
 app.use(bodyParser.json());
@@ -20,6 +21,9 @@ app.post('/products', Products.create);
 app.get('/products/:id', Products.getProductsById);
 app.put('/products/:id', Products.updateProduct);
 app.delete('/products/:id', Products.removeProduct);
+app.get('/sales/', Sales.getSales);
+app.post('/sales/', Sales.createSale);
+app.get('/sales/:id', Sales.getSales);
 
 // não remova esse endpoint, e para o avaliador funcionar
 // Ok Jean, não vou remover esse endpoint...
