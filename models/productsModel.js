@@ -31,16 +31,6 @@ const deleteProduct = async (id) =>
   getCollection('products')
     .then((product) => product.deleteOne({ _id: ObjectId(id) }));
 
-const updateSales = async (productId, quantity) => {
-  const id = ObjectId(productId);
-  getCollection('products')
-    .then((product) => product.updateOne(
-      { _id: id },
-      { $set: { quantity: -quantity } },
-    ));
-  return { _id: id, quantity };
-};
-
 module.exports = {
   create,
   findName,
@@ -48,5 +38,4 @@ module.exports = {
   findId,
   updateProduct,
   deleteProduct,
-  updateSales,
 };

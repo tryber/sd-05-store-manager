@@ -74,26 +74,10 @@ const deleteProduct = async (id) => {
   return productsModel.deleteProduct(id);
 };
 
-const updateSales = async (itensSold) =>
-  itensSold.forEach(async (itemSold) => {
-    console.log(`testando o for ${itemSold}`);
-
-    const itemBD = await productsModel.findId(itemSold.productId);
-
-    if (itemBD.quantity < itemSold.quantity) {
-      throw {
-        code: 'stock_problem',
-        message: 'Such amount is not permitted to sell',
-      };
-    }
-    await productsModel.updateSales(itemSold.prductId, itemSold.quantity);
-  });
-
 module.exports = {
   create,
   AllProducts,
   findId,
   updateProduct,
   deleteProduct,
-  updateSales,
 };

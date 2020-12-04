@@ -1,13 +1,11 @@
 const { Router } = require('express');
 const salesService = require('../service/salesService');
-// const productsService = require('../service/productsService');
 
 const routerSales = Router();
 
 routerSales.post('/', async (req, res) => {
   const itensSold = req.body;
   try {
-    // await productsService.updateSales(itensSold); // conferindo se o ID existe.
     const newSales = await salesService.createSales(itensSold);
     res.status(200).json(newSales);
   } catch (err) {
