@@ -12,8 +12,7 @@ const createProduct = async (name, quantity) =>
 
 const updateProduct = async (id, name, quantity) => {
   connection('products').then((db) =>
-    db.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    db.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
   return { _id: id, name, quantity };
 };
 
