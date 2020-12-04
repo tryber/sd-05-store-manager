@@ -28,7 +28,14 @@ const findIdSale = async (id) => {
       message: 'Sale not found',
     };
   }
-  return salesModel.findIdSale(id);
+  const find = await salesModel.findIdSale(id);
+  if (!find) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+  return find;
 };
 
 const updateSales = async (id, bodySales) => {
@@ -56,11 +63,7 @@ const deleteSale = async (id) => {
       message: 'Wrong sale ID format',
     };
   }
-  const BeforeDeleted = await salesModel.findIdSale(id);
-
-  await salesModel.deleteSale(id);
-
-  return BeforeDeleted;
+  return salesModel.deleteSale(id);
 };
 
 module.exports = {
