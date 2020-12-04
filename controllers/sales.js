@@ -4,10 +4,10 @@ const services = require('../services/sales');
 
 const salesRouter = Router();
 
-/* salesRouter.get('/', async (req, res) => {
+salesRouter.get('/', async (req, res) => {
   const sales = await services.getAll();
-  res.status(200).json({ products: sales });
-}); */
+  res.status(200).json({ sales });
+});
 
 salesRouter.post('/', async (req, res) => {
   try {
@@ -21,13 +21,26 @@ salesRouter.post('/', async (req, res) => {
     res.status(500).json({ message: 'Deu ruim no POST' });
   }
 });
-/*   */
 
-/* salesRouter.put('/:id', async (req, res) => {
+salesRouter.get('/:id', async (req, res) => {
   try {
-    const { name, quantity } = req.body;
     const { id } = req.params;
-    const updated = await services.update(id, name, quantity);
+    // console.log('id no controller => ', id);
+    const sale = await services.getSale(id);
+    res.status(200).json(sale);
+  } catch (error) {
+    if (error.err.code === 'not_found') {
+      return res.status(404).json(error);
+    }
+    res.status(500).json({ message: 'Deu ruim' });
+  }
+});
+
+salesRouter.put('/:id', async (req, res) => {
+  try {
+    const { body } = req;
+    const { id } = req.params;
+    const updated = await services.update(id, body);
     res.status(200).json(updated);
   } catch (error) {
     if (error.err.code === 'invalid_data') {
@@ -48,6 +61,6 @@ salesRouter.delete('/:id', async (req, res) => {
     }
     res.status(500).json({ message: 'Deu ruim' });
   }
-}); */
+});
 
 module.exports = salesRouter;
