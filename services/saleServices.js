@@ -8,8 +8,23 @@ const getAllSales = async () => salesModels.getAll();
 
 const getSoldById = async (id) => salesModels.getById(id);
 
+const saleToBeDeleted = async (id) => {
+  const idExists = await salesModels.getById(id);
+  if (idExists) {
+    salesModels.exclude(id);
+    return idExists;
+  }
+  return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    },
+  };
+};
+
 module.exports = {
   createSale,
   getAllSales,
   getSoldById,
+  saleToBeDeleted,
 };

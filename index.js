@@ -14,6 +14,7 @@ const {
   createSale,
   getAllSales,
   getSaleById,
+  deleteSale,
 } = require('./controllers/saleControllers');
 
 const app = express();
@@ -22,15 +23,15 @@ app.use(bodyParser.json());
 app.get('/', (request, response) => {
   response.send();
 });
-
+app.get('/sales/:id', getSaleById);
 app.post('/sales', validateSale, createSale);
 app.post('/products', validateProduct, addProduct);
 app.get('/sales', getAllSales);
-app.get('/sales/:id', getSaleById);
 app.get('/products', getAllProducts);
 app.get('/products/:id', getProductById);
 app.delete('/products/:id', deleteProduct);
 app.put('/products/:id', validateProduct, updateProduct, getProductById);
+app.delete('/sales/:id', deleteSale);
 
 app.use((err, _req, res, _next) => {
   if (err) {

@@ -11,14 +11,14 @@ const create = async (itensSold) => getConnection('sales')
 const getAll = async () => getConnection('sales')
   .then((sales) => sales.find({}).toArray());
 
-const getById = async (id) => {
-  const saleID = Number(id);
-  await getConnection('sales').then((sales) => (ObjectId
-    .isValid(saleID) ? sales.findOne({ _id: ObjectId(saleID) }) : null));
-};
+const getById = async (id) => getConnection('sales').then((sales) => (ObjectId.isValid(id) ? sales.findOne({ _id: ObjectId(id) }) : null));
+
+const exclude = async (id) => getConnection('sales')
+  .then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   create,
   getAll,
   getById,
+  exclude,
 };
