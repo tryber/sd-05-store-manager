@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const { salesEnums } = require('../enumerators');
 const SalesModel = require('../models/Sales.models');
-const { getProducts } = require('../models/Products.models');
+// const { getProducts } = require('../models/Products.models');
 
 const isItemValid = (item) => {
   if (!Number(item.quantity) || item.quantity < 1) {
@@ -15,6 +15,9 @@ const isItemValid = (item) => {
 
 const isValid = async (items) => {
   let data = [];
+  // const promises = items.map((item) => getProducts(item.productId));
+  // const idExists = await Promise.all(promises);
+  // idExists.forEach((item) => console.log(item));
   for (let prod = 0; prod < items.length; prod += 1) {
     const product = items[prod];
     const item = isItemValid(product);
@@ -22,13 +25,9 @@ const isValid = async (items) => {
       data = item;
       return item;
     }
-    const findItem = await getProducts(product.productId);
-    if (!findItem.name) {
-      data = salesEnums.error.isInvalid;
-      return salesEnums.error.isInvalid;
-    }
     data.push(product);
   }
+
   return data;
 };
 
