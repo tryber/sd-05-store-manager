@@ -42,4 +42,45 @@ products.get('/:id', async (req, res) => {
   }
 });
 
+products.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    const updatedProduct = await service.update(id, name, quantity);
+
+    if (!name) {
+      throw {
+        code: 'invalid_data',
+        message: '"name" should exist',
+      };
+    }
+  
+    if (name.length <= 5) {
+      throw {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long',
+      };
+    }
+  
+    if (quantity <= 0) {
+      throw {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1',
+      };
+    }
+  
+    if (typeof quantity === 'string') {
+      throw {
+        code: 'invalid_data',
+        message: '"quantity" must be a number',
+      };
+    }
+
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(422).json({ err: { code: err.code, message: err.message } });
+  }
+})
+
 module.exports = products;
