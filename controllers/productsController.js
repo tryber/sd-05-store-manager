@@ -12,7 +12,7 @@ products.post('/', async (req, res) => {
     res.status(201).json(newProdutct);
   } catch (err) {
     if (err.code === 'invalid_data') {
-      return res.status(422).json(err.message);
+      return res.status(422).json({ err: { code: err.code, message: err.message }});
     }
 
     res.status(500).json({ message: 'Algo deu errado.' });
