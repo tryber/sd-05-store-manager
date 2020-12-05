@@ -65,10 +65,7 @@ const getById = async (id) => {
   return product;
 };
 
-const update = async (id, name, quantity) => {
-  const updatedProduct = await model.updateProduct(id, name, quantity);
-  return updatedProduct;
-}
+const update = async (id, name, quantity) => model.updateProduct(id, name, quantity);
 
 module.exports = {
   create,
