@@ -83,4 +83,15 @@ products.put('/:id', async (req, res) => {
   }
 });
 
+products.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedProduct = await service.remove(id);
+
+    res.status(200).json(deletedProduct);
+  } catch (err) {
+    res.status(422).json({ err: { code: err.code, message: err.message } });
+  }
+});
+
 module.exports = products;
