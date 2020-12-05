@@ -8,14 +8,15 @@ products.post('/', async (req, res) => {
     const { name, quantity } = req.body;
 
     const newProdutct = await service.create(name, quantity);
-  
+
     res.status(201).json(newProdutct);
   } catch (err) {
-    // aqui falta colocar o tratamento de erro conforme o service.
-    console.error(err);
+    if (err.code === 'invalid_data') {
+      return res.status(422).json(err.message);
+    }
 
-    res.status(500).json({ message: 'Algo deu errado '});
+    res.status(500).json({ message: 'Algo deu errado.' });
   }
-})
+});
 
 module.exports = products;

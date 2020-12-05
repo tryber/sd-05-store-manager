@@ -1,5 +1,4 @@
 const express = require('express');
-const rescue = require('express-rescue');
 const bodyParser = require('body-parser');
 const productsController = require('./controllers/productsController');
 
