@@ -36,6 +36,30 @@ const register = async (itensSold) => {
   return sale;
 };
 
+const getAllSales = async () => salesModel.getAllSales();
+
+const getSaleById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+
+  const sale = await salesModel.getSaleById(id);
+
+  if (!sale) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+
+  return sale;
+};
+
 module.exports = {
   register,
+  getAllSales,
+  getSaleById,
 };
