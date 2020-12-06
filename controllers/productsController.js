@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const service = require('../services/productsService');
+const services = require('../services');
 
 const products = Router();
 
@@ -7,7 +7,7 @@ products.post('/', async (req, res) => {
   try {
     const { name, quantity } = req.body;
 
-    const newProdutct = await service.create(name, quantity);
+    const newProdutct = await services.productsService.create(name, quantity);
 
     res.status(201).json(newProdutct);
   } catch (err) {
@@ -21,7 +21,7 @@ products.post('/', async (req, res) => {
 
 products.get('/', async (_req, res) => {
   try {
-    const allProducts = await service.getAll();
+    const allProducts = await services.productsService.getAll();
 
     res.status(200).json({ products: allProducts });
   } catch {
@@ -32,7 +32,7 @@ products.get('/', async (_req, res) => {
 products.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await service.getById(id);
+    const product = await services.productsService.getById(id);
 
     res.status(200).json(product);
   } catch (err) {
@@ -47,7 +47,7 @@ products.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { name, quantity } = req.body;
 
-    const updatedProduct = await service.update(id, name, quantity);
+    const updatedProduct = await services.productsService.update(id, name, quantity);
 
     if (!name) {
       throw {
@@ -86,7 +86,7 @@ products.put('/:id', async (req, res) => {
 products.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedProduct = await service.remove(id);
+    const deletedProduct = await services.productsService.remove(id);
 
     res.status(200).json(deletedProduct);
   } catch (err) {

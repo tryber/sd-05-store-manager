@@ -1,8 +1,8 @@
 const { ObjectId } = require('mongodb');
-const model = require('../models/productsModel');
+const models = require('../models');
 
 const create = async (name, quantity) => {
-  const getExistentProduct = await model.getProductByName(name);
+  const getExistentProduct = await models.productsModel.getProductByName(name);
 
   if (!name) {
     throw {
@@ -39,11 +39,11 @@ const create = async (name, quantity) => {
     };
   }
 
-  const newProduct = await model.create(name, quantity);
+  const newProduct = await models.productsModel.create(name, quantity);
   return newProduct;
 };
 
-const getAll = async () => model.getAllProducts();
+const getAll = async () => models.productsModel.getAllProducts();
 
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
@@ -53,7 +53,7 @@ const getById = async (id) => {
     };
   }
 
-  const product = await model.getProductById(id);
+  const product = await models.productsModel.getProductById(id);
 
   if (!product) {
     throw {
@@ -65,7 +65,7 @@ const getById = async (id) => {
   return product;
 };
 
-const update = async (id, name, quantity) => model.updateProduct(id, name, quantity);
+const update = async (id, name, quantity) => models.productsModel.updateProduct(id, name, quantity);
 
 const remove = async (id) => {
   if (!ObjectId.isValid(id)) {
@@ -75,8 +75,8 @@ const remove = async (id) => {
     };
   }
 
-  const deletedProduct = await model.deleteProduct(id);
-  await model.deleteProduct(id);
+  const deletedProduct = await models.productsModel.deleteProduct(id);
+  await models.productsModel.deleteProduct(id);
 
   return deletedProduct;
 };

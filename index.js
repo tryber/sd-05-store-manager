@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const productsController = require('./controllers/productsController');
+const { productsController, salesController } = require('./controllers');
 
 const app = express();
 
@@ -12,6 +12,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/products', productsController);
+app.use('/sales', salesController);
 
 app.use((err, _req, res, _next) => {
   console.error(err);
