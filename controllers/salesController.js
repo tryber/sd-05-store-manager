@@ -60,4 +60,15 @@ sales.put('/:id', async (req, res) => {
   }
 });
 
+sales.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedSale = await salesService.deleteSale(id);
+
+    res.status(200).json(deletedSale);
+  } catch (err) {
+    res.status(422).json({ err: { code: err.code, message: err.message } });
+  }
+});
+
 module.exports = sales;

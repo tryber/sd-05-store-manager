@@ -86,9 +86,32 @@ const updateSale = async (id, itensSold) => {
   return updatedSale;
 };
 
+const deleteSale = async (id) => {
+  if (!id || id.length < 24) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+
+  const findSale = await salesModel.getSaleById(id);
+
+  if (!findSale) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    };
+  }
+
+  await salesModel.deleteSale(id);
+
+  return findSale;
+};
+
 module.exports = {
   register,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };
