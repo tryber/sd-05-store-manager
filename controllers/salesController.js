@@ -47,4 +47,17 @@ sales.get('/:id', async (req, res) => {
   }
 });
 
+sales.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const itensSold = req.body;
+
+    const saleUpdated = await salesService.updateSale(id, itensSold);
+
+    res.status(200).json(saleUpdated);
+  } catch (err) {
+    res.status(422).json({ err: { code: err.code, message: err.message } });
+  }
+});
+
 module.exports = sales;

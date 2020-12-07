@@ -58,8 +58,37 @@ const getSaleById = async (id) => {
   return sale;
 };
 
+const updateSale = async (id, itensSold) => {
+  const { productId, quantity } = itensSold[0];
+
+  if (!ObjectId.isValid(productId)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  if (!quantity || typeof quantity === 'string') {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  if (quantity <= 0) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  const updatedSale = await salesModel.updateSale(id, itensSold);
+  return updatedSale;
+};
+
 module.exports = {
   register,
   getAllSales,
   getSaleById,
+  updateSale,
 };
