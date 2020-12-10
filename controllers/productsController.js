@@ -39,17 +39,24 @@ productsRouter.put('/:id', rescue(async (req, res) => {
   const { name, quantity } = req.body;
 
   const response = await services.update(id, name, quantity);
+
   if (response.err && response.err.code === 'invalid_data') {
     return res.status(422).json(response);
   }
+
   return res.status(200).json(response);
 }));
 
 productsRouter.delete('/:id', rescue(async (req, res) => {
   const { id } = req.params;
-  const removeProduct = await services.exclude(id);
-  console.log(removeProduct);
-  return res.status(200).json(removeProduct);
+
+  const response = await services.exclude(id);
+
+  if (response.err && response.err.code === 'invalid_data') {
+    return res.status(422).json(response);
+  }
+
+  return res.status(200).json(response);
 }));
 
 module.exports = productsRouter;
