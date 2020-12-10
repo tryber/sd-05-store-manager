@@ -60,10 +60,25 @@ const getById = async (id) => {
   const findProductById = await model.getById(id);
 
   if (!findProductById) {
-    console.log('queeee');
     return showError('invalid_data', 'Wrong id format');
   }
+
   return findProductById;
+};
+
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return showError('invalid_data', 'Wrong id format');
+  }
+  const findProduct = await model.getById(id);
+
+  if (!findProduct) {
+    return showError('invalid_data', 'Wrong id format');
+  }
+
+  await model.remove(id);
+
+  return findProduct;
 };
 
 module.exports = {
@@ -71,4 +86,5 @@ module.exports = {
   create,
   getById,
   update,
+  exclude,
 };

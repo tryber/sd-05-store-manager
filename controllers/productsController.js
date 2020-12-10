@@ -45,4 +45,11 @@ productsRouter.put('/:id', rescue(async (req, res) => {
   return res.status(200).json(response);
 }));
 
+productsRouter.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const removeProduct = await services.exclude(id);
+  console.log(removeProduct);
+  return res.status(200).json(removeProduct);
+}));
+
 module.exports = productsRouter;
