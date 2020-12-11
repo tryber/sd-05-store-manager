@@ -52,7 +52,7 @@ const salesQuantityIsNumber = (req, res, next) => {
   const [...itensSold] = req.body;
   const quantities = itensSold.map(({ quantity }) => quantity);
 
-  if (quantities.some((item) => isNaN(item))) {
+  if (quantities.some((item) => Number.isNaN(item))) {
     return res
       .status(422)
       .json(buildResponse('invalid_data', 'Wrong product ID or invalid quantity'));

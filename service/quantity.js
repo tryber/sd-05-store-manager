@@ -13,8 +13,7 @@ const updateQuantity = async (action, productId, quantity) => {
 const updateProductQuantity = async (action, itensSold) => {
   if (itensSold === {}) return;
   const promisses = itensSold.map(({ productId, quantity }) =>
-    updateQuantity(action, productId, quantity),
-  );
+    updateQuantity(action, productId, quantity));
 
   await Promise.all(promisses);
 };
