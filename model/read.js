@@ -20,7 +20,7 @@ const getAll = async (collection) => {
   return results;
 };
 
-const findBy = async (by, collection, query = '') => {
+const findBy = async (by, query = '', collection) => {
   switch (by) {
     case 'id':
       return findById(collection, query);

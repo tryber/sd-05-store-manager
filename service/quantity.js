@@ -12,11 +12,11 @@ const updateQuantity = async (action, productId, quantity) => {
 
 const updateProductQuantity = async (action, itensSold) => {
   if (itensSold === {}) return;
+  const promisses = itensSold.map(({ productId, quantity }) =>
+    updateQuantity(action, productId, quantity),
+  );
 
-  const promises = itensSold.map(({ productId, quantity }) =>
-    updateQuantity(action, productId, quantity));
-
-  await Promise.all(promises);
+  await Promise.all(promisses);
 };
 
 module.exports = {

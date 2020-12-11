@@ -10,25 +10,25 @@ router.post(
   validate.salesQuantityIsNumber,
   validate.salesQuantityIsNot0OrLess,
   validate.quantityIsNot0OrLess,
-  async (request, response) => {
-    const [...itensSold] = request.body;
+  async (req, res) => {
+    const [...itensSold] = req.body;
     const sales = await crud.create('sales', { itensSold });
-    await quantityService.updateProductQuantity(request.method, itensSold);
-    response.status(200).json(sales);
+    await quantityService.updateProductQuantity(req.method, itensSold);
+    res.status(200).json(sales);
   },
 );
 
-router.get('/', async (_, response) => {
-  crud.read('all', null, 'sales').then((sales) => response.status(200).json({ sales }));
+router.get('/', async (_req, res) => {
+  crud.read('all', null, 'sales').then((sales) => res.status(200).json({ sales }));
 });
 
-router.get('/:id', async (request, response) => {
-  const { id } = request.params;
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
   const sale = await crud.read('id', id, 'sales');
   if (!sale) {
-    return response.status(404).json({ err: { code: 'not_found', message: 'Sale not found' } });
+    return res.status(404).json({ err: { code: 'not_found', message: 'Sale not found' } });
   }
-  response.status(200).json(sale);
+  res.status(200).json(sale);
 });
 
 router.put(
@@ -37,25 +37,25 @@ router.put(
   validate.salesQuantityIsNumber,
   validate.salesQuantityIsNot0OrLess,
   validate.quantityIsNot0OrLess,
-  async (request, response) => {
-    const { id } = request.params;
+  async (req, res) => {
+    const { id } = req.params;
     const document = {
-      itensSold: request.body,
+      itensSold: req.body,
     };
     await crud.update('sales', id, document);
-    crud.read('id', id, 'sales').then((sale) => response.status(200).json(sale));
+    crud.read('id', id, 'sales').then((sale) => res.status(200).json(sale));
   },
 );
 
-router.delete('/:id', async (request, response) => {
-  const { id } = request.params;
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
   const sale = await crud.read('id', id, 'sales');
   if (!sale) {
-    return response.status(422).json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
+    return res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
   }
-  await quantityService.updateProductQuantity(request.method, sale.itensSold);
+  await quantityService.updateProductQuantity(req.method, sale.itensSold);
   await crud.delete('sales', id);
-  response.status(200).json(request.sale);
+  res.status(200).json(req.sale);
 });
 
 module.exports = router;

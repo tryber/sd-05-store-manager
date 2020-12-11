@@ -9,40 +9,40 @@ router.post(
   validate.nameLongerThan5,
   validate.quantityIsNumber,
   validate.quantityIsNot0OrLess,
-  async (request, response) => {
-    const { name, quantity } = request.body;
+  async (req, res) => {
+    const { name, quantity } = req.body;
     try {
-      const alreadyInDBProduct = await crud.read('name', 'products', name);
+      const alreadyInDBProduct = await crud.read('name', name, 'products');
 
       if (alreadyInDBProduct) {
-        return response
+        return res
           .status(422)
           .json({ err: { code: 'invalid_data', message: 'Product already exists' } });
       }
 
       const insertedProduct = await crud.create('products', { name, quantity });
-      return response.status(201).json(insertedProduct);
+      return res.status(201).json(insertedProduct);
     } catch (err) {
-      return response.status(500).json({ err });
+      return res.status(500).json({ err });
     }
   },
 );
 
-router.get('/', async (_, response) => {
-  const products = await crud.read('all', 'products');
-  return response.status(200).json({ products });
+router.get('/', async (_req, res) => {
+  const products = await crud.read('all', null, 'products');
+  return res.status(200).json({ products });
 });
 
-router.get('/:id', async (request, response) => {
-  const { id } = request.params;
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
 
-  const product = await crud.read('id', 'products', id);
+  const product = await crud.read('id', id, 'products');
 
   if (!product) {
-    return response.status(422).json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+    return res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
   }
 
-  return response.status(200).json(product);
+  return res.status(200).json(product);
 });
 
 router.put(
@@ -50,36 +50,36 @@ router.put(
   validate.nameLongerThan5,
   validate.quantityIsNumber,
   validate.quantityIsNot0OrLess,
-  async (request, response) => {
-    const { name, quantity } = request.body;
-    const { id } = request.params;
+  async (req, res) => {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
     try {
-      const product = await crud.read('id', 'products', id);
+      const product = await crud.read('id', id, 'products');
 
       if (!product) {
-        return response.status(422).json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+        return res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
       }
       await crud.update('products', id, { name, quantity });
 
-      const updatedProduct = await crud.read('id', 'products', id);
+      const updatedProduct = await crud.read('id', id, 'products');
 
-      return response.status(200).json(updatedProduct);
+      return res.status(200).json(updatedProduct);
     } catch (err) {
-      return response.status(500).json({ err });
+      return res.status(500).json({ err });
     }
   },
 );
 
-router.delete('/:id', async (request, response) => {
-  const { id } = request.params;
-  const product = await crud.read('id', 'products', id);
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const product = await crud.read('id', id, 'products');
 
   if (!product) {
-    return response.status(422).json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+    return res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
   }
 
   await crud.delete('products', id);
-  return response.status(200).json(product);
+  return res.status(200).json(product);
 });
 
 module.exports = router;
