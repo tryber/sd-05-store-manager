@@ -5,7 +5,7 @@ const verifyProduct = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
 
   // [Será validado que não é possível criar um produto com o nome menor que 5 caracteres]
-  if (name.length < 5) {
+  if (name && name.length < 5) {
     return res.status(422).json({
       err: {
         code: 'invalid_data',
