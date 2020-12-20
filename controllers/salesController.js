@@ -1,13 +1,13 @@
 const express = require('express');
-const { verifySale } = require('../middlewares/index');
-const { salesModel } = require('../models/index');
+const { verifySale } = require('../middlewares');
+const salesModel = require('../models');
 
 const salesController = express.Router();
 
 // requisito 5 - crie um endpoint para o cadastro de vendas;
 salesController.post('/', verifySale, async (req, res) => {
   try {
-    const { itensSold } = req.body;
+    const [...itensSold] = req.body;
     const newSales = await salesModel.createSales(itensSold);
 
     return res.status(200).json(newSales);
