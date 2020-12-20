@@ -8,6 +8,13 @@ const createProduct = async (name, quantity) => {
   return { _id: newProduct.insertedId, name, quantity };
 };
 
+const excludeProductById = async (id) => {
+  const deletedProduct = await getCollection('products')
+    .then((products) => products.deleteOne({ _id: ObjectId(id) }));
+
+  return deletedProduct;
+};
+
 const findByProductName = async (name) => {
   const product = await getCollection('products').then((products) => products.findOne({ name }));
 
@@ -43,4 +50,5 @@ module.exports = {
   findByProductId,
   getAllProducts,
   updateProductById,
+  excludeProductById,
 };

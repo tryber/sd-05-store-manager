@@ -34,6 +34,7 @@ productsController.get('/', async (_req, res) => {
 
 productsController.get('/:id', verifyId, async (req, res) => {
   const { id } = req.params;
+
   try {
     const product = await productsModel.findByProductId(id);
 
@@ -44,13 +45,27 @@ productsController.get('/:id', verifyId, async (req, res) => {
 });
 
 // requisito 3 - crie um endpoint para atualizar um produto;
-productsController.put('/:id', verifyProduct, verifyId, async (req, res) => {
+productsController.put('/:id', verifyProduct, async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
+
   try {
     const updatedProduct = await productsModel.updateProductById(id, { name, quantity });
 
     return res.status(200).json(updatedProduct);
+  } catch (err) {
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
+  }
+});
+
+// requisito 4 - crie um endpoint para deletar um produto
+productsController.delete('/:id', verifyId, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedProduct = await productsModel.excludeProductById(id);
+
+    return res.status(200).json(deletedProduct);
   } catch (err) {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }

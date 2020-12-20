@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 
-// [Será validado que não é possível listar um produto que não existe]
+// [Será validado que não é possível listar/alterar/deletar um produto que não existe]
 const verifyId = async (req, res, next) => {
   const { id } = req.params;
 
