@@ -4,10 +4,10 @@ const rescue = require('express-rescue');
 const { productsModel } = require('../models/index');
 const { verifyProduct } = require('../middlewares/index');
 
-const productController = express.Router();
+const productsController = express.Router();
 
 // requisito 1 - crie um endpoint para o cadastro de produtos;
-productController.post('/', verifyProduct, rescue(async (req, res) => {
+productsController.post('/', verifyProduct, rescue(async (req, res) => {
   const { name, quantity } = req.body;
   const addProduct = await productsModel.createProduct({ name, quantity });
   // controller chama o model diretamente, sem intermédio de service
@@ -16,9 +16,9 @@ productController.post('/', verifyProduct, rescue(async (req, res) => {
 }));
 
 // requisito 2 - crie um endpoint para listar os produtos;
-productController.get('/', rescue(async (_req, res) => {
+productsController.get('/', rescue(async (_req, res) => {
   const products = await productsModel.getAll();
   res.status(200).json({ products });
 }));
 
-module.exports = productController;
+module.exports = productsController;
