@@ -16,8 +16,7 @@ const findByProductName = async (name) => {
 
 const findByProductId = async (id) => {
   const product = await getCollection('products').then((products) =>
-    products.findOne(ObjectId(id)),
-  );
+    products.findOne(ObjectId(id)));
 
   return product;
 };
