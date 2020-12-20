@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { verifyProduct } = require('../middlewares/index');
+const { verifyProduct, verifyId } = require('../middlewares/index');
 const { productsModel } = require('../models/index');
 
 const productsController = express.Router();
@@ -11,13 +11,13 @@ productsController.post('/', verifyProduct, async (req, res) => {
     const { name, quantity } = req.body;
     const newProdutct = await productsModel.createProduct(name, quantity);
 
-    res.status(201).json(newProdutct);
+    return res.status(201).json(newProdutct);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
 
-    res.status(500).json({ message: 'Oops! Something went wrong.' });
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
 });
 
@@ -26,9 +26,20 @@ productsController.get('/', async (_req, res) => {
   try {
     const allProducts = await productsModel.getAllProducts();
 
-    res.status(200).json({ products: allProducts });
+    return res.status(200).json({ products: allProducts });
   } catch {
-    res.status(500).json({ message: 'Oops! Something went wrong.' });
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
+  }
+});
+
+productsController.get('/:id', verifyId, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await productsModel.findByProductId(id);
+
+    return res.status(200).json(product);
+  } catch (err) {
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
 });
 
