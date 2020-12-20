@@ -1,7 +1,6 @@
-const rescue = require('express-rescue');
 const { productsModel } = require('../models/index');
 
-const verifyProduct = rescue(async (req, res, next) => {
+const verifyProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
 
   // [Será validado que não é possível criar um produto com o nome menor que 5 caracteres]
@@ -47,6 +46,6 @@ const verifyProduct = rescue(async (req, res, next) => {
   }
 
   next();
-});
+};
 
 module.exports = verifyProduct;
