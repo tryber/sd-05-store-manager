@@ -1,4 +1,4 @@
-const { productsModel } = require('../models');
+const { productsModel } = require('../models/index');
 
 const verifyProduct = async (req, res, next) => {
   const { name, quantity } = req.body;

@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { verifyProduct, verifyId } = require('../middlewares');
-const productsModel = require('../models');
+const { verifyProduct, verifyId } = require('../middlewares/index');
+const productsModel = require('../models/index');
 
 const productsController = express.Router();
 
