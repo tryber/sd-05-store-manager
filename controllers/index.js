@@ -1,5 +1,3 @@
 const productsController = require('./productsController');
 
-module.exports = {
-  productsController,
-};
+module.exports = { productsController };
