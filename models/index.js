@@ -9,7 +9,11 @@ const {
   excludeProductById,
 } = require('./productsModel');
 
-const { createSales } = require('./salesModel');
+const {
+  createSales,
+  findBySaleId,
+  getAllSales,
+} = require('./salesModel');
 
 module.exports = {
   getCollection,
@@ -20,4 +24,6 @@ module.exports = {
   updateProductById,
   excludeProductById,
   createSales,
+  findBySaleId,
+  getAllSales,
 };

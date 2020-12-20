@@ -20,7 +20,7 @@ const verifySale = async (req, res, next) => {
         },
       });
     }
-
+    // [Será validado que não é possível listar/alterar/deletar uma venda que não existe]
     if (!ObjectId.isValid(item.productId)) {
       return res.status(422).json({
         err: {

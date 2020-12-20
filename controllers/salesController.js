@@ -1,6 +1,10 @@
 const express = require('express');
-const { verifySale } = require('../middlewares/index');
-const { createSales } = require('../models/index');
+const { verifySale, verifySaleId } = require('../middlewares/index');
+const {
+  createSales,
+  findBySaleId,
+  getAllSales,
+} = require('../models/index');
 
 const salesController = express.Router();
 
@@ -16,6 +20,29 @@ salesController.post('/', verifySale, async (req, res) => {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
 
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
+  }
+});
+
+// requisito 6 - crie um endpoint para listar as vendas;
+salesController.get('/', async (_req, res) => {
+  try {
+    const allSales = await getAllSales();
+
+    return res.status(200).json({ allSales });
+  } catch {
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
+  }
+});
+
+salesController.get('/:id', verifySaleId, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const sale = await findBySaleId(id);
+
+    return res.status(200).json(sale);
+  } catch (err) {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
 });
