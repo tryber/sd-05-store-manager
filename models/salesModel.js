@@ -28,9 +28,17 @@ const updateSaleById = async (id, objeto) => {
   return { _id: ObjectId(id), name, quantity };
 };
 
+const excludeSaleById = async (id) => {
+  const deletedSale = await getCollection('sales')
+    .then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
+
+  return deletedSale;
+};
+
 module.exports = {
   createSales,
   findBySaleId,
   getAllSales,
   updateSaleById,
+  excludeSaleById,
 };

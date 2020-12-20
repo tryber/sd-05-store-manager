@@ -14,6 +14,7 @@ const {
   findBySaleId,
   getAllSales,
   updateSaleById,
+  excludeSaleById,
 } = require('./salesModel');
 
 module.exports = {
@@ -28,4 +29,5 @@ module.exports = {
   findBySaleId,
   getAllSales,
   updateSaleById,
+  excludeSaleById,
 };

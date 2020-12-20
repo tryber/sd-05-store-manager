@@ -5,6 +5,7 @@ const {
   findBySaleId,
   getAllSales,
   updateSaleById,
+  excludeSaleById,
 } = require('../models/index');
 
 const salesController = express.Router();
@@ -57,6 +58,19 @@ salesController.put('/:id', verifySale, async (req, res) => {
     const updatedSale = await updateSaleById(id, { name, quantity });
 
     return res.status(200).json(updatedSale);
+  } catch (err) {
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
+  }
+});
+
+// requisito 8 - crie um endpoint para deletar uma venda
+salesController.delete('/:id', verifySaleId, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedSale = await excludeSaleById(id);
+
+    return res.status(200).json(deletedSale);
   } catch (err) {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
