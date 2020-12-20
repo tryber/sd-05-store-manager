@@ -2,8 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { productsController } = require('./controllers/index');
 
-require('dotenv').config();
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -18,5 +16,5 @@ app.get('/', (request, response) => {
 const PORT = 3000;
 
 app.listen(PORT, () => {
-  console.log(`tá rolando na porta ${PORT}`);
+  console.log(`Tá rolando na porta ${PORT}`);
 });
