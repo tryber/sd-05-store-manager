@@ -7,8 +7,8 @@ const salesController = express.Router();
 // requisito 5 - crie um endpoint para o cadastro de vendas;
 salesController.post('/', verifySale, async (req, res) => {
   try {
-    const [...itensSold] = req.body;
-    const newSales = await salesModel.createSales(itensSold);
+    const itemsSold = req.body;
+    const newSales = await salesModel.createSales(itemsSold);
 
     return res.status(200).json(newSales);
   } catch (err) {
