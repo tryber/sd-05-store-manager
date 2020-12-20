@@ -1,6 +1,6 @@
 const express = require('express');
 const { verifySale } = require('../middlewares/index');
-const salesModel = require('../models/index');
+const { createSales } = require('../models/index');
 
 const salesController = express.Router();
 
@@ -8,7 +8,7 @@ const salesController = express.Router();
 salesController.post('/', verifySale, async (req, res) => {
   try {
     const itemsSold = req.body;
-    const newSales = await salesModel.createSales(itemsSold);
+    const newSales = await createSales(itemsSold);
 
     return res.status(200).json(newSales);
   } catch (err) {

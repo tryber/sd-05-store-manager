@@ -1,5 +1,23 @@
 const getCollection = require('./connection');
-const productsModel = require('./productsModel');
-const salesModel = require('./salesModel');
 
-module.exports = { getCollection, productsModel, salesModel };
+const {
+  createProduct,
+  findByProductName,
+  findByProductId,
+  getAllProducts,
+  updateProductById,
+  excludeProductById,
+} = require('./productsModel');
+
+const { createSales } = require('./salesModel');
+
+module.exports = {
+  getCollection,
+  createProduct,
+  findByProductName,
+  findByProductId,
+  getAllProducts,
+  updateProductById,
+  excludeProductById,
+  createSales,
+};

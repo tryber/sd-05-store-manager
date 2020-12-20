@@ -1,4 +1,4 @@
-const { productsModel } = require('../models/index');
+const { findByProductName } = require('../models/index');
 
 const verifyProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -34,7 +34,7 @@ const verifyProduct = async (req, res, next) => {
   }
 
   // [Será validado que não é possível criar um produto com o mesmo nome de outro já existente]
-  const checkExistence = await productsModel.findByProductName(name);
+  const checkExistence = await findByProductName(name);
 
   if (checkExistence) {
     return res.status(422).json({
