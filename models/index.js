@@ -13,6 +13,7 @@ const {
   createSales,
   findBySaleId,
   getAllSales,
+  updateSaleById,
 } = require('./salesModel');
 
 module.exports = {
@@ -26,4 +27,5 @@ module.exports = {
   createSales,
   findBySaleId,
   getAllSales,
+  updateSaleById,
 };

@@ -4,6 +4,7 @@ const {
   createSales,
   findBySaleId,
   getAllSales,
+  updateSaleById,
 } = require('../models/index');
 
 const salesController = express.Router();
@@ -42,6 +43,20 @@ salesController.get('/:id', verifySaleId, async (req, res) => {
     const sale = await findBySaleId(id);
 
     return res.status(200).json(sale);
+  } catch (err) {
+    return res.status(500).json({ message: 'Oops! Something went wrong.' });
+  }
+});
+
+// requisito 7 - crie um endpoint para atualizar uma venda;
+salesController.put('/:id', verifySale, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  try {
+    const updatedSale = await updateSaleById(id, { name, quantity });
+
+    return res.status(200).json(updatedSale);
   } catch (err) {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
