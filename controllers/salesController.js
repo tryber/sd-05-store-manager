@@ -1,5 +1,5 @@
 const express = require('express');
-const { verifySale, verifySaleId } = require('../middlewares/index');
+const { verifySale, verifySaleId, verifyDeletedId } = require('../middlewares/index');
 const {
   createSales,
   findBySaleId,
@@ -12,8 +12,9 @@ const salesController = express.Router();
 
 // requisito 5 - crie um endpoint para o cadastro de vendas;
 salesController.post('/', verifySale, async (req, res) => {
+  const itemsSold = req.body;
+
   try {
-    const itemsSold = req.body;
     const newSales = await createSales(itemsSold);
 
     return res.status(200).json(newSales);
@@ -31,7 +32,7 @@ salesController.get('/', async (_req, res) => {
   try {
     const allSales = await getAllSales();
 
-    return res.status(200).json({ allSales });
+    return res.status(200).json({ sales: allSales });
   } catch {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
@@ -52,11 +53,11 @@ salesController.get('/:id', verifySaleId, async (req, res) => {
 // requisito 7 - crie um endpoint para atualizar uma venda;
 salesController.put('/:id', verifySale, async (req, res) => {
   const { id } = req.params;
-  const { name, quantity } = req.body;
+  const itemsUpdated = { itensSold: req.body };
 
   try {
-    const updatedSale = await updateSaleById(id, { name, quantity });
-
+    const updatedSale = await updateSaleById(id, itemsUpdated);
+    console.log(updatedSale, 'updated');
     return res.status(200).json(updatedSale);
   } catch (err) {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
@@ -64,16 +65,18 @@ salesController.put('/:id', verifySale, async (req, res) => {
 });
 
 // requisito 8 - crie um endpoint para deletar uma venda
-salesController.delete('/:id', verifySaleId, async (req, res) => {
+salesController.delete('/:id', verifyDeletedId, async (req, res) => {
   const { id } = req.params;
 
   try {
     const deletedSale = await excludeSaleById(id);
 
-    return res.status(200).json(deletedSale);
+    res.status(200).json(deletedSale);
   } catch (err) {
-    return res.status(500).json({ message: 'Oops! Something went wrong.' });
+    return res.status(404).json({ err: { code: err.code, message: err.message } });
   }
+
+  return res.status(500).json({ message: 'Oops! Something went wrong.' });
 });
 
 module.exports = salesController;

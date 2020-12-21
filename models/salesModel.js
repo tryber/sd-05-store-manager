@@ -2,15 +2,18 @@ const { ObjectId } = require('mongodb');
 const getCollection = require('./connection');
 
 const createSales = async (itensSold) => {
-  await getCollection('sales').then((sales) => sales.insertMany(itensSold));
+  const newSale = await getCollection('sales').then((sales) => sales.insertOne({ itensSold }));
 
-  return { itensSold };
+  return { _id: newSale.insertedId, itensSold };
 };
 
 const findBySaleId = async (id) => {
-  const sale = await getCollection('sales').then((sales) => sales.findOne(ObjectId(id)));
+  if (ObjectId.isValid(id)) {
+    const sale = await getCollection('sales').then((sales) => sales.findOne({ _id: ObjectId(id) }));
 
-  return sale;
+    return sale;
+  }
+  return null;
 };
 
 const getAllSales = async () => {
@@ -20,17 +23,21 @@ const getAllSales = async () => {
 };
 
 const updateSaleById = async (id, objeto) => {
-  const { name, quantity } = objeto;
+  const { itensSold } = objeto;
   const allSales = await getCollection('sales');
 
-  await allSales.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
+  await allSales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } });
 
-  return { _id: ObjectId(id), name, quantity };
+  return { _id: ObjectId(id), itensSold };
 };
 
 const excludeSaleById = async (id) => {
-  const deletedSale = await getCollection('sales')
-    .then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
+  const deletedSale = await getCollection('sales').then((sales) =>
+    sales.findOne({ _id: ObjectId(id) }),
+  );
+  console.log(deletedSale, 'deleted');
+
+  await getCollection('sales').then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
 
   return deletedSale;
 };
