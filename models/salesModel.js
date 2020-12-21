@@ -33,8 +33,7 @@ const updateSaleById = async (id, objeto) => {
 
 const excludeSaleById = async (id) => {
   const deletedSale = await getCollection('sales').then((sales) =>
-    sales.findOne({ _id: ObjectId(id) }),
-  );
+    sales.findOne({ _id: ObjectId(id) }));
   console.log(deletedSale, 'deleted');
 
   await getCollection('sales').then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
