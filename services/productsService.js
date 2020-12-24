@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const model = require('../models/productsModel');
+const models = require('../models/productsModel');
 
 function showError(code, message) {
   return {
@@ -32,13 +32,13 @@ const create = async (name, quantity) => {
     return formatIsOK;
   }
 
-  const findExisting = await model.findProductByName(name);
+  const findExisting = await models.findProductByName(name);
 
   if (findExisting) {
     return showError('invalid_data', 'Product already exists');
   }
 
-  return model.create(name, quantity);
+  return models.create(name, quantity);
 };
 
 const update = async (id, name, quantity) => {
@@ -48,7 +48,7 @@ const update = async (id, name, quantity) => {
     return formatIsOK;
   }
 
-  await model.update(id, name, quantity);
+  await models.update(id, name, quantity);
   return ({ _id: ObjectId(id), name, quantity });
 };
 
@@ -57,7 +57,7 @@ const getById = async (id) => {
     return showError('invalid_data', 'Wrong id format');
   }
 
-  const findProductById = await model.getById(id);
+  const findProductById = await models.getById(id);
 
   if (!findProductById) {
     return showError('invalid_data', 'Wrong id format');
@@ -70,13 +70,13 @@ const exclude = async (id) => {
   if (!ObjectId.isValid(id)) {
     return showError('invalid_data', 'Wrong id format');
   }
-  const findProduct = await model.getById(id);
+  const findProduct = await models.getById(id);
 
   if (!findProduct) {
     return showError('invalid_data', 'Wrong id format');
   }
 
-  await model.remove(id);
+  await models.remove(id);
 
   return findProduct;
 };
