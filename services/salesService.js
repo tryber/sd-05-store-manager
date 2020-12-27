@@ -10,7 +10,7 @@ const register = async (itensSold) => {
   }
 
   itensSold.forEach(async (item) => {
-    const product = await productsModel.getProductById(item.productId);
+    const stockProduct = await productsModel.getProductById(item.productId);
 
     if (!ObjectId.isValid(item.productId)) {
       throw {
@@ -33,7 +33,7 @@ const register = async (itensSold) => {
       };
     }
 
-    if ((stockProduct.quantity - quantity) < 0) {
+    if ((stockProduct.quantity - item.quantity) < 0) {
       throw {
         code: 'stock_problem',
         message: 'Such amount is not permitted to sell',

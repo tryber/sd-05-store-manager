@@ -89,7 +89,6 @@ const remove = async (id) => {
 
 //     console.log('entrou aqui...', productId, quantity)
 //     const stockProduct = await models.productsModel.getProductById(productId);
-    
 //     console.log('to aqui no service...', stockProduct)
 //     if ((stockProduct.quantity - quantity) < 0) {
 //       throw {
@@ -97,7 +96,7 @@ const remove = async (id) => {
 //         message: 'Such amount is not permitted to sell',
 //       };
 //     }
-    
+
 //     return possible = true;
 //   })
 
