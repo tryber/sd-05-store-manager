@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { FindByProductId } = require('../models');
+const { findByProductId } = require('../models');
 
 const verifySales = async (req, res, next) => {
   const { itemsSold } = req.body;
