@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { salesModel } = require('../models');
+const { salesModel, productsModel } = require('../models');
 
 const register = async (itensSold) => {
   if (!itensSold) {
@@ -9,7 +9,9 @@ const register = async (itensSold) => {
     };
   }
 
-  itensSold.forEach((item) => {
+  itensSold.forEach(async (item) => {
+    const product = await productsModel.getProductById(item.productId);
+
     if (!ObjectId.isValid(item.productId)) {
       throw {
         code: 'invalid_data',
@@ -28,6 +30,13 @@ const register = async (itensSold) => {
       throw {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
+      };
+    }
+
+    if ((stockProduct.quantity - quantity) < 0) {
+      throw {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell',
       };
     }
   });

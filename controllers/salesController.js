@@ -1,18 +1,24 @@
 const { Router } = require('express');
-const { salesService } = require('../services');
+const { salesService, productsService } = require('../services');
+const models = require('../models');
 
 const sales = Router();
 
 sales.post('/', async (req, res) => {
   try {
     const saleInfo = req.body;
-
+    
     const newItemSold = await salesService.register(saleInfo);
-
+    
     res.status(200).json(newItemSold);
+
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
+    }
+
+    if (err.code === 'stock_problem') {
+      return res.status(404).json({ err: { code: err.code, message: err.message } });
     }
   }
 });

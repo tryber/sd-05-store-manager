@@ -81,10 +81,34 @@ const remove = async (id) => {
   return deletedProduct;
 };
 
+// const checkQtd = async (saleInfo) => {
+//   let possible;
+
+//   saleInfo.forEach(async item => {
+//     const { productId, quantity } = item;
+
+//     console.log('entrou aqui...', productId, quantity)
+//     const stockProduct = await models.productsModel.getProductById(productId);
+    
+//     console.log('to aqui no service...', stockProduct)
+//     if ((stockProduct.quantity - quantity) < 0) {
+//       throw {
+//         code: 'stock_problem',
+//         message: 'Such amount is not permitted to sell',
+//       };
+//     }
+    
+//     return possible = true;
+//   })
+
+//   return possible;
+// }
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
+  // checkQtd,
 };
