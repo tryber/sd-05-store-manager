@@ -1,6 +1,12 @@
 const express = require('express');
 const { verifySale, verifySaleId, verifyDeletedId } = require('../middlewares/index');
-const { modelSales } = require('../models/index');
+const {
+  createSales,
+  getAllSales,
+  findBySaleId,
+  updateSaleById,
+  excludeSaleById,
+} = require('../models/index');
 
 const salesController = express.Router();
 

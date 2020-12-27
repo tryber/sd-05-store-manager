@@ -1,5 +1,5 @@
-const makeConnection = require('./connection');
 const { ObjectId } = require('mongodb');
+const makeConnection = require('./connection');
 
 const createSales = async (itensSold) => {
   const newSale = await makeConnection('sales').then((sales) => sales.insertOne(itensSold));
@@ -10,8 +10,7 @@ const createSales = async (itensSold) => {
 const findBySaleId = async (id) => {
   if (ObjectId.isValid(id)) {
     const sale = await makeConnection('sales').then((sales) =>
-      sales.findOne({ _id: ObjectId(id) }),
-    );
+      sales.findOne({ _id: ObjectId(id) }));
     return sale;
   }
   return null;
@@ -25,13 +24,13 @@ const getAllSales = async () => {
 
 const updateSaleById = async (id, obj) => {
   const { itensSold } = obj;
-  const allSales = await getCollection('sales');
+  const allSales = await makeConnection('sales');
   await allSales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } });
   return { _id: ObjectId(id), itensSold };
 };
 
 const deleteSaleById = async (id) => {
-  const deletedSale = await getCollection('sales').then((sales) =>
+  const deletedSale = await makeConnection('sales').then((sales) =>
     sales.findOne({ _id: ObjectId(id) }));
   console.log(deletedSale, 'deleted');
   await makeConnection('sales').then((sales) => sales.deleteOne({ _id: ObjectId(id) }));

@@ -38,7 +38,7 @@ controllerProduct.get('/:id', verifyId, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const product = await productsModel.findByProductId(id);
+    const product = await modelsProduct.findByProductId(id);
     return res.status(200).json(product);
   } catch (err) {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
@@ -51,7 +51,7 @@ controllerProduct.put('/:id', verifyProduct, async (req, res) => {
   const { name, quantity } = req.body;
 
   try {
-    const updatedProduct = await productsModel.updateProductById(id, { name, quantity });
+    const updatedProduct = await modelsProduct.updateProductById(id, { name, quantity });
 
     return res.status(200).json(updatedProduct);
   } catch (err) {
@@ -64,7 +64,7 @@ controllerProduct.delete('/:id', verifyId, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedProduct = await productsModel.excludeProductById(id);
+    const deletedProduct = await modelsProduct.excludeProductById(id);
 
     return res.status(200).json(deletedProduct);
   } catch (err) {

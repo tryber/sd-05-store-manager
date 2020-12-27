@@ -1,10 +1,9 @@
 const makeConnection = require('./connection');
-const { ObjectId } = rewuire('mongodb');
+const { ObjectId } = require('mongodb');
 
 const createProduct = async (name, quantity) => {
   const newProduct = await makeConnection('products').then((products) =>
-    products.insertOne({ name, quantity }),
-  );
+    products.insertOne({ name, quantity }))
   return { _id: newProduct.insertedId, name, quantity };
 };
 
@@ -15,15 +14,13 @@ const findByProductName = async (collection, name) => {
 
 const findByProductId = async (id) => {
   const product = await makeConnection('products').then((products) =>
-    products.findOne(ObjectId(id)),
-  );
+    products.findOne(ObjectId(id)));
   return product;
 };
 
 const getAllProducts = async () => {
   const allProducts = await makeConnection('products').then((products) =>
-    products.find({}).toArray(),
-  );
+    products.find({}).toArray());
   return allProducts;
 };
 
@@ -35,10 +32,8 @@ const updateProductById = async (id, objeto) => {
 };
 
 const deleteProductById = async (id) => {
-  const deletedProduct = await getCollection('products').then((products) =>
-    products.deleteOne({ _id: ObjectId(id) }),
-  );
-
+  const deletedProduct = await makeConnection('products').then((products) =>
+    products.deleteOne({ _id: ObjectId(id) }));
   return deletedProduct;
 };
 
