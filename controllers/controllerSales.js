@@ -53,7 +53,7 @@ salesController.get('/:id', verifySaleId, async (req, res) => {
 // criar endpoint para atualizar uma venda
 salesController.put('/:id', verifySale, async (req, res) => {
   const { id } = req.params;
-  const itemsUpdated = ({ itemsSold } = req.body);
+  const itemsUpdated = { itensSold: req.body };
 
   try {
     const updatedSale = await updateSaleById(id, { itemsUpdated });

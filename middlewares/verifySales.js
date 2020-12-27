@@ -1,11 +1,12 @@
 const { ObjectId } = require('mongodb');
+const { FindByProductId } = require('../models');
 
 const verifySales = async (req, res, next) => {
   const { itemsSold } = req.body;
 
   itemsSold.forEach(async (item) => {
     // [Será validado que não é possível cadastrar vendas com quantidade menor que/igual a zero]
-    if (quantity <= 0) {
+    if (item.quantity <= 0) {
       return res.status(422).json({
         err: {
           code: 'invalid_data',
