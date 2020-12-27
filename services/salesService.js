@@ -1,6 +1,29 @@
 const { ObjectId } = require('mongodb');
 const { salesModel, productsModel } = require('../models');
 
+const verifyStock = async (id, quantity) => {
+  const stockProduct = await productsModel.getProductById(id);
+  console.log(stockProduct);
+  if (!stockProduct) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  const stockQtd = stockProduct.quantity - quantity;
+  console.log(stockQtd <= 0);
+
+  if (!stockQtd || stockQtd <= 0) {
+    throw {
+      code: 'stock_problem',
+      message: 'Such amount is not permitted to sell',
+    };
+  }
+
+  return stockQtd;
+};
+
 const register = async (itensSold) => {
   if (!itensSold) {
     throw {
@@ -9,9 +32,7 @@ const register = async (itensSold) => {
     };
   }
 
-  itensSold.forEach(async (item) => {
-    const stockProduct = await productsModel.getProductById(item.productId);
-
+  itensSold.forEach((item) => {
     if (!ObjectId.isValid(item.productId)) {
       throw {
         code: 'invalid_data',
@@ -33,12 +54,7 @@ const register = async (itensSold) => {
       };
     }
 
-    if ((stockProduct.quantity - item.quantity) < 0) {
-      throw {
-        code: 'stock_problem',
-        message: 'Such amount is not permitted to sell',
-      };
-    }
+    verifyStock(item.productId, item.quantity);
   });
 
   const sale = await salesModel.registerSale(itensSold);
