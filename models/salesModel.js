@@ -1,15 +1,15 @@
 const { ObjectId } = require('mongodb');
-const makeConnection = require('./connection');
+const getCollection = require('./connection');
 
 const createSales = async (itensSold) => {
-  const newSale = await makeConnection('sales').then((sales) => sales.insertOne(itensSold));
+  const newSale = await getCollection('sales').then((sales) => sales.insertOne({ itensSold }));
 
   return { _id: newSale.insertedId, itensSold };
 };
 
-const findBySaleId = async (id) => {
+const findBySalesId = async (id) => {
   if (ObjectId.isValid(id)) {
-    const sale = await makeConnection('sales').then((sales) =>
+    const sale = await getCollection('sales').then((sales) =>
       sales.findOne({ _id: ObjectId(id) }));
     return sale;
   }
@@ -17,30 +17,30 @@ const findBySaleId = async (id) => {
 };
 
 const getAllSales = async () => {
-  const allSales = await makeConnection('sales').then((sales) => sales.find().toArray());
+  const allSales = await getCollection('sales').then((sales) => sales.find().toArray());
 
   return allSales;
 };
 
-const updateSaleById = async (id, obj) => {
+const updateSalesById = async (id, obj) => {
   const { itensSold } = obj;
-  const allSales = await makeConnection('sales');
+  const allSales = await getCollection('sales');
   await allSales.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } });
   return { _id: ObjectId(id), itensSold };
 };
 
-const deleteSaleById = async (id) => {
-  const deletedSale = await makeConnection('sales').then((sales) =>
+const deleteSalesById = async (id) => {
+  const deletedSale = await getCollection('sales').then((sales) =>
     sales.findOne({ _id: ObjectId(id) }));
   console.log(deletedSale, 'deleted');
-  await makeConnection('sales').then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
+  await getCollection('sales').then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
   return deletedSale;
 };
 
 module.exports = {
   createSales,
-  deleteSaleById,
-  findBySaleId,
+  deleteSalesById,
+  findBySalesId,
   getAllSales,
-  updateSaleById,
+  updateSalesById,
 };

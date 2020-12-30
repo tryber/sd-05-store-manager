@@ -1,33 +1,32 @@
 const express = require('express');
-const { verifySale, verifySaleId, verifyDeletedId } = require('../middlewares/index');
+const { verifySales, verifySalesId, verifyDeletedId } = require('../middlewares');
 const {
-  createSales,
+  salesModel: { createSales,
   getAllSales,
-  findBySaleId,
-  updateSaleById,
-  excludeSaleById,
-} = require('../models/index');
+  findBySalesId,
+  updateSalesById,
+  deleteSalesById }
+} = require('../models');
 
 const salesController = express.Router();
 
-// criar endpoint para cadastrar vendas;
-salesController.post('/', verifySale, async (req, res) => {
-  const itemsSold = req.body;
-
+// Rquisito 5: criar endpoint para cadastrar vendas;
+salesController.post('/', verifySales, async (req, res) => {
+  
   try {
+    const itemsSold = req.body;
     const newSales = await createSales(itemsSold);
 
-    return res.status(200).json({ newSales });
+    return res.status(200).json( newSales );
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
-
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
 });
 
-// criar endpoint para listar as vendas
+// Rquisito 6: criar endpoint para listar as vendas
 salesController.get('/', async (_req, res) => {
   try {
     const allSales = await getAllSales();
@@ -38,11 +37,11 @@ salesController.get('/', async (_req, res) => {
   }
 });
 
-salesController.get('/:id', verifySaleId, async (req, res) => {
+salesController.get('/:id', verifySalesId, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const sale = await findBySaleId(id);
+    const sale = await findBySalesId(id);
 
     return res.status(200).json(sale);
   } catch (err) {
@@ -50,27 +49,27 @@ salesController.get('/:id', verifySaleId, async (req, res) => {
   }
 });
 
-// criar endpoint para atualizar uma venda
-salesController.put('/:id', verifySale, async (req, res) => {
+// Requisito 7: criar endpoint para atualizar uma venda
+salesController.put('/:id', verifySales, async (req, res) => {
   const { id } = req.params;
   const itemsUpdated = { itensSold: req.body };
 
   try {
-    const updatedSale = await updateSaleById(id, { itemsUpdated });
+    const updatedSale = await updateSalesById(id, itemsUpdated );
     return res.status(200).json(updatedSale);
   } catch (err) {
     return res.status(500).json({ message: 'Oops! Something went wrong.' });
   }
 });
 
-// criar endpoint para deletar uma venda
+// Requisito 8: criar endpoint para deletar uma venda
 salesController.delete('/:id', verifyDeletedId, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedSale = await excludeSaleById(id);
+    const deletedSales = await deleteSalesById(id);
 
-    res.status(200).json(deletedSale);
+    res.status(200).json(deletedSales);
   } catch (err) {
     return res.status(404).json({ err: { code: err.code, message: err.message } });
   }
