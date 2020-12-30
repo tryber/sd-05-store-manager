@@ -8,11 +8,10 @@ const cadastro = async (name, quantity) => {
       _id: result.insertedId,
       name,
       quantity,
-    })),
-  );
+    })));
 };
 
 const nameSearch = async (name) =>
-  connection('products').then((products) => products.find({ name: name }).toArray());
+  connection('products').then((products) => products.find({ name }).toArray());
 
 module.exports = { getAll, cadastro, nameSearch };
