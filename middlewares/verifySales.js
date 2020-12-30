@@ -1,5 +1,4 @@
 const { ObjectId } = require('mongodb');
-const { findBySalesId } = require('../models')
 const {
   modelProducts: { findByProductId },
 } = require('../models');
