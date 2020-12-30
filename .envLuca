@@ -1,0 +1,2 @@
+DB_NAME=StoreManager
+MONGO_DB_URL=mongodb://mongodb:27017/StoreManager
