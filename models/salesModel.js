@@ -10,7 +10,17 @@ const insertSale = async (itensSold) =>
     .then((sales) => sales.insertOne({ itensSold }))
     .then((result) => ({ _id: result.insertedId, itensSold }));
 
+const getAll = async () =>
+  getCollection('sales')
+    .then((sales) => sales.find().toArray());
+
+const getById = async (id) =>
+  getCollection('sales')
+    .then((sales) => sales.findOne(ObjectId(id)));
+
 module.exports = {
   findSaleById,
   insertSale,
+  getAll,
+  getById,
 };

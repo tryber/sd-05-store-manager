@@ -30,6 +30,27 @@ const create = async (saleList) => {
   return salesModels.insertSale(saleList);
 };
 
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+
+  const findSaleById = await salesModels.getById(id);
+
+  if (!findSaleById) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+
+  return findSaleById;
+};
+
 module.exports = {
   create,
+  getById,
 };
