@@ -25,6 +25,19 @@ salesRouter.get('/', rescue(async (_req, res) => {
   return res.status(200).json({ sales });
 }));
 
+salesRouter.get('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await services.getById(id);
+    return res.status(200).json(response);
+  } catch (err) {
+    if (err.code === 'not_found') {
+      return res.status(404).json({ err });
+    }
+  }
+}));
+
 salesRouter.put('/:id', rescue(async (req, res) => {
   const { id } = req.params;
   const { productId, quantity } = req.body[0];

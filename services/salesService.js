@@ -77,7 +77,7 @@ const update = async (id, productId, quantity) => {
   }
 
   await salesModels.update(id, productId, quantity);
-  return ([{ productId, quantity }]);
+  return ({ _id: id, itensSold: [{ productId, quantity }] });
 };
 
 module.exports = {
