@@ -50,7 +50,38 @@ const getById = async (id) => {
   return findSaleById;
 };
 
+const update = async (id, productId, quantity) => {
+  const saleExists = await salesModels.getById(id);
+  if (!saleExists) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+
+  const validProduct = ObjectId.isValid(productId);
+  if (!validProduct) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  const productExists = await productModels.getById(productId);
+  console.log(productExists);
+  if (!productExists || quantity <= 0 || typeof quantity !== 'number') {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  await salesModels.update(id, productId, quantity);
+  return ([{ productId, quantity }]);
+};
+
 module.exports = {
   create,
   getById,
+  update,
 };
