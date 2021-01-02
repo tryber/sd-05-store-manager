@@ -1,24 +1,33 @@
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const salesModels = require('../models/salesModel');
 const productModels = require('../models/productsModel');
 
-function showError(code, message) {
-  return {
-    err: {
-      code: `${code}`,
-      message: `${message}`,
-    },
-  };
-}
+const create = async (saleList) => {
+  const checkSales = saleList.map(async (sale) => {
+    const validProduct = ObjectId.isValid(sale.productId);
 
-const create = async (productId, quantity) => {
-  const productExists = await productModels.getById(productId);
+    if (!validProduct) {
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      };
+    }
 
-  if (!productExists || quantity <= 0 || typeof quantity === 'string') {
-    showError('invalid_data', 'Wrong product ID or invalid quantity');
-  }
+    const productExists = await productModels.getById(sale.productId);
 
-  return salesModels.insertSale(productId, quantity);
+    if (!productExists || sale.quantity <= 0 || typeof sale.quantity !== 'number') {
+      throw {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      };
+    }
+
+    return saleList;
+  });
+
+  await Promise.all(checkSales);
+
+  return salesModels.insertSale(saleList);
 };
 
 module.exports = {
