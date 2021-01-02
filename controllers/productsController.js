@@ -15,4 +15,12 @@ const productsById = async (req, res, _next) => {
   }
 };
 
-module.exports = { getAllProducts, productsById };
+const editProduct = async (req, res, _next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  await db.editProduct(name, quantity, id);
+  const product = await db.idSearch(id);
+  res.status(200).json(product);
+};
+
+module.exports = { getAllProducts, productsById, editProduct };
