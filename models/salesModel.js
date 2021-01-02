@@ -23,10 +23,15 @@ const update = async (id, productId, quantity) =>
     .then((sales) =>
       sales.updateOne({ _id: ObjectId(id) }, { $set: { productId, quantity } }));
 
+const remove = async (id) =>
+  getCollection('sales')
+    .then((sales) => sales.deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   findSaleById,
   insertSale,
   getAll,
   getById,
   update,
+  remove,
 };

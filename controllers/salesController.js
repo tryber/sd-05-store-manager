@@ -55,4 +55,17 @@ salesRouter.put('/:id', rescue(async (req, res) => {
   }
 }));
 
+salesRouter.delete('/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await services.exclude(id);
+    return res.status(200).json(response);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+  }
+}));
+
 module.exports = salesRouter;
