@@ -15,7 +15,13 @@ const cadastro = async (name, quantity) => {
 const idSearch = async (id) =>
   connection('products').then((products) => (ObjectId.isValid(id) ? products.findOne({ _id: ObjectId(id) }) : null));
 
+const editProduct = async (name, quantity, id) => {
+  connection('products').then((products) =>
+    (ObjectId.isValid(id) ? products.update({ _id: ObjectId(id) }, { $set: { name, quantity } })
+      : null));
+};
+
 const nameSearch = async (name) =>
   connection('products').then((products) => products.find({ name }).toArray());
 
-module.exports = { getAll, cadastro, nameSearch, idSearch };
+module.exports = { getAll, cadastro, nameSearch, idSearch, editProduct };
