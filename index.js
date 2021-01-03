@@ -17,6 +17,8 @@ app.put('/products/:id', pL, pc.editProduct);
 app.delete('/products/:id', pc.deleteProductById);
 
 app.post('/sales', sl, sc.cadastroDeVendas);
+app.get('/sales', sc.allSales);
+app.get('/sales/:id', sc.salesById);
 
 app.listen(port, () => {
   console.log('estamos online rapaziada!');

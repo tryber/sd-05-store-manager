@@ -11,9 +11,7 @@ const cadastro = async (arr) => {
     })));
 };
 
-const searchSaleById = async (id) => {
-  connection('sales').then((sales) =>
-    (ObjectId.isValid(id) ? sales.find({ _id: ObjectId(id) }) : null));
-};
+const searchSaleById = async (id) =>
+  connection('sales').then((sales) => (ObjectId.isValid(id) ? sales.findOne({ _id: ObjectId(id) }) : null));
 
 module.exports = { cadastro, searchSaleById, getAllSales };
