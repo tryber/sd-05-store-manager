@@ -12,6 +12,9 @@ const cadastro = async (name, quantity) => {
     })));
 };
 
+const deleteProducts = async (id) =>
+  connection('products').then((products) => (ObjectId.isValid(id) ? products.deleteOne({ _id: ObjectId(id) }) : null));
+
 const idSearch = async (id) =>
   connection('products').then((products) => (ObjectId.isValid(id) ? products.findOne({ _id: ObjectId(id) }) : null));
 
@@ -24,4 +27,4 @@ const editProduct = async (name, quantity, id) => {
 const nameSearch = async (name) =>
   connection('products').then((products) => products.find({ name }).toArray());
 
-module.exports = { getAll, cadastro, nameSearch, idSearch, editProduct };
+module.exports = { getAll, cadastro, nameSearch, idSearch, editProduct, deleteProducts };

@@ -23,6 +23,7 @@ app.post('/products', pL, async (req, res, _next) => {
 app.get('/products', pc.getAllProducts);
 app.get('/products/:id', pc.productsById);
 app.put('/products/:id', pL, pc.editProduct);
+app.delete('/products/:id', pc.deleteProductById);
 
 app.listen(port, () => {
   console.log('estamos online rapaziada!');
