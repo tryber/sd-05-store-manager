@@ -31,4 +31,15 @@ const editProduct = async (req, res, _next) => {
   res.status(200).json(product);
 };
 
-module.exports = { getAllProducts, productsById, editProduct, deleteProductById };
+const cadastro = async (req, res, _next) => {
+  try {
+    const { name, quantity } = req.body;
+    await db.cadastro(name, quantity);
+    const product = await db.nameSearch(name);
+    res.status(201).json(product[0]);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+module.exports = { getAllProducts, productsById, editProduct, deleteProductById, cadastro };
