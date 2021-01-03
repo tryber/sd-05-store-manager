@@ -13,12 +13,23 @@ const create = async (saleList) => {
       };
     }
 
+    // const checkStock =
+
     const productExists = await productModels.getById(sale.productId);
+
+    console.log(productExists);
 
     if (!productExists || sale.quantity <= 0 || typeof sale.quantity !== 'number') {
       throw {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
+      };
+    }
+
+    if (sale.quantity > productExists.quantity) {
+      throw {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell',
       };
     }
 
@@ -73,6 +84,13 @@ const update = async (id, productId, quantity) => {
     throw {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
+    };
+  }
+
+  if (quantity > productExists.quantity) {
+    throw {
+      code: 'stock_problem',
+      message: 'Such amount is not permitted to sell',
     };
   }
 
