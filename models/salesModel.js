@@ -17,4 +17,7 @@ const searchSaleById = async (id) =>
 const updateSale = async (id, arr) =>
   connection('sales').then((sales) => (ObjectId.isValid(id) ? sales.update({ _id: ObjectId(id) }, { itensSold: arr }) : null));
 
-module.exports = { cadastro, searchSaleById, getAllSales, updateSale };
+const deleteSale = async (id) =>
+  connection('sales').then((sales) => (ObjectId.isValid(id) ? sales.deleteOne({ _id: ObjectId(id) }) : null));
+
+module.exports = { cadastro, searchSaleById, getAllSales, updateSale, deleteSale };

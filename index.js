@@ -20,6 +20,7 @@ app.post('/sales', sl, sc.cadastroDeVendas);
 app.get('/sales', sc.allSales);
 app.get('/sales/:id', sc.salesById);
 app.put('/sales/:id', sl, sc.updateSale);
+app.delete('/sales/:id', sc.deleteSale);
 
 app.listen(port, () => {
   console.log('estamos online rapaziada!');

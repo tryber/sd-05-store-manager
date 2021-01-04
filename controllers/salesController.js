@@ -45,4 +45,17 @@ const updateSale = async (req, res, _next) => {
   }
 };
 
-module.exports = { cadastroDeVendas, allSales, salesById, updateSale };
+const deleteSale = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    const saleDeleted = await sm.deleteSale(id);
+    if (saleDeleted === null) {
+      res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
+    }
+    res.status(200).json(saleDeleted);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
+
+module.exports = { cadastroDeVendas, allSales, salesById, updateSale, deleteSale };
