@@ -33,4 +33,16 @@ const salesById = async (req, res, _next) => {
   }
 };
 
-module.exports = { cadastroDeVendas, allSales, salesById };
+const updateSale = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    const list = req.body;
+    await sm.updateSale(id, list);
+    const saleUpdate = await sm.searchSaleById(id);
+    res.status(200).json(saleUpdate);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
+
+module.exports = { cadastroDeVendas, allSales, salesById, updateSale };
