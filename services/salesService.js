@@ -3,7 +3,7 @@ const { salesModel, productsModel } = require('../models');
 
 const verifyStock = async (id, quantity) => {
   const stockProduct = await productsModel.getProductById(id);
-  console.log(stockProduct);
+
   if (!stockProduct) {
     throw {
       code: 'invalid_data',
@@ -12,16 +12,16 @@ const verifyStock = async (id, quantity) => {
   }
 
   const stockQtd = stockProduct.quantity - quantity;
-  console.log(stockQtd <= 0);
-
-  if (!stockQtd || stockQtd <= 0) {
+  console.log('testandoooo')
+  if (stockQtd <= 0) {
+    console.log('testandoooo 2')
     throw {
       code: 'stock_problem',
       message: 'Such amount is not permitted to sell',
     };
   }
 
-  return stockQtd;
+  return;
 };
 
 const register = async (itensSold) => {
@@ -53,8 +53,6 @@ const register = async (itensSold) => {
         message: 'Wrong product ID or invalid quantity',
       };
     }
-
-    verifyStock(item.productId, item.quantity);
   });
 
   const sale = await salesModel.registerSale(itensSold);
@@ -139,4 +137,5 @@ module.exports = {
   getSaleById,
   updateSale,
   deleteSale,
+  verifyStock
 };

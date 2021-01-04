@@ -7,6 +7,8 @@ sales.post('/', async (req, res) => {
   try {
     const saleInfo = req.body;
 
+    Promise.all(saleInfo.map(async (item) => await salesService.verifyStock(item.productId, item.quantity)))
+
     const newItemSold = await salesService.register(saleInfo);
 
     res.status(200).json(newItemSold);
@@ -18,6 +20,8 @@ sales.post('/', async (req, res) => {
     if (err.code === 'stock_problem') {
       return res.status(404).json({ err: { code: err.code, message: err.message } });
     }
+
+    return res.status(500).json({ err: err.message });
   }
 });
 
