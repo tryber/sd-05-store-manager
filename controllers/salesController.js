@@ -5,11 +5,11 @@ const sales = Router();
 
 sales.post('/', async (req, res) => {
   try {
-    const saleInfo = req.body;
+    const sale = req.body;
 
-    Promise.all(saleInfo.map(async (item) => await salesService.verifyStock(item.productId, item.quantity)))
+    Promise.all(sale.map(async (item) => salesService.verifyStock(item.productId, item.quantity)));
 
-    const newItemSold = await salesService.register(saleInfo);
+    const newItemSold = await salesService.register(sale);
 
     res.status(200).json(newItemSold);
   } catch (err) {
