@@ -1,9 +1,12 @@
 const sm = require('../models/salesModel');
+const pm = require('../models/productsModels');
 
 const cadastroDeVendas = async (req, res, _next) => {
   try {
     const list = req.body;
+    const { quantity, productId } = req.body[0];
     await sm.cadastro(list);
+    await pm.saleQuantity(productId, quantity);
     const allSales = await sm.getAllSales();
     res.status(200).json(allSales[allSales.length - 1]);
   } catch (err) {
@@ -48,12 +51,16 @@ const updateSale = async (req, res, _next) => {
 const deleteSale = async (req, res, _next) => {
   try {
     const { id } = req.params;
+    const saleById = await sm.searchSaleById(id);
+    console.log(saleById.itensSold[0].productId);
+    await pm.saleQuantityDelete(saleById.itensSold[0].productId, saleById.itensSold[0].quantity);
     const saleDeleted = await sm.deleteSale(id);
     if (saleDeleted === null) {
       res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
     }
     res.status(200).json(saleDeleted);
   } catch (err) {
+    console.log(err.message);
     res.status(500).json(err.message);
   }
 };

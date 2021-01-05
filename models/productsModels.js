@@ -24,7 +24,26 @@ const editProduct = async (name, quantity, id) => {
       : null));
 };
 
+const saleQuantity = async (id, saleD) =>
+  connection('products').then((products) =>
+    (ObjectId.isValid(id) ? products.update({ _id: ObjectId(id) }, { $inc: { quantity: -saleD } })
+      : null));
+
+const saleQuantityDelete = async (id, saleI) =>
+  connection('products').then((products) =>
+    (ObjectId.isValid(id) ? products.update({ _id: ObjectId(id) }, { $inc: { quantity: saleI } })
+      : null));
+
 const nameSearch = async (name) =>
   connection('products').then((products) => products.find({ name }).toArray());
 
-module.exports = { getAll, cadastro, nameSearch, idSearch, editProduct, deleteProducts };
+module.exports = {
+  getAll,
+  cadastro,
+  nameSearch,
+  idSearch,
+  editProduct,
+  deleteProducts,
+  saleQuantity,
+  saleQuantityDelete,
+};
