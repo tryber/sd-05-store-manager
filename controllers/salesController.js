@@ -52,11 +52,12 @@ const deleteSale = async (req, res, _next) => {
   try {
     const { id } = req.params;
     const saleById = await sm.searchSaleById(id);
-    console.log(saleById.itensSold[0].productId);
-    await pm.saleQuantityDelete(saleById.itensSold[0].productId, saleById.itensSold[0].quantity);
     const saleDeleted = await sm.deleteSale(id);
     if (saleDeleted === null) {
       res.status(422).json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
+    }
+    if (saleById !== null) {
+      await pm.saleQuantityDelete(saleById.itensSold[0].productId, saleById.itensSold[0].quantity);
     }
     res.status(200).json(saleDeleted);
   } catch (err) {
