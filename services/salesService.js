@@ -12,9 +12,8 @@ const verifyStock = async (id, quantity) => {
   }
 
   const stockQtd = stockProduct.quantity - quantity;
-  console.log('testandoooo');
+
   if (stockQtd <= 0) {
-    console.log('testandoooo 2');
     throw {
       code: 'stock_problem',
       message: 'Such amount is not permitted to sell',

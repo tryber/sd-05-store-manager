@@ -7,7 +7,9 @@ sales.post('/', async (req, res) => {
   try {
     const sale = req.body;
 
-    Promise.all(sale.map(async (item) => salesService.verifyStock(item.productId, item.quantity)));
+    const stock = sale.map(async (item) => salesService.verifyStock(item.productId, item.quantity));
+
+    await Promise.all(stock);
 
     const newItemSold = await salesService.register(sale);
 
