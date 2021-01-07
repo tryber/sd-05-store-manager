@@ -15,4 +15,3 @@ const getConnection = async (collectionName) => {
   return connection.db(DB_NAME).collection(collectionName);
 };
 module.exports = getConnection;
-
