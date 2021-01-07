@@ -28,16 +28,10 @@ prodRouter.post('/', async (req, res) => {
 // GET /product/ -> Comportamento de getAll
 // O endpoint deve ser acessível através do caminho (/products) ou (/products/:id);
 prodRouter.get('/', async (req, res) => {
-  const produtos = await productService.getAll();
-
-  res.status(200).json(produtos);
-});
-
-prodRouter.get('/', async (req, res) => {
   try {
-    const produtos = await productService.getAll();
+    const products = await productService.getAll();
     // com status http 200
-    res.status(200).json({ produtos });
+    res.status(200).json({ products });
   } catch (err) {
     // sem cenário de invalid_data neste caso
     res.status(500).json({ message: 'Internal error' });
@@ -50,10 +44,10 @@ prodRouter.get('/', async (req, res) => {
 prodRouter.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const person = await productService.getById(id);
+    const product = await productService.getById(id);
 
     // com status http 200
-    res.status(200).json(person);
+    res.status(200).json(product);
   } catch (err) {
     if (err.code === 'invalid_data') {
       return res.status(422).json({ err });
