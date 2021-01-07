@@ -44,7 +44,7 @@ const create = async (name, quantity) => {
       message: 'Product already exists',
     };
   }
-  const productCreated = await prodModel.create(name, quantity);
+  const productCreated = await productModel.create(name, quantity);
   return productCreated;
 };
 
