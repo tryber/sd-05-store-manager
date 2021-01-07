@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-//Router é agrupador de middlewares
+// Router é agrupador de middlewares
 const produtos = Router();
 
 const productService = require('../services/productService');
