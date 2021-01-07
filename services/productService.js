@@ -2,6 +2,7 @@ const productModel = require('../models/productModel');
 // O Service faz as regras de negócio e todas funções de apoio chamadas no Controller.
 // As funções aqui chamam as funções do Model para efetivar as mudanças no BD.
 
+/************************************************************************************************/
 const isValid = async (name, quantity) => {
   // [Será validado que não é possível criar um produto com o nome menor
   // que 5 caracteres] erro status http 422:
@@ -32,6 +33,13 @@ const isValid = async (name, quantity) => {
   return true;
 };
 
+/************************************************************************************************/
+// POST :3000/products
+// REQ-BODY-JSON ->
+// {
+//   "name": "Cerveja",
+//   "quantity": 125
+// }
 const create = async (name, quantity) => {
   const validProduct = await isValid(name, quantity);
   if (!validProduct) return false;
@@ -48,4 +56,32 @@ const create = async (name, quantity) => {
   return productCreated;
 };
 
-module.exports = { create };
+/************************************************************************************************/
+// GET :3000/products
+const getAll = async () => productModel.getAll();
+
+/************************************************************************************************/
+// GET :3000/products/:id
+const getById = async (id) => {
+  // [Será validado que não é possível listar um produto que não existe]
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+
+  const Product = await productModel.getById(id);
+  // [Será validado que não é possível listar um produto que não existe]
+  if (!Product) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return Product;
+};
+/************************************************************************************************/
+
+
+module.exports = { create, getAll, getById };
