@@ -66,4 +66,4 @@ prodRouter.get('/:id', async (req, res) => {
 
 /*  ********************************************************************************************* */
 
-module.exports = produtos;
+module.exports = prodRouter;
