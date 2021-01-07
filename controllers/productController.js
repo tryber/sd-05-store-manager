@@ -1,14 +1,14 @@
 const { Router } = require('express');
 
 // Router é agrupador de middlewares
-const produtos = Router();
+const prodRouter = Router();
 
 const productService = require('../services/productService');
 
-/************************************************************************************************/
+/*  ********************************************************************************************* */
 // 1 - Crie um endpoint para o cadastro de produtos
 // POST /product/ -> Comportamento de create
-produtos.post('/', async (req, res) => {
+prodRouter.post('/', async (req, res) => {
   const { name, quantity } = req.body;
   try {
     const produtoCriado = await productService.create(name, quantity);
@@ -23,18 +23,17 @@ produtos.post('/', async (req, res) => {
   }
 });
 
-/************************************************************************************************/
+/*  ********************************************************************************************* */
 // 2 - Crie um endpoint para listar os produtos
 // GET /product/ -> Comportamento de getAll
 // O endpoint deve ser acessível através do caminho (/products) ou (/products/:id);
-produtos.get('/', async (req, res) => {
+prodRouter.get('/', async (req, res) => {
   const produtos = await productService.getAll();
 
   res.status(200).json(produtos);
 });
 
-
-produtos.get('/', async (req, res) => {
+prodRouter.get('/', async (req, res) => {
   try {
     const produtos = await productService.getAll();
     // com status http 200
@@ -48,7 +47,7 @@ produtos.get('/', async (req, res) => {
 // Rotas que tem parametros devem vir depois de rotas que nao
 // tem parametreos.
 // GET /product/:id -> Comportamento de getById
-produtos.get('/:id', async (req, res) => {
+prodRouter.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const person = await productService.getById(id);
@@ -65,6 +64,6 @@ produtos.get('/:id', async (req, res) => {
   }
 });
 
-/************************************************************************************************/
+/*  ********************************************************************************************* */
 
 module.exports = produtos;
