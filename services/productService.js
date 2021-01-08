@@ -43,7 +43,7 @@ const idValid = (id) => {
       message: 'Wrong id format',
     };
   }
-}
+};
 
 /*  ********************************************************************************************* */
 // POST :3000/products
@@ -109,7 +109,7 @@ const update = async (id, name, quantity) => {
 const exclude = async (id) => {
   idValid(id);
 
-  const deletedProd = await prodModel.exclude(id);
+  const deletedProd = await productModel.exclude(id);
   if (!deletedProd) {
     throw {
       code: 'invalid_data',

@@ -38,7 +38,7 @@ prodRouter.get('/', async (req, res) => {
   }
 });
 
-// Rotas que tem parametros devem vir depois de rotas que nao
+// 2.2 - Rotas que tem parametros devem vir depois de rotas que nao
 // tem parametreos.
 // GET /product/:id -> Comportamento de getById
 prodRouter.get('/:id', async (req, res) => {
@@ -62,7 +62,7 @@ prodRouter.get('/:id', async (req, res) => {
 // 3 - Crie um endpoint para atualizar um produto
 // PUT /products/:id/ -> Comportamento de update
 // O endpoint deve ser acessível através do caminho (/products/:id);
-router.put('/:id', async (req, res) => {
+prodRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
   try {
@@ -81,7 +81,7 @@ router.put('/:id', async (req, res) => {
 // 4 - Crie um endpoint para deletar um produto
 // DELETE /products/:id/ -> Comportamento de delete
 // O endpoint deve ser acessível através do caminho (/products/:id);
-router.delete('/:id', async (req, res) => {
+prodRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const deletedProduct = await productService.deleteById(id);

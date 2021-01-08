@@ -34,7 +34,7 @@ const update = async (id, name, quantity) =>
 const exclude = async (id) =>
   connection('products')
     .then((product) => product.findOneAndDelete({ _id: ObjectId(id) }))
-    .then((exclude) => exclude.value);
+    .then((prodExclude) => prodExclude.value);
 
 module.exports = {
   create,
