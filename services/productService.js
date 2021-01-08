@@ -36,6 +36,16 @@ const isValid = async (name, quantity) => {
 };
 
 /*  ********************************************************************************************* */
+const idValid = (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+}
+
+/*  ********************************************************************************************* */
 // POST :3000/products
 // REQ-BODY-JSON ->
 // {
@@ -43,8 +53,8 @@ const isValid = async (name, quantity) => {
 //   "quantity": 125
 // }
 const create = async (name, quantity) => {
-  const validProduct = await isValid(name, quantity);
-  if (!validProduct) return false;
+  const validar = await isValid(name, quantity);
+  if (!validar) return false;
   // [Será validado que não é possível criar um produto com o mesmo nome de
   // outro já existente] erro status http 422:
   const productExists = await productModel.findProduct(name);
@@ -66,12 +76,7 @@ const getAll = async () => productModel.getAll();
 // GET :3000/products/:id
 const getById = async (id) => {
   // [Será validado que não é possível listar um produto que não existe]
-  if (!ObjectId.isValid(id)) {
-    throw {
-      code: 'invalid_data',
-      message: 'Wrong id format',
-    };
-  }
+  idValid(id);
 
   const Product = await productModel.getById(id);
   // [Será validado que não é possível listar um produto que não existe]
@@ -83,6 +88,41 @@ const getById = async (id) => {
   }
   return Product;
 };
-/*  ********************************************************************************************* */
 
-module.exports = { create, getAll, getById };
+/*  ********************************************************************************************* */
+// PUT :3000/products/:id
+// REQ-BODY-JSON ->
+// {
+//   "name": "Cerveja",
+//   "quantity": 125
+// }
+const update = async (id, name, quantity) => {
+  const validar = await isValid(name, quantity);
+  if (!validar) return false;
+  idValid(id);
+
+  return productModel.update(id, name, quantity);
+};
+
+/*  ********************************************************************************************* */
+// DELETE :3000/products/:id
+const exclude = async (id) => {
+  idValid(id);
+
+  const deletedProd = await prodModel.exclude(id);
+  if (!deletedProd) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  return deletedProd;
+};
+
+module.exports = {
+  create,
+  getAll,
+  update,
+  exclude,
+  getById,
+};

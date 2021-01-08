@@ -25,4 +25,22 @@ const getById = async (id) => {
     .then((product) => product.findOne(ObjectId(id)));
 };
 
-module.exports = { findProduct, create, getAll, getById };
+/*  ********************************************************************************************* */
+const update = async (id, name, quantity) =>
+  connection('products')
+    .then((products) => products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+
+/*  ********************************************************************************************* */
+const exclude = async (id) =>
+  connection('products')
+    .then((product) => product.findOneAndDelete({ _id: ObjectId(id) }))
+    .then((exclude) => exclude.value);
+
+module.exports = {
+  create,
+  update,
+  getAll,
+  getById,
+  exclude,
+  findProduct,
+};

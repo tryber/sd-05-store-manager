@@ -59,5 +59,40 @@ prodRouter.get('/:id', async (req, res) => {
 });
 
 /*  ********************************************************************************************* */
+// 3 - Crie um endpoint para atualizar um produto
+// PUT /products/:id/ -> Comportamento de update
+// O endpoint deve ser acessível através do caminho (/products/:id);
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  try {
+    const updatedProd = await productService.updateById(id, name, quantity);
+    res.status(200).json(updatedProd);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Internal error' });
+  }
+});
+
+/*  ********************************************************************************************* */
+// 4 - Crie um endpoint para deletar um produto
+// DELETE /products/:id/ -> Comportamento de delete
+// O endpoint deve ser acessível através do caminho (/products/:id);
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedProduct = await productService.deleteById(id);
+    return res.status(200).json(deletedProduct);
+  } catch (err) {
+    if (err.code === 'invalid_data') {
+      return res.status(422).json({ err });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Internal error' });
+  }
+});
 
 module.exports = prodRouter;
