@@ -17,12 +17,13 @@ const create = async (body) => {
       throw {
         err: {
           code: 'invalid_data',
-          message: 'Wrong product ID or invalid quantity'
+          message: 'Wrong product ID or invalid quantity',
         },
       };
     }
     if (typeof quantity === 'string' || quantity <= 0) {
-      throw { err: {
+      throw {
+        err: {
           code: 'invalid_data',
           message: 'Wrong product ID or invalid quantity',
         },
@@ -40,7 +41,8 @@ const getAll = async () => salesModel.getAll();
 // GET :3000/sales/5ff86fd3b56949379996443f
 const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
-    throw { err: {
+    throw {
+      err: {
         code: 'not_found',
         message: 'Sale not found',
       },
@@ -48,7 +50,8 @@ const getById = async (id) => {
   }
   const item = await salesModel.getById(id);
   if (!item) {
-    throw { err: {
+    throw {
+      err: {
         code: 'not_found',
         message: 'Sale not found',
       },
