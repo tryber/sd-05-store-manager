@@ -60,4 +60,59 @@ const getById = async (id) => {
   return item;
 };
 
-module.exports = { create, getAll, getById };
+/*  ********************************************************************************************* */
+// PUT :3000/sales/5ff86fd3b56949379996443f
+// REQ-BODY-JSON ->
+// [
+//   {
+//     "productId": "5f3ff849d94d4a17da707008",
+//     "quantity": 3
+//   }
+// ]
+const update = async (id, body) => {
+  body.forEach(({ productId, quantity }) => {
+    if (!ObjectId.isValid(productId)) {
+      throw {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity',
+        },
+      };
+    }
+    if (typeof quantity === 'string' || quantity <= 0) {
+      throw {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity',
+        },
+      };
+    }
+  });
+
+  return salesModel.update(id, body);
+};
+
+/*  ********************************************************************************************* */
+// DELETE :3000/sales/5ff86fd3b56949379996443f
+const exclude = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      },
+    };
+  }
+  const sale = await salesModel.getById(id);
+  if (!sale) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      },
+    };
+  }
+  return salesModel.exclude(id);
+};
+
+module.exports = { create, getAll, getById, update, exclude };

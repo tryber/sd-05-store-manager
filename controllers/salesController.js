@@ -11,13 +11,13 @@ salesRouter.post('/', async (req, res) => {
     const { body } = req;
     const novo = await salesService.create(body);
     res.status(200).json(novo);
-  } catch (errou) {
-    console.log('erro controller', errou);
-    if (errou.err.code === 'invalid_data') {
-      return res.status(422).json(errou);
+  } catch (error) {
+    console.log('erro controller', error);
+    if (error.err.code === 'invalid_data') {
+      return res.status(422).json(error);
     }
-    console.error(errou);
-    res.status(500).json({ message: 'Deu ruim no POST' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal Error' });
   }
 });
 
@@ -39,11 +39,54 @@ salesRouter.get('/:id', async (req, res) => {
     const { id } = req.params;
     const sale = await salesService.getById(id);
     res.status(200).json(sale);
-  } catch (errou) {
-    if (errou.err.code === 'not_found') {
-      return res.status(404).json(errou);
+  } catch (error) {
+    console.log('erro controller', error);
+    if (error.err.code === 'not_found') {
+      return res.status(404).json(error);
     }
-    res.status(500).json({ message: 'Deu ruim' });
+    res.status(500).json({ message: 'Internal Error' });
+  }
+});
+
+// 7 - Crie um endpoint para atualizar uma venda
+// O endpoint deve ser acessível através do caminho (/sales/:id);
+
+// O corpo da requisição deve receber a seguinte estrutura:
+// [
+//   {
+//     "productId": "5f3ff849d94d4a17da707008",
+//     "quantity": 3
+//   }
+// ]
+salesRouter.put('/:id', async (req, res) => {
+  try {
+    const { body } = req;
+    const { id } = req.params;
+    const saleUpdated = await salesService.update(id, body);
+    res.status(200).json(saleUpdated);
+  } catch (error) {
+    console.log('erro controller', error);
+    if (error.err.code === 'invalid_data') {
+      return res.status(422).json(error);
+    }
+    res.status(500).json({ message: 'Internal Error' });
+  }
+});
+
+// 8 - Crie um endpoint para deletar uma venda
+// O endpoint deve ser acessível através do caminho (/sales/:id);
+
+// Apenas a venda com o id presente na URL deve ser deletado;
+salesRouter.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const excluded = await salesService.exclude(id);
+    res.status(200).json(excluded);
+  } catch (error) {
+    if (error.err.code === 'invalid_data') {
+      return res.status(422).json(error);
+    }
+    res.status(500).json({ message: 'Internal Error' });
   }
 });
 
