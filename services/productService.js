@@ -101,7 +101,12 @@ const update = async (id, name, quantity) => {
   if (!validar) return false;
   idValid(id);
 
-  return productModel.update(id, name, quantity);
+  await productModel.update(id, name, quantity);
+  return {
+    _id: ObjectId(id),
+    name,
+    quantity,
+  };
 };
 
 /*  ********************************************************************************************* */

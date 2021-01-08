@@ -66,7 +66,7 @@ prodRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
   try {
-    const updatedProd = await productService.updateById(id, name, quantity);
+    const updatedProd = await productService.update(id, name, quantity);
     res.status(200).json(updatedProd);
   } catch (err) {
     if (err.code === 'invalid_data') {
@@ -84,7 +84,7 @@ prodRouter.put('/:id', async (req, res) => {
 prodRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedProduct = await productService.deleteById(id);
+    const deletedProduct = await productService.exclude(id);
     return res.status(200).json(deletedProduct);
   } catch (err) {
     if (err.code === 'invalid_data') {
