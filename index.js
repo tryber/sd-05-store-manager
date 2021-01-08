@@ -14,6 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const controllerProduct = require('./controllers/productController');
+const controllerSales = require('./controllers/salesController');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
@@ -22,6 +23,9 @@ app.get('/', (request, response) => {
 
 // 1.1 - O endpoint deve ser acessível através do caminho (/products);
 app.use('/products', controllerProduct);
+
+// 5 - Crie um endpoint para cadastrar vendas
+app.use('/sales', controllerSales);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Starting over ${PORT} times`));
