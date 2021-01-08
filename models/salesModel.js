@@ -10,24 +10,24 @@ const create = async (itensSold) =>
 /*  ********************************************************************************************* */
 const getAll = async () =>
   connection('sales')
-  .then((db) => db.find().toArray());
+    .then((db) => db.find().toArray());
 
 /*  ********************************************************************************************* */
 const getById = async (id) =>
   connection('sales')
-  .then((db) => db.findOne(ObjectId(id)));
+    .then((db) => db.findOne(ObjectId(id)));
 
 /*  ********************************************************************************************* */
 const update = async (id, itensSold) => {
   connection('sales')
-  .then((db) => db.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } }));
+    .then((db) => db.updateOne({ _id: ObjectId(id) }, { $set: { itensSold } }));
   return { _id: id, itensSold };
 };
 
 /*  ********************************************************************************************* */
 const exclude = async (id) =>
   connection('sales')
-  .then((db) => db.deleteOne({ _id: ObjectId(id) }));
+    .then((db) => db.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   create,

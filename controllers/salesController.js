@@ -13,8 +13,9 @@ salesRouter.post('/', async (req, res) => {
     res.status(200).json(novo);
   } catch (errou) {
     console.log('erro controller', errou);
-    if (errou.err.code === 'invalid_data')
+    if (errou.err.code === 'invalid_data') {
       return res.status(422).json(errou);
+    }
     console.error(errou);
     res.status(500).json({ message: 'Deu ruim no POST' });
   }
