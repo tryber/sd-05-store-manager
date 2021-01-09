@@ -21,7 +21,7 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-// 1.1 - O endpoint deve ser acessível através do caminho (/products);
+// 1 - O endpoint deve ser acessível através do caminho (/products);
 app.use('/products', controllerProduct);
 
 // 5 - Crie um endpoint para cadastrar vendas

@@ -79,8 +79,7 @@ salesRouter.put('/:id', async (req, res) => {
 // Apenas a venda com o id presente na URL deve ser deletado;
 salesRouter.delete('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const excluded = await salesService.exclude(id);
+    const excluded = await salesService.exclude(req.params.id);
     res.status(200).json(excluded);
   } catch (error) {
     if (error.err.code === 'invalid_data') {

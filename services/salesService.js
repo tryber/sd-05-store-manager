@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 
 const salesModel = require('../models/salesModel');
+const quantityService = require('./quantityService');
 
 /*  ********************************************************************************************* */
 // POST :3000/sales
@@ -29,7 +30,11 @@ const create = async (body) => {
         },
       };
     }
+
+    console.log("salesService------>", 'POST', { productId, quantity });
+    quantityService.updateProductQuantity('POST', [{ productId, quantity }]);
   });
+
   return salesModel.create(body);
 };
 
@@ -104,6 +109,7 @@ const exclude = async (id) => {
     };
   }
   const sale = await salesModel.getById(id);
+  const { productId, quantity } = sale.itensSold[0];
   if (!sale) {
     throw {
       err: {
@@ -112,6 +118,7 @@ const exclude = async (id) => {
       },
     };
   }
+  quantityService.updateProductQuantity('DELETE', [{ productId, quantity }]);
   return salesModel.exclude(id);
 };
 
