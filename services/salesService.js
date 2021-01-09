@@ -8,8 +8,8 @@ const quantityService = require('./quantityService');
 // REQ-BODY-JSON ->
 // [
 //   {
-//   "productId": "5ff86fd3b56949379996443f",
-//   "quantity": 5
+//   '"productId'": '"5ff86fd3b56949379996443f'",
+//   '"quantity'": 5
 //   }
 // ]
 const create = async (body) => {
@@ -31,7 +31,7 @@ const create = async (body) => {
       };
     }
 
-    console.log("salesService------>", 'POST', { productId, quantity });
+    console.log('salesService------>', 'POST', { productId, quantity });
     quantityService.updateProductQuantity('POST', [{ productId, quantity }]);
   });
 
@@ -70,8 +70,8 @@ const getById = async (id) => {
 // REQ-BODY-JSON ->
 // [
 //   {
-//     "productId": "5f3ff849d94d4a17da707008",
-//     "quantity": 3
+//     '"productId'": '"5f3ff849d94d4a17da707008'",
+//     '"quantity'": 3
 //   }
 // ]
 const update = async (id, body) => {
