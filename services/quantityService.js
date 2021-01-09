@@ -10,7 +10,7 @@ const updateQuantity = async (action, productId, quantity) => {
   } else if (action === 'POST') {
     newQuantity = Product.quantity - quantity;
   }
-  console.log(action ,'UpdateQuantity' ,'Nova quantidade: ' ,newQuantity ,' Produto ID: ' ,productId ,Product.name, quantity);
+  // console.log(action ,'UpdateQuantity' ,'Nova quantidade: ' ,newQuantity ,' Produto ID: ' ,productId ,Product.name, quantity);
   await productModel.update(productId, Product.name, newQuantity);
 };
 
