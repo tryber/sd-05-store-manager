@@ -21,6 +21,20 @@ const verifyStock = async (id, quantity) => {
   }
 };
 
+const updateQuantityDown = async (id, qtd) => {
+  const stockProduct = await productsModel.getProductById(id);
+  const newQtd = stockProduct.quantity - qtd;
+
+  await productsModel.updateProduct(id, stockProduct.name, newQtd);
+};
+
+const updateQuantityUp = async (id, qtd) => {
+  const stockProduct = await productsModel.getProductById(id);
+  const newQtd = stockProduct.quantity + qtd;
+
+  await productsModel.updateProduct(id, stockProduct.name, newQtd);
+};
+
 const register = async (itensSold) => {
   if (!itensSold) {
     throw {
@@ -29,30 +43,34 @@ const register = async (itensSold) => {
     };
   }
 
-  itensSold.forEach((item) => {
-    if (!ObjectId.isValid(item.productId)) {
+  itensSold.forEach(async (item) => {
+    const { productId, quantity } = item;
+    if (!ObjectId.isValid(productId)) {
       throw {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
       };
     }
 
-    if (!item.quantity || typeof item.quantity === 'string') {
+    if (!quantity || typeof quantity === 'string') {
       throw {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
       };
     }
 
-    if (item.quantity <= 0) {
+    if (quantity <= 0) {
       throw {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
       };
     }
+
+    await updateQuantityDown(productId, quantity);
   });
 
   const sale = await salesModel.registerSale(itensSold);
+
   return sale;
 };
 
@@ -102,7 +120,12 @@ const updateSale = async (id, itensSold) => {
     };
   }
 
+  await verifyStock(productId, quantity);
+
   const updatedSale = await salesModel.updateSale(id, itensSold);
+
+  await updateQuantityDown(productId, quantity);
+
   return updatedSale;
 };
 
@@ -124,6 +147,12 @@ const deleteSale = async (id) => {
   }
 
   await salesModel.deleteSale(id);
+
+  findSale.itensSold.forEach(async (item) => {
+    const { productId, quantity } = item;
+
+    await updateQuantityUp(productId, quantity);
+  });
 
   return findSale;
 };

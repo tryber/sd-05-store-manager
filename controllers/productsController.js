@@ -15,6 +15,7 @@ products.post('/', async (req, res) => {
       return res.status(422).json({ err: { code: err.code, message: err.message } });
     }
 
+    console.log(err);
     res.status(500).json({ message: 'Algo deu errado.' });
   }
 });
