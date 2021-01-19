@@ -1,5 +1,6 @@
 // acesso ao banco
 
+const { ObjectID } = require('mongodb');
 const connectionDB = require('./connection');
 
 const productCreate = async (name, quantity) => connectionDB('products')
@@ -12,4 +13,7 @@ const getAllProducts = async () => connectionDB('products')
 const getByNameProducts = async (name) => connectionDB('products')
   .then((db) => db.findOne({ name }));
 
-module.exports = { getAllProducts, productCreate, getByNameProducts };
+const getProductById = async (id) => connectionDB('products')
+  .then((db) => db.findOne(ObjectID(id)));
+
+module.exports = { getAllProducts, productCreate, getByNameProducts, getProductById };
