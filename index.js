@@ -1,13 +1,12 @@
 const boom = require('boom');
 const express = require('express');
-const rescue = require('express-rescue');
 const bodyParser = require('body-parser');
 const productsRouter = require('./controller/productController');
 
 const app = express();
 app.use(bodyParser.json());
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (request, response) => {
+app.get('/', (_request, response) => {
   response.send();
 });
 // ------------------------------------------------------

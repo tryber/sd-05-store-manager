@@ -16,7 +16,6 @@ productsRouter.post('/', checkProduct, rescue(async (req, res) => {
 
 productsRouter.get('/', async (_req, res) => {
   const allProducts = await products.getAllProducts();
-  console.log(allProducts)
   if (!allProducts) {
     return res.status(500).json({ message: 'Try Again' });
   }

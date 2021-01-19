@@ -8,7 +8,7 @@ const checkProduct = async (req, res, next) => {
     return res.status(422).json({
       err: {
         code: 'invalid_data',
-        message: '\"name\" length must be at least 5 characters long',
+        message: '"name" length must be at least 5 characters long',
       },
     });
   }
@@ -17,7 +17,7 @@ const checkProduct = async (req, res, next) => {
     return res.status(422).json({
       err: {
         code: 'invalid_data',
-        message: '\"quantity\" must be larger than or equal to 1',
+        message: '"quantity" must be larger than or equal to 1',
       },
     });
   }
@@ -26,7 +26,7 @@ const checkProduct = async (req, res, next) => {
     return res.status(422).json({
       err: {
         code: 'invalid_data',
-        message: '\"quantity\" must be a number',
+        message: '"quantity" must be a number',
       },
     });
   }
