@@ -25,7 +25,9 @@ salesRoute.post('/', async (req, res) => {
   const sale = req.body;
   // console.log(sale);
   try {
+    const err = { code: 'stock_problem', message: 'Such amount is not permitted to sell' };
     const itensSold = await salesService.create(sale);
+    if (!itensSold) return res.status(404).json({ err });
     return res.status(200).json(itensSold);
   } catch (err) {
     return res.status(422).json({ err });
@@ -34,12 +36,17 @@ salesRoute.post('/', async (req, res) => {
 
 salesRoute.put('/:id', async (req, res) => {
   try {
+    const err = { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' };
     const saleId = req.params.id;
     // req.body is [{ productId, quantity }, ...]
     const saleData = req.body;
     const { productId } = saleData[0];
     const sale = await salesService.editSale(saleId, saleData);
-    const err = { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' };
+    // if (!sale) {
+    //   err.code = 'stock_problem';
+    //   err.message = 'Such amount is not permitted to sell';
+    //   return res.status(404).json({ err });
+    // }
     if (!ObjectId.isValid(productId)) {
       return res.status(422).json({ err });
     }
