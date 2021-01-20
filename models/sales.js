@@ -14,12 +14,10 @@ const getAllSales = async () => {
 
 const registerSale = async (itensSold) => {
   const { productId, quantity } = itensSold;
-  await getCollection('products').then((products) =>
-    products.updateOne(
-      { _id: ObjectId(productId) },
-      { $set: { quantity: { $inc: ['quantity', -quantity] } } },
-    ),
-  );
+  await getCollection('products').then((products) => products.updateOne(
+    { _id: ObjectId(productId) },
+    { $set: { quantity: { $inc: ['quantity', -quantity] } } },
+  ));
   const sale = await getCollection('sales')
     .then((sales) => sales.insertOne({ itensSold }))
     .then((result) => result.ops[0]);
@@ -34,9 +32,9 @@ const editSale = async (saleId, saleData) => {
   //     { $set: { quantity: { $inc: ['quantity', -quantity] } } },
   //   ),
   // );
-  await getCollection('sales').then((sales) =>
-    sales.updateOne({ _id: ObjectId(saleId) }, { $set: { itensSold: saleData } }),
-  );
+  await getCollection('sales').then((sales) => sales.updateOne(
+    { _id: ObjectId(saleId) }, { $set: { itensSold: saleData } },
+  ));
   return getCollection('sales').then((sales) => sales.findOne({ _id: ObjectId(saleId) }));
 };
 
