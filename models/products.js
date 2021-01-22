@@ -1,6 +1,6 @@
 // acesso ao banco
 
-const { ObjectID } = require('mongodb');
+const { ObjectId, ObjectID } = require('mongodb');
 const connectionDB = require('./connection');
 
 const productCreate = async (name, quantity) => connectionDB('products')
