@@ -2,6 +2,7 @@ const boom = require('boom');
 const express = require('express');
 const bodyParser = require('body-parser');
 const productsRouter = require('./controller/productController');
+const salesRouter = require('./controller/salesController');
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,6 +13,8 @@ app.get('/', (_request, response) => {
 // ------------------------------------------------------
 
 app.use('/products', productsRouter);
+
+app.use('/sales', salesRouter);
 
 app.use((err, req, res, _next) => {
   if (boom.isBoom(err)) {

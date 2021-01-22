@@ -69,4 +69,18 @@ productsRouter.put('/:id', checkProduct, async (req, res) => {
   res.status(200).json({ ...req.body, id: productById });
 });
 
+productsRouter.delete('/:id', rescue(async (req, res) => {
+  try {
+      const deleteProduct = await products.deleteProduct.removeProduct(Number(req.params.id));
+      res.status(200).json(deleteProduct);
+    } catch (err) {
+      res.status(422).json({
+         err: {
+           code: 'invalid_data',
+           message: 'Wrong id format',
+         }
+      })
+    };
+  }))
+
 module.exports = productsRouter;

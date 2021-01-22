@@ -16,4 +16,12 @@ const getByNameProducts = async (name) => connectionDB('products')
 const getProductById = async (id) => connectionDB('products')
   .then((db) => db.findOne(ObjectID(id)));
 
-module.exports = { getAllProducts, productCreate, getByNameProducts, getProductById };
+const deleteProduct = async (id) => connectionDB('products')
+  .then((db) => db.deleteOne({ _id: ObjectId(id) }));
+
+module.exports = {
+  getAllProducts,
+  productCreate,
+  getByNameProducts,
+  getProductById,
+  deleteProduct };
