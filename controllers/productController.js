@@ -1,9 +1,9 @@
 const express = require('express');
 //https://github.com/rwillians/express-rescue
 const rescue = require('express-rescue');
-const productModel = require('../models/productModel');
-const validations = require('../middlewares/productValidations');
+const validations = require('../services/validations');
 const router = express.Router();
+const getAllProducts = require('../models/productModel');
 
 router.post(
   '/',
@@ -13,15 +13,16 @@ router.post(
   validations.validateSale,
   validations.validateSaleById,
   rescue(async (req, res) => {
-    const { name, quantity } = req.body;
-    const product = await productModel.addProduct(name, quantity);
-    return res.status(201).json(product);
+    const {name, quantity} = req.body;
+    const {product} = await productModel.addProduct(name, quantity);
+    console.log(req.body);
+    return res.status(201).json({product});
   }),
 );
-
-router.get('/', async (_req, res) => {
-  const products = await productModel.getAllProducts();
-  res.status(200).json({ products });
+// terminar
+router.get('/', async (req, res) => {
+  const allProducts = await getAllProducts(req.body);
+  res.status(200).json(allProducts);
 });
 
 router.get('/:id', async (req, res) => {
@@ -29,10 +30,7 @@ router.get('/:id', async (req, res) => {
   res.status(200).json(product);
 });
 
-router.delete(
-  '/:id',
-  validations.validateSaleById,
-  rescue(async (req, _res) => {
+router.delete('/:id', validations.validateSaleById, rescue(async (req, _res) => {
     const { id } = req.params;
     await productModel.removeProduct(id);
   }),

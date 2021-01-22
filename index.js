@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/products', productController);
 
-app.use('/products/:id', productController);
+// app.use('/products/:id', productController);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
