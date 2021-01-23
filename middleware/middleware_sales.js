@@ -1,9 +1,18 @@
 // const { getByNameProducts } = require('../models/sales');
 
 const checkSale = async (req, res, next) => {
-  const { quantity } = req.body;
+  const sales = req.body;
 
-  if (quantity > 0) {
+  if (sales.length === 0) {
+    return res.status(422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'There is no sale',
+      },
+    });
+  }
+
+  if (!sales.map(sale => sale.quantity).every(quantity => quantity > 0)) {
     return res.status(422).json({
       err: {
         code: 'invalid_data',
@@ -12,7 +21,7 @@ const checkSale = async (req, res, next) => {
     });
   }
 
-  if (!Number.isInteger(quantity)) {
+  if (!sales.map(sale => sale.quantity).every(quantity => Number.isInteger(quantity))) {
     return res.status(422).json({
       err: {
         code: 'invalid_data',

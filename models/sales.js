@@ -4,16 +4,11 @@
 const connectionDB = require('./connection');
 const products = require('./products');
 
-const salesCreate = async (productId, id, quantity) => connectionDB('sales')
-  .then((db) => db.insertOne({ productId, quantity }))
+const salesCreate = async (itensSold) => connectionDB('sales')
+  .then((db) => db.insertOne({ batatinha: itensSold }))
   .then((result) => ({
     _id: result.insertedId,
-    itensSold: [
-      {
-        productId: products.productCreate(id),
-        quantity,
-      },
-    ],
+    itensSold,
   }));
 
 module.exports = { salesCreate };
