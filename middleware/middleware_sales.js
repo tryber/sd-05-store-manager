@@ -12,7 +12,7 @@ const checkSale = async (req, res, next) => {
     });
   }
 
-  if (!sales.map(sale => sale.quantity).every(quantity => quantity > 0)) {
+  if (!sales.map((sale) => sale.quantity).every((quantity) => quantity > 0)) {
     return res.status(422).json({
       err: {
         code: 'invalid_data',
@@ -21,7 +21,7 @@ const checkSale = async (req, res, next) => {
     });
   }
 
-  if (!sales.map(sale => sale.quantity).every(quantity => Number.isInteger(quantity))) {
+  if (!sales.map((sale) => sale.quantity).every((quantity) => Number.isInteger(quantity))) {
     return res.status(422).json({
       err: {
         code: 'invalid_data',
