@@ -22,4 +22,7 @@ const getSaleById = async (id) => connectionDB('sales')
 const editSale = async (id, itensSold) => connectionDB('sales')
   .then((db) => db.updateOne({ _id: ObjectID(id) }, { $set: { itensSold } }));
 
-module.exports = { salesCreate, listSales, getSaleById, editSale };
+const deleteSale = async (id) => connectionDB('sales')
+  .then((db) => db.deleteOne({ _id: ObjectID(id) }));
+
+module.exports = { salesCreate, listSales, getSaleById, editSale, deleteSale };
