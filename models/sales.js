@@ -1,6 +1,6 @@
 // acesso ao banco
 
-// const { ObjectID } = require('mongodb');
+const { ObjectID } = require('mongodb');
 const connectionDB = require('./connection');
 
 const salesCreate = async (itensSold) => connectionDB('sales')
@@ -17,6 +17,9 @@ const listSales = async () => connectionDB('sales')
   }));
 
 const getSaleById = async (id) => connectionDB('sales')
-  .then((db) => db.find({ _id: id }));
+  .then((db) => db.findOne({ _id: ObjectID(id) }));
 
-module.exports = { salesCreate, listSales, getSaleById };
+const editSale = async (id, itensSold) => connectionDB('sales')
+  .then((db) => db.updateOne({ _id: ObjectID(id) }, { $set: { itensSold } }));
+
+module.exports = { salesCreate, listSales, getSaleById, editSale };

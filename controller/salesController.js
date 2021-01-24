@@ -37,12 +37,29 @@ salesRouter.get('/:id', async (req, res) => {
   }
 
   return res.status(200).json(saleById);
-})
+});
 
-salesRouter.get('/', async (req, res) => {
-  const listSales = await sales.listSales()
+salesRouter.get('/', async (_req, res) => {
+  const listSales = await sales.listSales();
 
   return res.status(200).json(listSales);
-})
+});
+
+salesRouter.put('/:id', checkSale, async (req, res) => {
+  // const listSales = await sales.listSales();
+  const saleById = await sales.getSaleById(req.params.id);
+  console.log(saleById)
+  if (!saleById) {
+    return res.status(422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+  })};
+
+  const changedSale = {...saleById, itensSold: req.body }
+  await sales.editSale(changedSale._id, changedSale.itensSold);
+  res.status(200).json(changedSale);
+});
 
 module.exports = salesRouter;
