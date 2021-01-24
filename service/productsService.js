@@ -1,4 +1,5 @@
 const rescue = require('express-rescue');
+const { ObjectID } = require('mongodb');
 const { getCollection } = require('../models/connection');
 
 const validateProduct = rescue(async (request, response, next) => {
@@ -46,4 +47,26 @@ const validateProduct = rescue(async (request, response, next) => {
   return next();
 });
 
-module.exports = { validateProduct };
+const validateProductId = rescue(async (request, response, next) => {
+  const { id } = request.params;
+  const myID = JSON.parse(id);
+
+  const isProductExist = await getCollection('products')
+    .then((item) => item.findOne({ _id: ObjectID(myID) }, {}));
+
+  if (!isProductExist) {
+    return response.status(422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    });
+  }
+
+  return next();
+});
+
+module.exports = {
+  validateProduct,
+  validateProductId,
+};
