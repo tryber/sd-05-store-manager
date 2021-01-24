@@ -19,8 +19,8 @@ productsController.get('/', rescue(async (_request, response) => {
 
 productsController.get('/:id', validateProductId, rescue(async (request, response) => {
   const { id } = request.params;
-  const getProductById = await productsModel.getProductById(id);
-  response.status(200).json(getProductById);
+  const product = await productsModel.getProductById(id);
+  response.status(200).json(product);
 }));
 
 module.exports = {

@@ -1,11 +1,13 @@
 const rescue = require('express-rescue');
-const { ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const { getCollection } = require('../models/connection');
+
+const getProducts = getCollection('products');
 
 const validateProduct = rescue(async (request, response, next) => {
   const { name, quantity } = request.body;
 
-  const isProductExist = await getCollection('products')
+  const isProductExist = getProducts
     .then((item) => item.findOne({ name }, {}));
 
   if (name && name.length < 5) {
@@ -49,12 +51,10 @@ const validateProduct = rescue(async (request, response, next) => {
 
 const validateProductId = rescue(async (request, response, next) => {
   const { id } = request.params;
-  const myID = JSON.parse(id);
 
-  const isProductExist = await getCollection('products')
-    .then((item) => item.findOne({ _id: ObjectID(myID) }, {}));
-
-  if (!isProductExist) {
+  try {
+    await getProducts.then((item) => item.findOne(ObjectId(id)));
+  } catch {
     return response.status(422).json({
       err: {
         code: 'invalid_data',
