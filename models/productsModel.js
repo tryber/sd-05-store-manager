@@ -16,10 +16,11 @@ const getProducts = async () => {
 };
 
 const getProductById = async (id) => {
-  const connect = await getCollection('products');
-  const result = connect.findOne(ObjectId(id));
+  if (!ObjectId.isValid(id)) return null;
 
-  return result;
+  const connect = await getCollection('products');
+
+  return connect.findOne(ObjectId(id));
 };
 
 module.exports = {
