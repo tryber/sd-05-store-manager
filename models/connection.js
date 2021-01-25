@@ -2,10 +2,10 @@ const { MongoClient } = require('mongodb');
 
 const DB_NAME = 'StoreManager';
 // Conexão para realizar EVALUATOR
-// const MONGO_DB_URL = `mongodb://mongodb:27017/${DB_NAME}`;
+const MONGO_DB_URL = `mongodb://mongodb:27017/${DB_NAME}`;
 
 // conexão no banco local....MANTER COMENTADO AO RODAR EVALUATOR
-const MONGO_DB_URL = `mongodb://localhost:27017/${DB_NAME}`;
+// const MONGO_DB_URL = `mongodb://localhost:27017/${DB_NAME}`;
 
 let connection;
 
