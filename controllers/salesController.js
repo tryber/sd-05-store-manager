@@ -75,4 +75,10 @@ const deleteSale = async (req, res, _next) => {
   }
 };
 
-module.exports = { registerOfSales, allSales, salesById, updateSale, deleteSale };
+module.exports = {
+  registerOfSales,
+  allSales,
+  salesById,
+  updateSale,
+  deleteSale,
+};
