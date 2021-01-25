@@ -22,7 +22,7 @@ const validateProduct = async (name, quantity) => {
     };
   }
 
-  if (quantity && !Number.isInteger(Number(quantity))) {
+  if (quantity && !Number.isInteger(quantity)) {
     return {
       err: {
         code: 'invalid_data',
