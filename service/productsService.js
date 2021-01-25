@@ -1,9 +1,8 @@
-const { getCollection } = require('../models/connection');
 const { productsModel } = require('../models/index');
 
 const validateProduct = async (name, quantity) => {
-  const isProductExist = getCollection('products')
-    .then((item) => item.findOne({ name }, {}));
+  const isProductExists = await productsModel.getProducts()
+    .then((product) => product.some((item) => item.name === name));
 
   if (name && name.length < 5) {
     return {
@@ -32,7 +31,7 @@ const validateProduct = async (name, quantity) => {
     };
   }
 
-  if (isProductExist) {
+  if (isProductExists) {
     return {
       err: {
         code: 'invalid_data',
