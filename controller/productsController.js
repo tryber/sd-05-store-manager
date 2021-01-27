@@ -16,6 +16,15 @@ productsController.post('/', validation, rescue(async (request, response) => {
   response.status(201).json(result);
 }));
 
+productsController.put('/:id', validation, rescue(async (request, response) => {
+  const { id } = request.params;
+  const { name, quantity } = request.body;
+
+  const result = await productsModel.updateProduct(id, name, quantity);
+
+  response.status(200).json(result);
+}));
+
 productsController.get('/', rescue(async (_request, response) => {
   const products = await productsModel.getProducts();
 
@@ -31,14 +40,6 @@ productsController.get('/:id', rescue(async (request, response) => {
   response.status(200).send(product);
 }));
 
-productsController.put('/:id', validation, rescue(async (request, response) => {
-  const { id } = request.params;
-  const { name, quantity } = request.body;
-
-  const result = await productsModel.updateProduct(id, name, quantity);
-
-  response.status(200).json(result);
-}));
 
 module.exports = {
   productsController,
