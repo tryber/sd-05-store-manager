@@ -4,33 +4,6 @@ const validateProduct = async (name, quantity) => {
   const isProductExists = await productsModel.getProducts()
     .then((product) => product.some((item) => item.name === name));
 
-  if (name && name.length < 5) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: '"name" length must be at least 5 characters long',
-      },
-    };
-  }
-
-  if (quantity <= 0) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be larger than or equal to 1',
-      },
-    };
-  }
-
-  if (quantity && !Number.isInteger(quantity)) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: '"quantity" must be a number',
-      },
-    };
-  }
-
   if (isProductExists) {
     return {
       err: {
