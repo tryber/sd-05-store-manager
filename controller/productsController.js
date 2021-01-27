@@ -40,7 +40,6 @@ productsController.get('/:id', rescue(async (request, response) => {
   response.status(200).send(product);
 }));
 
-
 module.exports = {
   productsController,
 };
