@@ -7,15 +7,6 @@ const { validation } = require('../middlewares/validateProducts');
 
 const productsController = express.Router();
 
-productsController.post('/', validation, rescue(async (request, response) => {
-  const { name, quantity } = request.body;
-  const result = await productService.validateProduct(name, quantity);
-
-  if (result.err) return response.status(422).json(result);
-
-  response.status(201).json(result);
-}));
-
 productsController.put('/:id', validation, rescue(async (request, response) => {
   const { id } = request.params;
   const { name, quantity } = request.body;
@@ -25,10 +16,13 @@ productsController.put('/:id', validation, rescue(async (request, response) => {
   response.status(200).json(result);
 }));
 
-productsController.get('/', rescue(async (_request, response) => {
-  const products = await productsModel.getProducts();
+productsController.post('/', validation, rescue(async (request, response) => {
+  const { name, quantity } = request.body;
+  const result = await productService.validateProduct(name, quantity);
 
-  response.status(200).json({ products });
+  if (result.err) return response.status(422).json(result);
+
+  response.status(201).json(result);
 }));
 
 productsController.get('/:id', rescue(async (request, response) => {
@@ -38,6 +32,12 @@ productsController.get('/:id', rescue(async (request, response) => {
   if (product.err) return response.status(422).json(product);
 
   response.status(200).send(product);
+}));
+
+productsController.get('/', rescue(async (_request, response) => {
+  const products = await productsModel.getProducts();
+
+  response.status(200).json({ products });
 }));
 
 module.exports = {
