@@ -5,7 +5,6 @@ const errorMessage = (message, code) => ({ err: { message, code } });
 
 const createProduct = async (name, quantity) => {
   const productCreated = await productModel.insertProduct(name, quantity);
-  console.log(name, quantity);
 
   if (!name) {
     return errorMessage('"name" is required', 'invalid_data');
@@ -19,17 +18,9 @@ const createProduct = async (name, quantity) => {
   return productCreated;
 };
 
-const getAllProducts = async () => {
-  const gotProduct = await productModel.findAllProducts();
-  if (!gotProduct) return false;
-  return gotProduct;
-};
+const getAllProducts = async () => productModel.findAllProducts();
 
-const getProductsById = async (id) => {
-  const gotProduct = await productModel.findById(id);
-  if (!gotProduct) return false;
-  return gotProduct;
-};
+const getProductsById = async (id) => productModel.findById(id);
 
 const updateProduct = async (id, name, quantity) => {
   const editedProduct = await productModel.updateProduct(id, name, quantity);
@@ -42,8 +33,9 @@ const updateProduct = async (id, name, quantity) => {
   if (!quantity.isInteger() || quantity <= 0) {
     return errorMessage('The "quantity" must be equal or larger than 1.', 'invalid_data');
   }
-  if (!editedProduct) return false;
-  return editedProduct;
+  if (!editedProduct) return errorMessage('All fields must be filled', 'invalid_data');
+  const newRecipe = await productModel.findById(id);
+  return newRecipe;
 };
 
 const deleteProduct = async (id) => {
@@ -51,21 +43,6 @@ const deleteProduct = async (id) => {
   if (!removedProduct) return false;
   return removedProduct;
 };
-
-// service
-// const addSale = rescue(async (name, quantity) => {
-//   const validSale = isValid(name, quantity);
-//   if (!validSale) return false;
-//   await productModel.addProduct(name, quantity);
-//   return true;
-// });
-// controller
-// const create = async (req, res) => {
-// 	const { first_name, middle_name, last_name } = req.body;
-// 	const author = await Author.create(first_name, middle_name, last_name);
-// 	if (!author) return res.status(400).json({ message: 'Dados inválidos' });
-// 	res.status(201).json({ message: 'Autor criado com sucesso! '});
-// }
 
 module.exports = {
   errorMessage,

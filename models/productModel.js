@@ -22,7 +22,6 @@ const findByName = async (name) =>
     .then((db) => db.collection('products').findOne({ name }))
     .catch((err) => console.log(err));
 
-
 const updateProduct = async (id, name, quantity) => {
   getConnection()
     .then((db) =>
@@ -33,13 +32,6 @@ const deleteProduct = async (id) =>
   getConnection()
     .then((db) => db.collection('products').deleteOne({ _id: Object(id) }))
     .catch((err) => console.log(err));
-
-// Substituída
-// const getAllProducts = async () => {
-//   const db = await getConnection();
-//   const allProducts = await db.getConnection('products').find().toArray();
-//   return allProducts;
-// };
 
 module.exports = {
   insertProduct,
