@@ -5,8 +5,8 @@ const errorMessage = (message, code) => ({ err: { message, code } });
 
 const insertSale = async (itemSold) => {
   if (!itemSold) return errorMessage('Wrong product ID or invalid quantity', 'invalid_data');
-	const sale = await salesModel.insertSales(itemSold);
-	return sale;
+  const sale = await salesModel.insertSales(itemSold);
+  return sale;
 };
 
 const getAllSales = async () => salesModel.findAllSales();

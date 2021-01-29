@@ -1,4 +1,4 @@
-const { Router} = require('express');
+const { Router } = require('express');
 
 const productService = require('../services/productService');
 
@@ -6,22 +6,22 @@ const productRoute = Router();
 
 productRoute.post(
   '/',
-  rescue(async (req, res) => {
+  async (req, res) => {
     const { name, quantity } = req.body;
     const product = await productService.createProduct(name, quantity);
     if (!product) res.status(400).json({ message: 'Dados inválidos' });
     res.status(201).json(product);
-  }),
+  },
 );
 
 productRoute.get(
   '/',
   async (req, res) => {
     const { name, quantity } = req.body;
-    cosnt product = await productService.getAllProducts(name, quantity);
+    const product = await productService.getAllProducts(name, quantity);
     if (!product) res.status(400).json({ message: 'Dados inválidos' });
     res.status(200).json(product);
-  }
+  },
 );
 
 productRoute.get(
@@ -31,7 +31,7 @@ productRoute.get(
     const product = await productService.getProductsById(id);
     if (!product) res.status(400).json({ message: 'Dados inválidos' });
     res.status(200).json(product);
-  }
+  },
 );
 
 productRoute.put(
@@ -41,7 +41,7 @@ productRoute.put(
     const product = await productService.updateProduct(id);
     if (!product) res.status(400).json({ message: 'Dados inválidos' });
     res.status(200).json(product);
-  }
+  },
 );
 
 productRoute.delete(
@@ -51,7 +51,7 @@ productRoute.delete(
     const product = await productService.updateProduct(id);
     if (!product) res.status(400).json({ message: 'Dados inválidos' });
     res.status(200).json(product);
-  }
+  },
 );
 
-module.exports = router;
+module.exports = productRoute;

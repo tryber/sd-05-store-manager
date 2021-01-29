@@ -1,17 +1,17 @@
-const getConnection = require('./connection');
 const { ObjectId } = require('mongodb');
+const getConnection = require('./connection');
 
-const insertProduct = async (name, quantity) => 
+const insertProduct = async (name, quantity) =>
   getConnection()
     .then((db) => db.collection('products').insertOne({ name, quantity }))
-    .catch((err) => console.log(err));  
+    .catch((err) => console.log(err));
 
 const findAllProducts = async () =>
   getConnection()
     .then((db) => db.collection('products').find().toArray())
-    .then((products) => products.map(({_id, name, product}) => ({ id: _id, name, product })))
+    .then((products) => products.map(({ _id, name, product }) => ({ id: _id, name, product })))
     .catch((err) => console.log(err));
-    
+
 const findById = async (id) =>
   getConnection()
     .then((db) => db.collection('products').findOne(ObjectId(id)))
@@ -22,7 +22,7 @@ const findByName = async (name) =>
     .then((db) => db.collection('products').findOne({ name }))
     .catch((err) => console.log(err));
 
-const updateProduct = async (id, name, quantity) => {
+const updateProduct = async (id, name, quantity) =>
   getConnection()
     .then((db) =>
       db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }))
