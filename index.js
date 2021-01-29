@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const productController = require('./controllers/productController');
 const salesController = require('./controllers/salesController');
 
@@ -11,8 +12,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/products', productController);
 
 app.use('/sales', salesController);
-
-// app.use('/products/:id', productController);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {

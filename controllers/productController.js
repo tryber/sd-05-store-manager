@@ -1,10 +1,10 @@
-const express = require('express');
+const { Router} = require('express');
 
-const router = express.Router();
-const rescue = require('express-rescue');
 const productService = require('../services/productService');
 
-router.post(
+const productRoute = Router();
+
+productRoute.post(
   '/',
   rescue(async (req, res) => {
     const { name, quantity } = req.body;
@@ -14,7 +14,7 @@ router.post(
   }),
 );
 
-router.get(
+productRoute.get(
   '/',
   async (req, res) => {
     const { name, quantity } = req.body;
@@ -24,7 +24,7 @@ router.get(
   }
 );
 
-router.get(
+productRoute.get(
   '/:id',
   async (req, res) => {
     const { id } = req.params;
@@ -34,7 +34,7 @@ router.get(
   }
 );
 
-router.put(
+productRoute.put(
   '/:id',
   async (req, res) => {
     const { id } = req.body;
@@ -44,7 +44,7 @@ router.put(
   }
 );
 
-router.delete(
+productRoute.delete(
   '/:id',
   async (req, res) => {
     const { id } = req.params;
@@ -53,28 +53,5 @@ router.delete(
     res.status(200).json(product);
   }
 );
-// sales.get('/', productService.addProduct, (req, res) => {
-//   res.status(200).json(req.data);
-// });
-
-// // terminar
-// router.get('/', async (req, res) => {
-//   const allProducts = await getAllProducts(req.body);
-//   res.status(200).json(allProducts);
-// });
-
-// router.get('/:id', async (req, res) => {
-//   const product = await productModel.findById(req.params.id);
-//   res.status(200).json(product);
-// });
-
-// router.delete(
-//   '/:id',
-//   validations.validateSaleById,
-//   rescue(async (req, _res) => {
-//     const { id } = req.params;
-//     await productModel.removeProduct(id);
-//   }),
-// );
 
 module.exports = router;

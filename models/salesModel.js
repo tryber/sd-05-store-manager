@@ -1,7 +1,7 @@
 const getConnection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const insertSales = async (itenSold) => 
+const insertSale = async (itenSold) => 
   getConnection()
     .then((db) => db.collection('sales').insertOne({ itenSold }))
     .catch((err) => console.log(err));  
@@ -22,16 +22,16 @@ const updateSale = async (id, name, quantity) => {
 			db.collection('sales').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }))
 		.catch((err) => console.log(err));
 
-const deleteSales = async (id) =>
+const deleteSale = async (id) =>
   getConnection()
     .then((db) => db.collection('sales').deleteOne({ _id: Object(id) }))
     .catch((err) => console.log(err));
 
 module.exports = {
-  insertSales,
+  insertSale,
   findAllSales,
   findById,
   findByName,
-  updateSales,
-  deleteSales,
+  updateSale,
+  deleteSale,
 };
