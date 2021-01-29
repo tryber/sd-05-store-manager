@@ -1,56 +1,51 @@
-const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
+const { ObjectId } = require('mongodb');
 
-const getAllProducts = async () => {
-  const db = await getConnection();
-  const allProducts = await db.getConnection('products').find().toArray()
-  return allProducts
-};
+const insertProduct = async (name, quantity) => 
+  getConnection()
+    .then((db) => db.collection('products').insertOne({ name, quantity }))
+    .catch((err) => console.log(err));  
 
-// Substituí pelo de cima
-// const getAllProducts = async () =>
-//   getConnection()
-//     .then((db) => db.collection('products').find().toArray())
-//     .catch((err) => {
-//       console.log(err);
-//       process.exit(1);
-//     });
+const findAllProducts = async () =>
+  getConnection()
+    .then((db) => db.collection('products').find().toArray())
+    .then((products) => products.map(({_id, name, product}) => ({ id: _id, name, product })))
+    .catch((err) => console.log(err));
+    
+const findById = async (id) =>
+  getConnection()
+    .then((db) => db.collection('products').findOne(ObjectId(id)))
+    .catch((err) => console.log(err));
 
 const findByName = async (name) =>
-  getConnection().then((db) => db.collection('products').findOne({ name }));
+  getConnection()
+    .then((db) => db.collection('products').findOne({ name }))
+    .catch((err) => console.log(err));
 
-const findById = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
-  return getConnection()
-    .then((db) => db.collection('products').findOne(ObjectId(id)))
-    .catch((err) => {
-      console.log(err);
-      throw err;
-    });
-};
-
-const addProduct = async (name, quantity) => {
-    getConnection()
-      .then((db) => db.collection('products').insertOne({ name, quantity }))
-      .then((result) => result)
-      .catch((err) => console.log(err));
-};
 
 const updateProduct = async (id, name, quantity) => {
-  getConnection().then((db) =>
-    db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
-  return true;
-};
+  getConnection()
+    .then((db) =>
+      db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }))
+    .catch((err) => console.log(err));
 
-const removeProduct = async (id) =>
-  getConnection().then((db) => db.collection('products').deleteOne({ _id: Object(id) }));
+const deleteProduct = async (id) =>
+  getConnection()
+    .then((db) => db.collection('products').deleteOne({ _id: Object(id) }))
+    .catch((err) => console.log(err));
+
+// Substituída
+// const getAllProducts = async () => {
+//   const db = await getConnection();
+//   const allProducts = await db.getConnection('products').find().toArray();
+//   return allProducts;
+// };
 
 module.exports = {
-  getAllProducts,
+  insertProduct,
+  findAllProducts,
   findByName,
   findById,
-  addProduct,
   updateProduct,
-  removeProduct,
+  deleteProduct,
 };

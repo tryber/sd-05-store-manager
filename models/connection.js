@@ -5,9 +5,8 @@ const MONGO_DB_URL = process.env.MONGO_DB_URL || `mongodb://mongodb:27017/${DB_N
 
 let connection = null;
 const getConnection = async () => {
-  connection =
-    connection ||
-    (await MongoClient.connect(MONGO_DB_URL, {
+  connection = connection
+    || (await MongoClient.connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }));
@@ -15,7 +14,6 @@ const getConnection = async () => {
 };
 
 // const mongo = require('mongodb').MongoClient;
-
 
 // const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager'; // pop
 //
@@ -30,4 +28,3 @@ const getConnection = async () => {
 //     });
 
 module.exports = getConnection;
-
