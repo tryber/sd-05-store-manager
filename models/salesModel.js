@@ -1,9 +1,9 @@
 const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
 
-const insertSale = async (itenSold) =>
+const insertSale = async (productId, quantity) =>
   getConnection()
-    .then((db) => db.collection('sales').insertOne({ itenSold }))
+    .then((db) => db.collection('sales').insert(productId, quantity))
     .catch((err) => console.log(err));
 
 const findAllSales = async () =>

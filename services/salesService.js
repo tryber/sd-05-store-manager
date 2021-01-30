@@ -3,9 +3,9 @@ const salesModel = require('../models/salesModel');
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
-const insertSale = async (itemSold) => {
-  if (!itemSold) return errorMessage('Wrong product ID or invalid quantity', 'invalid_data');
-  const sale = await salesModel.insertSales(itemSold);
+const insertSale = async (productId, quantity) => {
+  if (!productId || !quantity) return errorMessage('Wrong product ID or invalid quantity', 'invalid_data');
+  const sale = await salesModel.insertSales(productId, quantity);
   return sale;
 };
 
