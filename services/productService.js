@@ -1,21 +1,24 @@
 /* eslint-disable no-tabs */
 const productModel = require('../models/productModel');
 
-const errorMessage = (message, code) => ({ err: { message, code } });
+const errorMessage = (code, message) => ({ err: { code, message } });
 
 const createProduct = async (name, quantity) => {
-  const productCreated = await productModel.insertProduct(name, quantity);
-
+  const nameDuplicate = await productModel.findByName(name);
+  if (nameDuplicate) {
+    return errorMessage('invalid_data', 'Product already exists');
+  }
   if (!name) {
-    return errorMessage('"name" is required', 'invalid_data');
+    return errorMessage('invalid_data', '"name" length must be at least 5 characters long');
   }
   if (name.length < 5) {
-    return errorMessage('The "name" must be at least 5 characters long.', 'invalid_data');
+    return errorMessage('invalid_data', '"name" length must be at least 5 characters long');
   }
-  if (!quantity.isInteger() || quantity <= 0) {
-    return errorMessage('The "quantity" must be equal or larger than 1.', 'invalid_data');
+  if (quantity <= 0) {
+    return errorMessage('invalid_data', '"name" length must be at least 5 characters long');
   }
-  return productCreated;
+  if (!quantity.isInteger()) return errorMessage('invalid_data', '"quantity" must be a number');
+  return productModel.insertProduct(name, quantity);
 };
 
 const getAllProducts = async () => productModel.findAllProducts();
@@ -30,9 +33,10 @@ const updateProduct = async (id, name, quantity) => {
   if (name.length < 5) {
     return errorMessage('The "name" must be at least 5 characters long.', 'invalid_data');
   }
-  if (!quantity.isInteger() || quantity <= 0) {
-    return errorMessage('The "quantity" must be equal or larger than 1.', 'invalid_data');
+  if (quantity <= 0) {
+    return errorMessage('invalid_data', '"quantity" must be larger than or equal to 1');
   }
+  if (!quantity.isInteger()) return errorMessage('invalid_data', '"quantity" must be a number');
   if (!editedProduct) return errorMessage('All fields must be filled', 'invalid_data');
   const newRecipe = await productModel.findById(id);
   return newRecipe;
