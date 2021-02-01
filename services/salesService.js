@@ -1,18 +1,23 @@
 /* eslint-disable no-tabs */
+const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
 
 const errorMessage = (message, code) => ({ err: { code, message } });
 
-const insertSale = async (productId, quantity) => {
-  console.log('aqui no service', productId, quantity);
-  if (quantity <= 0) {
-    return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 1');
+const checkSale = (sales) =>
+  sales.filter((productId, quantity) => {
+    if (!ObjectId.isValid(productId)) return false;
+    if (quantity < 1 || typeof quantity !== 'number') return false;
+    return true;
+  });
+
+const insertSale = async (sales) => {
+  const validation = await checkSale(sales);
+  if (!validation) {
+    return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
   }
-  if (!quantity === Number) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 2 ');
-  if (!productId) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 3');
-  if (!quantity) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 4');
-  const sale = await salesModel.insertSale(productId, quantity);
-  return sale;
+  const saleChecked = await salesModel.insertSale(sales);
+  return saleChecked;
 };
 
 const getAllSales = async () => salesModel.findAllSales();

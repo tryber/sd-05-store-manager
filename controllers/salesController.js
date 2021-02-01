@@ -9,10 +9,9 @@ const errorMessage = (code, message) => ({ err: { code, message } });
 salesRoute.post(
   '/',
   async (req, res) => {
-    const { productId, quantity } = req.body;
-    const sale = await salesService.insertSale(productId, quantity);
-    console.log('aqui no controller', sale);
+    const sale = await salesService.insertSale(req.body);
     if (!sale) res.status(422).json({ message: 'Dados inválidos' });
+    console.log('aqui no controller', sale);
     res.status(201).json(sale);
   },
 );
