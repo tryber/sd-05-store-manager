@@ -44,4 +44,14 @@ productsRouter.put('/:id', async (req, res) => {
   }
 });
 
+productsRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await servicesProducts.deleteProduct(id);
+    return res.status(200).json({ message: `Deletado o item de id ${id}` });
+  } catch (err) {
+    return res.status(err.status).json({ err });
+  }
+});
+
 module.exports = productsRouter;

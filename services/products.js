@@ -48,4 +48,9 @@ const changeById = async (id, name, quantity) => {
   return changedProduct;
 };
 
-module.exports = { getAll, insertNewProduct, getById, changeById };
+const deleteProduct = async (id) => {
+  await getById(id);
+  await modelProducts.deleteProduct(id);
+};
+
+module.exports = { getAll, insertNewProduct, getById, changeById, deleteProduct };
