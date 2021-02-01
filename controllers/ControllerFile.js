@@ -1,10 +1,18 @@
-const list = require('../services/ServiceFile');
-const beta = require('../models/ModelFile');
+const { list, addProduct } = require('../services/ServiceFile');
+const getDataBase = require('../models/ModelFile');
 
 // const result = list('products', beta()).then((res) => res);
-const result = async () => {
-  const q = await list('products', beta());
-  return q;
+const output = async () => {
+  const result = await list(getDataBase(), 'products');
+  return result;
 };
 
-module.exports = result;
+const addProductOutput = async (name, quantity) => {
+  const result = await addProduct(getDataBase(), 'products', name, quantity);
+  return result;
+};
+
+module.exports = {
+  output,
+  addProductOutput,
+};

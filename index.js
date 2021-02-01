@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const result = require('./controllers/ControllerFile');
+const { output, addProductOutput } = require('./controllers/ControllerFile');
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,9 +12,16 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
+app.post('/products', async (req, res) => {
+  console.log(req.body);
+  const { name, quantity } = req.body;
+  const response = await addProductOutput(name, quantity);
+  res.status(200).json(response);
+});
+
 app.get('/products', async (_req, res) => {
-  const r = await result();
-  res.status(200).json(r);
+  const response = await output();
+  res.status(200).json(response);
 });
 
 const PORT = process.env.PORT || 3000;

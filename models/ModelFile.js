@@ -1,12 +1,12 @@
 const connection = require('./connection');
 
-const beta = async () => {
+const getDataBase = async () => {
   try {
-    const p = await connection().then((z) => z);
-    return p;
+    const dataBase = await connection();
+    return dataBase;
   } catch (error) {
     console.error(error);
   }
 };
 
-module.exports = beta;
+module.exports = getDataBase;
