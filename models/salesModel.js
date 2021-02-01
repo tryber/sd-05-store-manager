@@ -4,6 +4,7 @@ const getConnection = require('./connection');
 const insertSale = async (productId, quantity) =>
   getConnection()
     .then((db) => db.collection('sales').insert(productId, quantity))
+    .then((result) => result.ops[0])
     .catch((err) => console.log(err));
 
 const findAllSales = async () =>

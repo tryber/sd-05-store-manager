@@ -1,11 +1,17 @@
 /* eslint-disable no-tabs */
 const salesModel = require('../models/salesModel');
 
-const errorMessage = (message, code) => ({ err: { message, code } });
+const errorMessage = (message, code) => ({ err: { code, message } });
 
 const insertSale = async (productId, quantity) => {
-  if (!productId || !quantity) return errorMessage('Wrong product ID or invalid quantity', 'invalid_data');
-  const sale = await salesModel.insertSales(productId, quantity);
+  console.log('aqui no service', productId, quantity);
+  if (quantity <= 0) {
+    return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 1');
+  }
+  if (!quantity === Number) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 2 ');
+  if (!productId) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 3');
+  if (!quantity) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity 4');
+  const sale = await salesModel.insertSale(productId, quantity);
   return sale;
 };
 
@@ -13,20 +19,14 @@ const getAllSales = async () => salesModel.findAllSales();
 
 const getSaleById = async (id) => salesModel.findById(id);
 
-const update = async (id, name, quantity) => {
-  const editedSale = await salesModel.updateSales(id, name, quantity);
-  if (!name) {
-    return errorMessage('"name" is required', 'invalid_data');
+const update = async (productId, quantity) => {
+  if (quantity <= 0) {
+    return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
   }
-  if (name.length < 5) {
-    return errorMessage('The "name" must be at least 5 characters long.', 'invalid_data');
-  }
-  if (!quantity.isInteger() || quantity <= 0) {
-    return errorMessage('The "quantity" must be equal or larger than 1.', 'invalid_data');
-  }
-  if (!editedSale) return errorMessage('All fields must be filled', 'invalid_data');
-  const newRecipe = await salesModel.findById(id);
-  return newRecipe;
+  if (!quantity !== Number) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
+  const editedSale = await salesModel.updateSales(productId, quantity);
+  if (!editedSale) return errorMessage('invalid_data', 'All fields must be filled');
+  return editedSale;
 };
 
 const deleteSale = async (id) => {

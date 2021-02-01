@@ -4,10 +4,6 @@ const productModel = require('../models/productModel');
 const errorMessage = (code, message) => ({ err: { code, message } });
 
 const createProduct = async (name, quantity) => {
-  const nameDuplicate = await productModel.findByName(name);
-  if (nameDuplicate) {
-    return errorMessage('invalid_data', 'Product already exists');
-  }
   if (!name) {
     return errorMessage('invalid_data', '"name" length must be at least 5 characters long');
   }
@@ -17,7 +13,11 @@ const createProduct = async (name, quantity) => {
   if (quantity <= 0) {
     return errorMessage('invalid_data', '"name" length must be at least 5 characters long');
   }
-  if (!quantity.isInteger()) return errorMessage('invalid_data', '"quantity" must be a number');
+  if (!quantity === Number) return errorMessage('invalid_data', '"quantity" must be a number');
+  const nameDuplicate = await productModel.findByName(name);
+  if (nameDuplicate) {
+    return errorMessage('invalid_data', 'Product already exists');
+  }
   return productModel.insertProduct(name, quantity);
 };
 
@@ -26,7 +26,6 @@ const getAllProducts = async () => productModel.findAllProducts();
 const getProductsById = async (id) => productModel.findById(id);
 
 const updateProduct = async (id, name, quantity) => {
-  const editedProduct = await productModel.updateProduct(id, name, quantity);
   if (!name) {
     return errorMessage('"name" is required', 'invalid_data');
   }
@@ -36,10 +35,10 @@ const updateProduct = async (id, name, quantity) => {
   if (quantity <= 0) {
     return errorMessage('invalid_data', '"quantity" must be larger than or equal to 1');
   }
-  if (!quantity.isInteger()) return errorMessage('invalid_data', '"quantity" must be a number');
+  if (!quantity === Number) return errorMessage('invalid_data', '"quantity" must be a number');
+  const editedProduct = await productModel.updateProduct(id, name, quantity);
   if (!editedProduct) return errorMessage('All fields must be filled', 'invalid_data');
-  const newRecipe = await productModel.findById(id);
-  return newRecipe;
+  return editedProduct;
 };
 
 const deleteProduct = async (id) => {
