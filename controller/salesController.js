@@ -5,10 +5,12 @@ const sales = require('../models/sales');
 
 const salesRouter = Router();
 const checkSale = require('../middleware/middleware_sales');
+const middlewareBonus = require('../middleware/middleware_bonus');
 
-salesRouter.post('/', checkSale, rescue(async (req, res) => {
+salesRouter.post('/', checkSale, middlewareBonus, rescue(async (req, res) => {
   const arraySales = req.body;
   // model para conversar com o db
+  console.log(arraySales);
   const sale = await sales.salesCreate(arraySales);
 
   return res.status(200).json(sale);
