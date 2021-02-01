@@ -7,7 +7,7 @@ const insertProduct = async (name, quantity) =>
     .then((result) => result.ops[0])
     .catch((err) => console.log(err));
 
-const findAllProducts = async () => 
+const findAllProducts = async () =>
   getConnection()
     .then((db) => db.collection('products').find({}).toArray())
     .then((products) => products)

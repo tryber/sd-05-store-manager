@@ -4,12 +4,11 @@ const salesModel = require('../models/salesModel');
 
 const errorMessage = (message, code) => ({ err: { code, message } });
 
-const checkSale = (sales) =>
-  sales.filter((productId, quantity) => {
-    if (!ObjectId.isValid(productId)) return false;
-    if (quantity < 1 || typeof quantity !== 'number') return false;
-    return true;
-  });
+const checkSale = (sales) => sales.filter((productId, quantity) => {
+  if (!ObjectId.isValid(productId)) return false;
+  if (quantity < 1 || typeof quantity !== 'number') return false;
+  return true;
+});
 
 const insertSale = async (sales) => {
   const validation = await checkSale(sales);
