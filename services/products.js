@@ -1,47 +1,51 @@
 const { ObjectId } = require('mongodb');
+const { verifyName, verifyQuantity } = require('../midlewares/verify');
 const modelProducts = require('../models/products');
 
-const err = { code: 'invalid_data', message: '' };
-
-const getAll = async (name) => {
-  console.log('cheguei')
-  const allProducts = await modelProducts.getAll(name);
+const getAll = async () => {
+  const allProducts = await modelProducts.getAll();
   console.log(allProducts);
   return allProducts;
 };
 
-const getById = async (id, res) => {
-  // console.log('services');
-  console.log(id);
+const getById = async (id) => {
   if (!ObjectId.isValid(id)) {
+    const err = { code: 'invalid_data' };
     err.message = 'Wrong id format';
-    throw res.status(422).json({ err });
+    err.status = 422;
+    throw err;
   }
   const productById = await modelProducts.getById(id);
   console.log(productById);
   return productById;
 };
 
-const insertNewProduct = async (name, quantity, res) => {
-  const verifyProducts = await modelProducts.getAll(name);
-  if (name.length < 5) {
-    err.message = '"name" length must be at least 5 characters long';
-    throw res.status(422).json({ err });
-  }
+const insertNewProduct = async (name, quantity) => {
+  verifyName(name);
+  verifyQuantity(quantity);
+  const verifyProducts = await modelProducts.getOne(name);
   if (verifyProducts) {
+    const err = { code: 'invalid_data' };
     err.message = 'Product already exists';
-    throw res.status(422).json({ err });
-  }
-  if (quantity <= 0) {
-    err.message = '"quantity" must be larger than or equal to 1';
-    throw res.status(422).json({ err });
-  }
-  if (typeof quantity === 'string') {
-    err.message = '"quantity" must be a number';
-    throw res.status(422).json({ err });
+    err.status = 422;
+    throw err;
   }
   const newProduct = await modelProducts.insertNewProduct(name, quantity);
   return newProduct;
 };
 
-module.exports = { getAll, insertNewProduct, getById };
+const changeById = async (id, name, quantity) => {
+  verifyName(name);
+  verifyQuantity(quantity);
+  const verifyProducts = await modelProducts.getOne(name);
+  if (verifyProducts) {
+    const err = { code: 'invalid_data' };
+    err.message = 'Product already exists';
+    err.status = 422;
+    throw err;
+  }
+  const changedProduct = await modelProducts.changeById(id, name, quantity);
+  return changedProduct;
+};
+
+module.exports = { getAll, insertNewProduct, getById, changeById };
