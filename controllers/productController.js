@@ -4,7 +4,6 @@ const productService = require('../services/productService');
 
 const productRoute = Router();
 
-
 // Checked
 productRoute.post(
   '/',
