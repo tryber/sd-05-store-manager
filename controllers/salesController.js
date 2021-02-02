@@ -10,7 +10,6 @@ salesRoute.post(
   async (req, res) => {
     const sale = await salesService.createSale(req.body);
     if (!sale) res.status(422).json({ message: 'Dados inválidos' });
-    console.log('aqui no controller', sale);
     res.status(201).json(sale);
   },
 );
