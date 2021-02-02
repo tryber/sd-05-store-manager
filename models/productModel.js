@@ -27,12 +27,12 @@ const updateProduct = async (id, name, quantity) =>
   getConnection()
     .then((db) =>
       db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }))
+    .then(() => ({ _id: id, name, quantity }))
     .catch((err) => console.log(err));
 
 const deleteProduct = async (id) =>
   getConnection()
     .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }))
-    .then((result) => result)
     .catch((err) => console.log(err));
 
 module.exports = {

@@ -28,7 +28,7 @@ productRoute.get(
   async (req, res) => {
     const { id } = req.params;
     const product = await productService.getProductsById(id);
-    if (!product) res.status(422).json({ message: 'Dados inválidos' });
+    if (product.err) res.status(422).json(product);
     res.status(200).json(product);
   },
 );
@@ -50,7 +50,7 @@ productRoute.delete(
     const { id } = req.params;
     const product = await productService.deleteProduct(id);
     console.log(product);
-    if (!product) return res.status(422).json({ message: 'Dados inválidos' });
+    if (product.err) return res.status(422).json(product);
     res.status(200).json(product);
   },
 );
