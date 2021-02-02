@@ -4,7 +4,7 @@ const { getCollection } = require('./connection');
 const connect = getCollection('products');
 
 const createProduct = async (name, quantity) => {
-  const result = connect
+  const result = await connect
     .then((item) => item.insertOne({ name, quantity }));
 
   return { _id: result.insertedId, name, quantity };
