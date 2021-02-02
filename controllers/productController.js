@@ -4,7 +4,6 @@ const productService = require('../services/productService');
 
 const productRoute = Router();
 
-const errorMessage = (code, message) => ({ err: { code, message } });
 
 // Checked
 productRoute.post(
@@ -12,7 +11,7 @@ productRoute.post(
   async (req, res) => {
     const { name, quantity } = req.body;
     const product = await productService.createProduct(name, quantity);
-    if (!product) res.status(422).json({ message: 'Dados inválidos' });
+    if (product.err) return res.status(422).json(product);
     res.status(201).json(product);
   },
 );
@@ -22,7 +21,6 @@ productRoute.get(
   '/',
   async (_req, res) => {
     const products = await productService.getAllProducts();
-    if (!products) res.status(422).err(errorMessage('invalid_data', 'wrong id format'));
     res.status(200).json({ products });
   },
 );
@@ -33,7 +31,7 @@ productRoute.get(
   async (req, res) => {
     const { id } = req.params;
     const product = await productService.getProductsById(id);
-    if (!product) res.status(422).res.status(400).err(errorMessage('invalid_data', 'wrong id format'));
+    if (!product) res.status(422).json({ message: 'Dados inválidos' });
     res.status(200).json(product);
   },
 );
@@ -45,7 +43,7 @@ productRoute.put(
     const { id } = req.params;
     const { name, quantity } = req.body;
     const product = await productService.updateProduct(id, name, quantity);
-    if (!product) res.status(422).json({ message: 'Dados inválidos' });
+    if (product.err) return res.status(422).json(product);
     res.status(200).json(product);
   },
 );
@@ -56,7 +54,8 @@ productRoute.delete(
   async (req, res) => {
     const { id } = req.params;
     const product = await productService.deleteProduct(id);
-    if (!product) res.status(422).err(errorMessage('invalid_data', 'wrong id format'));
+    console.log(product);
+    if (!product) return res.status(422).json({ message: 'Dados inválidos' });
     res.status(200).json(product);
   },
 );

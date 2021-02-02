@@ -4,8 +4,6 @@ const salesService = require('../services/salesService');
 
 const salesRoute = Router();
 
-const errorMessage = (code, message) => ({ err: { code, message } });
-
 // Checked
 salesRoute.post(
   '/',
@@ -22,7 +20,7 @@ salesRoute.get(
   '/',
   async (_req, res) => {
     const sales = await salesService.getAllSales();
-    if (!sales) res.status(422).res.status(400).err(errorMessage('invalid_data', 'wrong id format'));
+    if (!sales) res.status(422).json({ message: 'Dados inválidos' });
     res.status(200).json(sales);
   },
 );
@@ -33,7 +31,7 @@ salesRoute.get(
   async (req, res) => {
     const { id } = req.params;
     const sale = await salesService.getSaleById(id);
-    if (!sale) res.status(422).res.status(400).err(errorMessage('invalid_data', 'wrong id format'));
+    if (!sale) res.status(422).json({ message: 'Dados inválidos' });
     res.status(200).json(sale);
   },
 );
@@ -55,7 +53,7 @@ salesRoute.delete(
   async (req, res) => {
     const { id } = req.params;
     const sale = await salesService.deleteSale(id);
-    if (!sale) res.status(400).err(errorMessage('invalid_data', 'wrong id format'));
+    if (!sale) res.status(422).json({ message: 'Dados inválidos' });
     res.status(200).json(sale);
   },
 );

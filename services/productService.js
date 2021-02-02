@@ -42,9 +42,10 @@ const updateProduct = async (id, name, quantity) => {
 };
 
 const deleteProduct = async (id) => {
+  const product = productModel.findById(id);
   const removedProduct = await productModel.deleteProduct(id);
   if (!removedProduct) return false;
-  return removedProduct;
+  return product;
 };
 
 module.exports = {
