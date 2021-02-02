@@ -21,7 +21,7 @@ const validation = rescue(async (request, response, next) => {
     });
   }
 
-  if (typeof quantity === 'string' || !Number.isInteger(quantity)) {
+  if (!Number.isInteger(Number(quantity))) {
     return response.status(422).json({
       err: {
         code: 'invalid_data',

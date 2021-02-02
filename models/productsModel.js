@@ -27,14 +27,17 @@ const updateProduct = async (id, name, quantity) => {
   if (!ObjectId.isValid(id)) return null;
 
   const result = connect
-    .then((item) => item.updateOne(ObjectId(id), { $set: { name, quantity } }));
+    .then((item) => item.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
 
   return { _id: result.insertedId, name, quantity };
 };
+
+const deleteProduct = async () => connect.then((e) => e.drop());
 
 module.exports = {
   createProduct,
   getProducts,
   getProductById,
   updateProduct,
+  deleteProduct,
 };

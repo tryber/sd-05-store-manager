@@ -7,6 +7,11 @@ const { validation } = require('../middlewares/validateProducts');
 
 const productsController = express.Router();
 
+// productsController.delete('/', rescue(async (_request, response) => {
+//   productsModel.deleteProduct();
+//   response.status(200).json({ m: 'ok' });
+// }));
+
 productsController.put('/:id', validation, rescue(async (request, response) => {
   const { id } = request.params;
   const { name, quantity } = request.body;
