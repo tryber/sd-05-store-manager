@@ -1,4 +1,4 @@
-const { listProducts, addProduct } = require('../models/ModelFile');
+const { listProducts, addProduct, getProductById } = require('../models/ModelFile');
 
 const getItem = (itemData) => {
   let x = { _id: '', name: '', quantity: '' };
@@ -16,7 +16,11 @@ const addedProduct = (collection, name, quantity) =>
     .then((item) =>
       getItem({ _id: item.insertedId, name, quantity }));
 
+const productByIdDocument = async (collection, id) =>
+  getProductById(collection, id);
+
 module.exports = {
   getProducts,
   addedProduct,
+  productByIdDocument,
 };

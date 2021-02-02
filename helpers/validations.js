@@ -32,9 +32,18 @@ const productQuantityTypeError = () => {
   return err;
 };
 
+const productNotFoundError = () => {
+  const err = {};
+  err.status = '422';
+  err.code = 'invalid_data';
+  err.message = 'Wrong id format';
+  return err;
+};
+
 module.exports = {
   nameLengthError,
   productExitsError,
   productQuantityError,
   productQuantityTypeError,
+  productNotFoundError,
 };

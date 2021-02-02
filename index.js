@@ -3,8 +3,9 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const listProductsOutput = require('./controllers/ControllerFile');
+const { getProducts } = require('./services/ServiceFile');
 const addProductValidation = require('./middlewares/addProductValidation');
+const listProductsValidation = require('./middlewares/listProductsValidation');
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,9 +16,10 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/products', async (_req, res) => {
-  const response = await listProductsOutput('products');
-  res.status(200).json(response);
+  const products = await getProducts('products');
+  res.status(200).send({ products });
 });
+app.get('/products/:id', listProductsValidation);
 
 app.post('/products', addProductValidation);
 
