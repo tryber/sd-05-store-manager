@@ -13,7 +13,7 @@ const createProduct = async (name, quantity) => {
   if (quantity <= 0) {
     return errorMessage('invalid_data', '"name" length must be at least 5 characters long');
   }
-  if (!quantity === Number) return errorMessage('invalid_data', '"quantity" must be a number');
+  if (typeof quantity !== 'number') return errorMessage('invalid_data', '"quantity" must be a number');
   const nameDuplicate = await productModel.findByName(name);
   if (nameDuplicate) {
     return errorMessage('invalid_data', 'Product already exists');

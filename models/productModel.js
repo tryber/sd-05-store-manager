@@ -4,7 +4,7 @@ const getConnection = require('./connection');
 const insertProduct = async (name, quantity) =>
   getConnection()
     .then((db) => db.collection('products').insertOne({ name, quantity }))
-    .then((result) => result.ops[0])
+    .then((result) => ({ _id: result.insertedId, name, quantity }))
     .catch((err) => console.log(err));
 
 const findAllProducts = async () =>
