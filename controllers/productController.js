@@ -3,7 +3,6 @@ const { Router } = require('express');
 const productService = require('../services/productService');
 
 const productRoute = Router();
-
 // Checked
 productRoute.get(
   '/',
@@ -12,7 +11,6 @@ productRoute.get(
     res.status(200).json({ products });
   },
 );
-
 // Checked
 productRoute.post(
   '/',
@@ -24,8 +22,6 @@ productRoute.post(
     console.log(product);
   },
 );
-
-
 // Checked
 productRoute.get(
   '/:id',
@@ -36,7 +32,6 @@ productRoute.get(
     res.status(200).json(product);
   },
 );
-
 // Checked
 productRoute.put(
   '/:id',
@@ -48,7 +43,6 @@ productRoute.put(
     res.status(200).json(product);
   },
 );
-
 // Doesnt work
 productRoute.delete(
   '/:id',
