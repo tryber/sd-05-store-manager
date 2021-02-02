@@ -27,7 +27,6 @@ const updateProduct = async (id, name, quantity) =>
   getConnection()
     .then((db) =>
       db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }))
-    // .then((result) => result.ops[0])
     .catch((err) => console.log(err));
 
 const deleteProduct = async (id) =>

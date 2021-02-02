@@ -1,34 +1,25 @@
 /* eslint-disable no-tabs */
-const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
+const productModel = require('../models/productModel');
 
 const errorMessage = (message, code) => ({ err: { code, message } });
 
-const checkSale = (sales) => sales.filter((productId, quantity) => {
-  if (!ObjectId.isValid(productId)) return false;
-  if (quantity < 1 || typeof quantity !== 'number') return false;
-  return true;
-});
-
-const insertSale = async (sales) => {
-  const validation = await checkSale(sales);
-  if (!validation) {
-    return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
-  }
-  const saleChecked = await salesModel.insertSale(sales);
-  return saleChecked;
+const createSale = async (sales) => {
+  sales.forEach((element) => {
+    const idProduct = productModel.findById(element.productId);
+    if (!idProduct || sales.quantity < 1 || typeof sales.quantity !== 'number') return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
+  });
+  const insertSale = await salesModel.insertSale(sales);
+  return insertSale;
 };
 
 const getAllSales = async () => salesModel.findAllSales();
 
 const getSaleById = async (id) => salesModel.findById(id);
 
-const update = async (productId, quantity) => {
-  if (quantity <= 0) {
-    return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
-  }
-  if (!quantity !== Number) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
-  const editedSale = await salesModel.updateSales(productId, quantity);
+const update = async (id, productId, quantity) => {
+  if (quantity < 1 || typeof quantity !== 'number') return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
+  const editedSale = await salesModel.updateSales(id, productId, quantity);
   if (!editedSale) return errorMessage('invalid_data', 'All fields must be filled');
   return editedSale;
 };
@@ -41,7 +32,7 @@ const deleteSale = async (id) => {
 
 module.exports = {
   errorMessage,
-  insertSale,
+  createSale,
   getAllSales,
   getSaleById,
   update,
