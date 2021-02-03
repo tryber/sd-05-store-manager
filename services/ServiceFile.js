@@ -45,20 +45,15 @@ const addSales = async (collection, itensSold) =>
     .then((item) =>
       getSale({ _id: item.insertedId, itensSold }));
 
+// getSales feito com ajuda do especialista Critiano Cunha
+
 const getSales = async (collection) =>
   listSales(collection)
-    .then((sales) =>
-      ({ sales: sales.map(({ _id, sale }) =>
-        ({ _id,
-          itensSold: sale.map(({ id, quantity }) =>
-            ({ productId: id,
-              quantity })) })) }));
+    .then((item) =>
+      ({ sales: item.map(({ _id, sale }) => ({ _id, itensSold: sale })) }));
 
-            // getSale({ productsId: sales.insertedId, quantity}));
-
-      const saleByIdDocument = async (collection, id) =>
-      getSaleById(collection, id);
-    
+const saleByIdDocument = async (collection, id) =>
+  getSaleById(collection, id);
 
 module.exports = {
   getProducts,

@@ -36,7 +36,6 @@ app.post('/sales', addSalesValidation);
 
 app.get('/sales', async (_req, res) => {
   const itensSold = await getSales('sales');
-  console.log("i"+itensSold);
   res.status(200).send(itensSold);
 });
 
