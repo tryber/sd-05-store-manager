@@ -18,8 +18,6 @@ const getProductById = async (collection, id) =>
     return product;
   });
 
-// console.log(getProductById('products', '6019829e1d87d59d1feeda69'));
-
 module.exports = {
   listProducts,
   addProduct,
