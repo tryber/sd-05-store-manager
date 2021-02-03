@@ -1,5 +1,3 @@
-// const rescue = require("express-rescue");
-
 const { addProductOutput } = require('../controllers/ControllerFile');
 const { getProducts } = require('../services/ServiceFile');
 const validations = require('../helpers/validations');

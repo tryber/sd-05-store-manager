@@ -1,5 +1,7 @@
 // consulta ao PR do Sidney Ramos (git: sidneyramos02) PR #42
 
+// products validations:
+
 const nameLengthError = () => {
   const err = {};
   err.status = '422';
@@ -40,10 +42,21 @@ const productNotFoundError = () => {
   return err;
 };
 
+// sales validations:
+
+const addSalesError = () => {
+  const err = {};
+  err.status = '422';
+  err.code = 'invalid_data';
+  err.message = 'Wrong product ID or invalid quantity';
+  return err;
+};
+
 module.exports = {
   nameLengthError,
   productExitsError,
   productQuantityError,
   productQuantityTypeError,
   productNotFoundError,
+  addSalesError,
 };
