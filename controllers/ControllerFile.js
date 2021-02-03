@@ -1,4 +1,8 @@
-const { getProducts, addedProduct, productByIdDocument } = require('../services/ServiceFile');
+const { getProducts,
+  addedProduct,
+  productByIdDocument,
+  deleteProduct,
+} = require('../services/ServiceFile');
 
 // const result = list('products', beta()).then((res) => res);
 const listProductsOutput = async (collection) => {
@@ -16,8 +20,13 @@ const productByIdOutput = async (collection, id) => {
   return result;
 };
 
+const deleteProductControl = async (collection, id) => {
+  deleteProduct(collection, id);
+};
+
 module.exports = {
   listProductsOutput,
   addProductOutput,
   productByIdOutput,
+  deleteProductControl,
 };

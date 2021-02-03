@@ -1,4 +1,4 @@
-const { listProducts, addProduct, getProductById } = require('../models/ModelFile');
+const { listProducts, addProduct, getProductById, deleteProductById } = require('../models/ModelFile');
 
 const getItem = (itemData) => {
   let x = { _id: '', name: '', quantity: '' };
@@ -19,8 +19,12 @@ const addedProduct = (collection, name, quantity) =>
 const productByIdDocument = async (collection, id) =>
   getProductById(collection, id);
 
+const deleteProduct = async (collection, id) =>
+  deleteProductById(collection, id);
+
 module.exports = {
   getProducts,
   addedProduct,
   productByIdDocument,
+  deleteProduct,
 };

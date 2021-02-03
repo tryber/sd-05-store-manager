@@ -7,6 +7,7 @@ const { getProducts } = require('./services/ServiceFile');
 const addProductValidation = require('./middlewares/addProductValidation');
 const listProductsValidation = require('./middlewares/listProductsValidation');
 const updateProductsValidation = require('./middlewares/updateProductsValidation');
+const deleteProductsValidation = require('./middlewares/deleteProductsValidation');
 
 const app = express();
 app.use(bodyParser.json());
@@ -26,6 +27,8 @@ app.get('/products/:id', listProductsValidation);
 app.post('/products', addProductValidation);
 
 app.put('/products/:id', updateProductsValidation);
+
+app.delete('/products/:id', deleteProductsValidation);
 
 const PORT = process.env.PORT || 3000;
 

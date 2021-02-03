@@ -18,8 +18,13 @@ const getProductById = async (collection, id) =>
     return product;
   });
 
+const deleteProductById = async (collection, id) =>
+  connection()
+    .then((db) => db.collection(collection).deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   listProducts,
   addProduct,
   getProductById,
+  deleteProductById,
 };
