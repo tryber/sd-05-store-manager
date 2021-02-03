@@ -30,10 +30,25 @@ const addSalesToDb = async (collection, itensSold) =>
   connection()
     .then((db) => db.collection(collection).insertOne({ sale: itensSold }));
 
+const listSales = async (collection) =>
+  connection()
+    .then((db) => db.collection(collection).find().toArray());
+
+    const getSaleById = async (collection, id) =>
+    connection().then(async (db) => {
+      const sale = await db.collection(collection).findOne({ _id: ObjectId(id) });
+      if (!sale) {
+        return null;
+      }
+      return sale;
+    });
+
 module.exports = {
   listProducts,
   addProduct,
   getProductById,
   deleteProductById,
   addSalesToDb,
+  listSales,
+  getSaleById,
 };

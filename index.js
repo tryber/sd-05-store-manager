@@ -3,12 +3,13 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getProducts } = require('./services/ServiceFile');
+const { getProducts, getSales } = require('./services/ServiceFile');
 const addProductValidation = require('./middlewares/addProductValidation');
 const listProductsValidation = require('./middlewares/listProductsValidation');
 const updateProductsValidation = require('./middlewares/updateProductsValidation');
 const deleteProductsValidation = require('./middlewares/deleteProductsValidation');
 const addSalesValidation = require('./middlewares/addSalesValidation');
+const listSalesValidation = require('./middlewares/listSalesValidation');
 
 const app = express();
 app.use(bodyParser.json());
@@ -32,6 +33,14 @@ app.put('/products/:id', updateProductsValidation);
 app.delete('/products/:id', deleteProductsValidation);
 
 app.post('/sales', addSalesValidation);
+
+app.get('/sales', async (_req, res) => {
+  const itensSold = await getSales('sales');
+  console.log("i"+itensSold);
+  res.status(200).send(itensSold);
+});
+
+app.get('/sales/:id', listSalesValidation);
 
 const PORT = process.env.PORT || 3000;
 

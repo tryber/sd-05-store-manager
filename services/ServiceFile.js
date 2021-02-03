@@ -4,6 +4,8 @@ const {
   getProductById,
   deleteProductById,
   addSalesToDb,
+  listSales,
+  getSaleById,
 } = require('../models/ModelFile');
 
 // products services functions:
@@ -33,8 +35,8 @@ const deleteProduct = async (collection, id) =>
 // sales services functions:
 
 const getSale = (saleData) => {
-  let x = { _id: '', itensSold: '' };
-  x = saleData;
+  const x = saleData;
+  console.log(x);
   return x;
 };
 
@@ -43,10 +45,27 @@ const addSales = async (collection, itensSold) =>
     .then((item) =>
       getSale({ _id: item.insertedId, itensSold }));
 
+const getSales = async (collection) =>
+  listSales(collection)
+    .then((sales) =>
+      ({ sales: sales.map(({ _id, sale }) =>
+        ({ _id,
+          itensSold: sale.map(({ id, quantity }) =>
+            ({ productId: id,
+              quantity })) })) }));
+
+            // getSale({ productsId: sales.insertedId, quantity}));
+
+      const saleByIdDocument = async (collection, id) =>
+      getSaleById(collection, id);
+    
+
 module.exports = {
   getProducts,
   addedProduct,
   productByIdDocument,
   deleteProduct,
   addSales,
+  getSales,
+  saleByIdDocument,
 };

@@ -4,6 +4,7 @@ const {
   productByIdDocument,
   deleteProduct,
   addSales,
+  saleByIdDocument,
 } = require('../services/ServiceFile');
 
 // products controllers:
@@ -32,10 +33,16 @@ const deleteProductControl = async (collection, id) => {
 const addSalesOutput = async (collection, itensSold) =>
   addSales(collection, itensSold);
 
+const saleByIdOutput = async (collection, id) => {
+  const result = await saleByIdDocument(collection, id);
+  return result;
+};
+
 module.exports = {
   listProductsOutput,
   addProductOutput,
   productByIdOutput,
   deleteProductControl,
   addSalesOutput,
+  saleByIdOutput,
 };

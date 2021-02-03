@@ -52,6 +52,14 @@ const addSalesError = () => {
   return err;
 };
 
+const saleNotFoundError = () => {
+  const err = {};
+  err.status = '404';
+  err.code = 'not_found';
+  err.message = 'Sale not found';
+  return err;
+};
+
 module.exports = {
   nameLengthError,
   productExitsError,
@@ -59,4 +67,5 @@ module.exports = {
   productQuantityTypeError,
   productNotFoundError,
   addSalesError,
+  saleNotFoundError,
 };
