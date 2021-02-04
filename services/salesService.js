@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
 
-const errorMessage = (message, code) => ({ err: { code, message } });
+const errorMessage = (code, message) => ({ err: { code, message } });
 
 const validations = (sales) =>
   sales.some(({ productId, quantity }) => {
@@ -12,6 +12,7 @@ const validations = (sales) =>
 
 const createSale = async (sales) => {
   const isValid = await validations(sales);
+  console.log(isValid);
   if (isValid) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
   return salesModel.insertSale(sales);
 };

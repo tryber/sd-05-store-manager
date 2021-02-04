@@ -9,18 +9,19 @@ salesRoute.post(
   '/',
   async (req, res) => {
     const sale = await salesService.createSale(req.body);
-    console.log(req.body);
-    if (sale.err) return res.status(422).json(sale);
-    res.status(201).json(sale);
+    console.log('sale controller 1', req.body);
+    console.log('sale controller 2', sale);
+    if (sale.err) return console.log('aqui',sale.err.code, res.status(422).json(sale));
+    res.status(200).json(sale);
   },
 );
 
-// Checked
+// Checked WHAT THE FUCK IS GOING ON!!!!!
 salesRoute.get(
   '/',
   async (_req, res) => {
     const sales = await salesService.getAllSales();
-    if (!sales) return res.status(422).json({ message: 'Dados inválidos' });
+    if (!sales) return res.status(404 ).json({ message: 'Dados inválidos' });
     res.status(200).json(sales);
   },
 );
@@ -31,7 +32,7 @@ salesRoute.get(
   async (req, res) => {
     const { id } = req.params;
     const sale = await salesService.getSaleById(id);
-    if (sale.err) return res.status(422).json(sale);
+    if (sale.err) return res.status(422).json(sale.err);
     res.status(200).json(sale);
   },
 );
@@ -42,7 +43,7 @@ salesRoute.put(
     const { id } = req.params;
     const { productId, quantity } = req.body;
     const sale = await salesService.update(id, productId, quantity);
-    if (sale.err) return res.status(422).json(sale);
+    if (sale.err) return res.status(422).json(sale.err);
     res.status(200).json(sale);
   },
 );
@@ -53,7 +54,7 @@ salesRoute.delete(
   async (req, res) => {
     const { id } = req.params;
     const sale = await salesService.deleteSale(id);
-    if (sale.err) return res.status(422).json(sale);
+    if (sale.err) return res.status(422).json(sale.err);
     res.status(200).json(sale);
   },
 );
