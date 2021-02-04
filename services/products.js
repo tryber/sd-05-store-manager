@@ -4,7 +4,6 @@ const modelProducts = require('../models/products');
 
 const getAll = async () => {
   const allProducts = await modelProducts.getAll();
-  console.log(allProducts);
   return allProducts;
 };
 

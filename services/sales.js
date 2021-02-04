@@ -1,12 +1,33 @@
-// const { verifyName, verifyQuantity } = require('../midlewares/verify');
-const { forEachChild } = require('typescript');
 const modelSales = require('../models/sales');
 const { verifyQuantitySales } = require('../midlewares/verify');
+const { ObjectId } = require('mongodb');
 
-const insertNewSale = async (itensSold) => {
-  itensSold.forEach((array) => verifyQuantitySales(array.quantity));
-  const newSale = await modelSales.insertNewSale(itensSold);
+const insertNewSale = async (body) => {
+  body.forEach((array) => verifyQuantitySales(array.quantity));
+  const newSale = await modelSales.insertNewSale({ itensSold: body });
   return newSale;
 };
 
-module.exports = { insertNewSale };
+const getSales = async () => {
+  const allSales = await modelSales.getSales();
+  return allSales;
+};
+
+const getSale = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+  const sale = await modelSales.getSale(id);
+  if (!sale) {
+    throw {
+      code: 'not_found',
+      message: 'Sale not found',
+    };
+  }
+  return sale;
+};
+
+module.exports = { insertNewSale, getSales, getSale };
