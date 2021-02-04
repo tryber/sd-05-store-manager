@@ -9,7 +9,8 @@ salesRoute.post(
   '/',
   async (req, res) => {
     const sale = await salesService.createSale(req.body);
-    if (!sale) res.status(422).json({ message: 'Dados inválidos' });
+    console.log(req.body);
+    if (sale.err) return res.status(422).json(sale);
     res.status(201).json(sale);
   },
 );

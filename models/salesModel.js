@@ -7,6 +7,11 @@ const insertSale = async (sales) =>
     .then((result) => ({ _id: result.insertedId, itensSold: sales }))
     .catch((err) => console.log(err));
 
+const checkStock = (quantity) =>
+  getConnection()
+    .then((db) => db.collection('products').update({ $inc: quantity }))
+    .catch((err) => console.log(err));
+
 const findAllSales = async () =>
   getConnection()
     .then((db) => db.collection('sales').find({}).toArray())
@@ -30,6 +35,7 @@ const deleteSale = async (id) =>
 
 module.exports = {
   insertSale,
+  checkStock,
   findAllSales,
   findById,
   updateSale,
