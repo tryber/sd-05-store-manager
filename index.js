@@ -10,6 +10,7 @@ const updateProductsValidation = require('./middlewares/updateProductsValidation
 const deleteProductsValidation = require('./middlewares/deleteProductsValidation');
 const addSalesValidation = require('./middlewares/addSalesValidation');
 const listSalesValidation = require('./middlewares/listSalesValidation');
+const updateSaleValidation = require('./middlewares/updateSaleValidation');
 
 const app = express();
 app.use(bodyParser.json());
@@ -40,6 +41,8 @@ app.get('/sales', async (_req, res) => {
 });
 
 app.get('/sales/:id', listSalesValidation);
+
+app.put('/sales/:id', updateSaleValidation);
 
 const PORT = process.env.PORT || 3000;
 

@@ -27,11 +27,7 @@ const addProductValidation = async (req, res) => {
     return res.status(err.status).send({ err });
   }
 
-  try {
-    const response = await addProductOutput('products', name, quantity);
-    res.status(201).json(response);
-  } catch (error) {
-    console.error(`Erro ao ler arquivos: ${error.message}`);
-  }
+  const response = await addProductOutput('products', name, quantity);
+  res.status(201).json(response);
 };
 module.exports = addProductValidation;

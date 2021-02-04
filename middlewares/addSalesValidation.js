@@ -6,7 +6,6 @@ const validations = require('../helpers/validations');
 
 const addSalesValidation = async (req, res) => {
   const itensSold = req.body.map((product) => product);
-  console.log('sold', itensSold);
 
   const quantityValue = itensSold.map((obj) => obj.quantity);
 

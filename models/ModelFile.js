@@ -43,6 +43,11 @@ const getSaleById = async (collection, id) =>
     return sale;
   });
 
+const updateSale = async (collection, id, arr) => connection().then(async (db) =>
+  db.collection(collection)
+    .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: arr } }))
+  .catch(Error);
+
 module.exports = {
   listProducts,
   addProduct,
@@ -51,4 +56,5 @@ module.exports = {
   addSalesToDb,
   listSales,
   getSaleById,
+  updateSale,
 };
