@@ -32,7 +32,7 @@ const updateProduct = async (id, name, quantity) => {
   return { _id: result.insertedId, name, quantity };
 };
 
-const deleteProduct = async () => connect.then((e) => e.drop());
+const deleteProduct = async (id) => connect.then((e) => e.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   createProduct,

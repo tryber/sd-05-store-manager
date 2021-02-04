@@ -31,7 +31,14 @@ const validateProductId = async (id) => {
   return result;
 };
 
+const validationToDeleteProduct = async (id) => {
+  const validation = await validateProductId(id);
+  if (!validation.err) await productsModel.deleteProduct(id);
+  return validation;
+};
+
 module.exports = {
   validateProduct,
   validateProductId,
+  validationToDeleteProduct,
 };
