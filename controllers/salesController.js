@@ -8,11 +8,10 @@ const salesRoute = Router();
 salesRoute.post(
   '/',
   async (req, res) => {
-    const sale = await salesService.createSale(req.body);
-    console.log('sale controller 1', req.body);
-    console.log('sale controller 2', sale);
-    if (sale.err) return console.log('aqui',sale.err.code, res.status(422).json(sale));
-    res.status(200).json(sale);
+    const sales = await salesService.createSale(req.body);
+    console.log('aqui', sales);
+    if (sales.err) return res.status(422).json(sales);
+    res.status(200).json(sales);
   },
 );
 
@@ -21,7 +20,7 @@ salesRoute.get(
   '/',
   async (_req, res) => {
     const sales = await salesService.getAllSales();
-    if (!sales) return res.status(404 ).json({ message: 'Dados inválidos' });
+    if (!sales) return res.status(404).json({ message: 'Dados inválidos' });
     res.status(200).json(sales);
   },
 );
