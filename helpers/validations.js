@@ -60,6 +60,13 @@ const saleNotFoundError = () => {
   return err;
 };
 
+const wrongSaleFormatError = () => {
+  const err = {};
+  err.code = 'invalid_data';
+  err.message = 'Wrong sale ID format';
+  return err;
+};
+
 module.exports = {
   nameLengthError,
   productExitsError,
@@ -68,4 +75,5 @@ module.exports = {
   productNotFoundError,
   addSalesError,
   saleNotFoundError,
+  wrongSaleFormatError,
 };

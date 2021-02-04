@@ -7,13 +7,13 @@ const {
   listSales,
   getSaleById,
   updateSale,
+  deleteSaleById,
 } = require('../models/ModelFile');
 
 // products services functions:
 
 const getItem = (itemData) => {
-  let x = { _id: '', name: '', quantity: '' };
-  x = itemData;
+  const x = itemData;
   return x;
 };
 
@@ -59,6 +59,9 @@ const saleByIdDocument = async (collection, id) =>
 const updateSaleByIdDocument = async (collection, id, arr) =>
   updateSale(collection, id, arr);
 
+const deleteSale = async (collection, id) =>
+  deleteSaleById(collection, id);
+
 module.exports = {
   getProducts,
   addedProduct,
@@ -68,4 +71,5 @@ module.exports = {
   getSales,
   saleByIdDocument,
   updateSaleByIdDocument,
+  deleteSale,
 };
