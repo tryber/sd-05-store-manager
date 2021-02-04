@@ -3,14 +3,15 @@ const getConnection = require('./connection');
 
 const insertSale = async (sales) =>
   getConnection()
-    .then((db) => db.collection('sales').insertOne({ itemSold: sales }))
+    .then((db) => db.collection('sales').insertOne({ itensSold: sales }))
     .then((result) => ({ _id: result.insertedId, itensSold: sales }))
     .catch((err) => console.log(err));
 
-const findAllSales = async () =>
-  getConnection()
-    .then((db) => db.collection('sales').find({}).toArray())
-    .catch((err) => console.log(err));
+const findAllSales = async () => getConnection().then(async (db) => {
+  const allSales = await db.collection('sales').find().toArray();
+  const returnSales = { sales: allSales };
+  return returnSales;
+});
 
 const findById = async (id) =>
   getConnection()
@@ -25,7 +26,12 @@ const updateSale = async (id, productId, quantity) =>
 
 const deleteSale = async (id) =>
   getConnection()
-    .then((db) => db.collection('sales').deleteOne({ _id: Object(id) }))
+    .then((db) => {
+      const delSales = db.collection('sales').deleteOne({ _id: ObjectId(id) });
+      const saleDeleted = { delSales };
+      console.log('aqui no model', saleDeleted);
+      return saleDeleted;
+    })
     .catch((err) => console.log(err));
 
 module.exports = {

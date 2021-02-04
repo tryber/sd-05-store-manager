@@ -15,12 +15,12 @@ salesRoute.post(
   },
 );
 
-// Checked WHAT THE FUCK IS GOING ON!!!!!
 salesRoute.get(
   '/',
   async (_req, res) => {
     const sales = await salesService.getAllSales();
-    if (!sales) return res.status(404).json({ message: 'Dados inválidos' });
+    console.log('aqui no controller', sales);
+    if (sales.err) return res.status(404).json(sales);
     res.status(200).json(sales);
   },
 );
@@ -31,7 +31,9 @@ salesRoute.get(
   async (req, res) => {
     const { id } = req.params;
     const sale = await salesService.getSaleById(id);
-    if (sale.err) return res.status(422).json(sale.err);
+    console.log('no controller', sale.err.code);
+    if (sale.err.code === 'not_found') return res.status(404).json(sale);
+    if (sale.err) return res.status(422).json(sale);
     res.status(200).json(sale);
   },
 );
@@ -52,9 +54,11 @@ salesRoute.delete(
   '/:id',
   async (req, res) => {
     const { id } = req.params;
-    const sale = await salesService.deleteSale(id);
-    if (sale.err) return res.status(422).json(sale.err);
-    res.status(200).json(sale);
+    const saleDelete = await salesService.deleteSale(id);
+    // console.log('no controller', saleDelete);
+    const error = saleDelete.err.code;
+    if (error) return res.status(422).json(saleDelete);
+    res.status(200).json(saleDelete);
   },
 );
 

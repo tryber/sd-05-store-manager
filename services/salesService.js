@@ -17,11 +17,17 @@ const createSale = async (sales) => {
   return salesModel.insertSale(sales);
 };
 
-const getAllSales = async () => salesModel.findAllSales();
+const getAllSales = async () => {
+  const allSales = await salesModel.findAllSales();
+  if (!allSales) return errorMessage('not_found', 'Sale not found');
+  console.log('aqui no service', allSales);
+  return allSales;
+};
 
 const getSaleById = async (id) => {
-  if (!ObjectId.isValid(id)) return errorMessage('not_found', 'Sale not found');
-  return salesModel.findById(id);
+  const saleId = await salesModel.findById(id);
+  if (!ObjectId.isValid(id) || !saleId) return errorMessage('not_found', 'Sale not found');
+  return saleId;
 };
 
 const update = async (id, productId, quantity) => {
@@ -32,10 +38,12 @@ const update = async (id, productId, quantity) => {
 };
 
 const deleteSale = async (id) => {
-  const isValid = await validations(id);
-  if (isValid) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
-  const removedProduct = await salesModel.deleteSale(id);
-  return removedProduct;
+  const saleId = await getSaleById(id);
+  console.log('aqui no service', saleId);
+  if (ObjectId.isValid(id) || !saleId) return errorMessage('invald_data', 'Wrong sale ID format');
+  const removeSale = await salesModel.deleteSale(id);
+  console.log('aqui no service 2', removeSale);
+  return removeSale;
 };
 
 module.exports = {
