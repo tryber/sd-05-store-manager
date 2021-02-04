@@ -67,6 +67,13 @@ const wrongSaleFormatError = () => {
   return err;
 };
 
+const overflowOfProductsError = () => {
+  const err = {};
+  err.code = 'stock_problem';
+  err.message = 'Such amount is not permitted to sell';
+  return err;
+};
+
 module.exports = {
   nameLengthError,
   productExitsError,
@@ -76,4 +83,5 @@ module.exports = {
   addSalesError,
   saleNotFoundError,
   wrongSaleFormatError,
+  overflowOfProductsError,
 };
