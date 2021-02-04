@@ -1,21 +1,27 @@
-/* eslint-disable no-tabs */
+const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
-const productModel = require('../models/productModel');
 
 const errorMessage = (message, code) => ({ err: { code, message } });
 
-const createSale = async (sales) => {
-  sales.forEach((element) => {
-    const idProduct = productModel.findById(element.productId);
-    if (!idProduct || sales.quantity < 1 || typeof sales.quantity !== 'number') return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
+const validations = (sales) =>
+  sales.some(({ productId, quantity }) => {
+    if (!ObjectId.isValid(productId)) return true;
+    if (quantity < 1 || typeof quantity !== 'number') return true;
+    return false;
   });
-  const insertSale = await salesModel.insertSale(sales);
-  return insertSale;
+
+const createSale = async (sales) => {
+  const isValid = await validations(sales);
+  if (isValid) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
+  return salesModel.insertSale(sales);
 };
 
 const getAllSales = async () => salesModel.findAllSales();
 
-const getSaleById = async (id) => salesModel.findById(id);
+const getSaleById = async (id) => {
+  if (!ObjectId.isValid(id)) return errorMessage('not_found', 'Sale not found');
+  return salesModel.findById(id);
+};
 
 const update = async (id, productId, quantity) => {
   if (quantity < 1 || typeof quantity !== 'number') return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
@@ -25,8 +31,9 @@ const update = async (id, productId, quantity) => {
 };
 
 const deleteSale = async (id) => {
+  const isValid = await validations(id);
+  if (isValid) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
   const removedProduct = await salesModel.deleteSale(id);
-  if (!removedProduct) return false;
   return removedProduct;
 };
 

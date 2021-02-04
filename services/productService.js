@@ -25,7 +25,7 @@ const getAllProducts = async () => {
   const allProducts = await productModel.findAllProducts();
   if (!allProducts) return errorMessage('invalid_data', 'Wrong id format');
   return allProducts;
-}; 
+};
 
 const getProductsById = async (id) => {
   const idProduct = await productModel.findById(id);
