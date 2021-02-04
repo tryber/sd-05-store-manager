@@ -1,6 +1,6 @@
+const { ObjectId } = require('mongodb');
 const modelSales = require('../models/sales');
 const { verifyQuantitySales } = require('../midlewares/verify');
-const { ObjectId } = require('mongodb');
 
 const insertNewSale = async (body) => {
   body.forEach((array) => verifyQuantitySales(array.quantity));
