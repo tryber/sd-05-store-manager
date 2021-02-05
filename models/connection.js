@@ -3,9 +3,9 @@ const { MongoClient } = require('mongodb');
 const DB_NAME = 'StoreManager';
 const MONGO_DB_URL = `mongodb://mongodb:27017/${DB_NAME}`;
 
-let connection = null;
+let connection;
 
-module.exports = async (collectionName) => {
+const conexao = async (collectionName) => {
   connection = connection || await MongoClient.connect(MONGO_DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -13,3 +13,5 @@ module.exports = async (collectionName) => {
 
   return connection.db(DB_NAME).collection(collectionName);
 };
+
+module.exports = conexao;
