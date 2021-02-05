@@ -18,10 +18,10 @@ const findById = async (id) =>
     .then((db) => db.collection('sales').findOne(ObjectId(id)))
     .catch((err) => console.log(err));
 
-const updateSale = async (id, productId, quantity) =>
+const updateSale = async (id, itensSold) =>
   getConnection()
     .then((db) =>
-      db.collection('sales').updateOne({ _id: ObjectId(id) }, { $set: { productId, quantity } }))
+      db.collection('sales').updateOne({ _id: ObjectId(id) }, { $set: { itensSold } }))
     .catch((err) => console.log(err));
 
 const deleteSale = async (id) =>

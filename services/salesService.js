@@ -29,17 +29,20 @@ const getSaleById = async (id) => {
   return saleId;
 };
 
-const update = async (id, productId, quantity) => {
-  if (quantity < 1 || typeof quantity !== 'number') return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
-  const editedSale = await salesModel.updateSales(id, productId, quantity);
+const updateSale = async (id, itensSold) => {
+  itensSold.forEach(({ productId, quantity }) => {
+    if (!ObjectId.isValid(productId)) throw errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
+    if (typeof quantity === 'string' || quantity <= 0) throw errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
+  });
+  const editedSale = await salesModel.updateSale(id, itensSold);
   if (!editedSale) return errorMessage('invalid_data', 'All fields must be filled');
-  return editedSale;
+  const saleMade = await getSaleById(id);
+  return saleMade;
 };
 
 const deleteSale = async (id) => {
   if (!ObjectId.isValid(id)) return errorMessage('invalid_data', 'Wrong sale ID format');
   const saleId = await getSaleById(id);
-  console.log('aqui no service', saleId);
   if (!saleId) return errorMessage('invalid_data', 'Wrong sale ID format');
   const removeSale = await salesModel.deleteSale(id);
   console.log('aqui no service 2', removeSale);
@@ -51,6 +54,6 @@ module.exports = {
   createSale,
   getAllSales,
   getSaleById,
-  update,
+  updateSale,
   deleteSale,
 };
