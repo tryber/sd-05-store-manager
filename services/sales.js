@@ -13,6 +13,12 @@ const getSales = async () => {
   return allSales;
 };
 
+const changeById = async (id, arraySales) => {
+  arraySales.map((produto) => (verifyQuantitySales(produto.quantity)));
+  const changedSale = await modelSales.changeById(id, arraySales);
+  return changedSale;
+};
+
 const getSale = async (id) => {
   if (!ObjectId.isValid(id)) {
     throw {
@@ -21,7 +27,8 @@ const getSale = async (id) => {
     };
   }
   const sale = await modelSales.getSale(id);
-  if (!sale) {
+  console.log(sale);
+  if (!sale.sales) {
     throw {
       code: 'not_found',
       message: 'Sale not found',
@@ -30,4 +37,16 @@ const getSale = async (id) => {
   return sale;
 };
 
-module.exports = { insertNewSale, getSales, getSale };
+const deleteSale = async (id) => {
+  const deletado = await modelSales.getSale(id);
+  console.log(deletado);
+  if (!deletado) {
+    throw { code: 'invalid_data',
+      status: 422,
+      message: 'Wrong sale ID format' };
+  }
+  await modelSales.deleteSale(id);
+  return deletado;
+};
+
+module.exports = { insertNewSale, getSales, getSale, changeById, deleteSale };

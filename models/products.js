@@ -26,7 +26,6 @@ const insertNewProduct = async (name, quantity) => getConnection().then(async (d
 
 const deleteProduct = async (id) => getConnection().then(async (db) => {
   await db.collection('products').deleteOne({ _id: ObjectId(id) });
-  console.log('cheguei model');
 });
 
 module.exports = { getAll, getOne, insertNewProduct, getById, changeById, deleteProduct };
