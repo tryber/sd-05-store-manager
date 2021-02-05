@@ -13,6 +13,10 @@ app.get('/', (request, response) => {
 });
 
 app.use('/products', produtosControll);
+app.use((err, _req, res, _next) => {
+  console.log(err);
+  res.status(500).json({ message: err.message });
+});
 
 const PORT = 3000;
 app.listen(PORT, console.log(`Bora abrir a loja? ${PORT}`));
