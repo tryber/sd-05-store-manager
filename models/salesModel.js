@@ -26,12 +26,8 @@ const updateSale = async (id, productId, quantity) =>
 
 const deleteSale = async (id) =>
   getConnection()
-    .then((db) => {
-      const delSales = db.collection('sales').deleteOne({ _id: ObjectId(id) });
-      const saleDeleted = { delSales };
-      console.log('aqui no model', saleDeleted);
-      return saleDeleted;
-    })
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }))
+    .then((result) => result)
     .catch((err) => console.log(err));
 
 module.exports = {

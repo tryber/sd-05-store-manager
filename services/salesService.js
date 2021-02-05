@@ -20,7 +20,6 @@ const createSale = async (sales) => {
 const getAllSales = async () => {
   const allSales = await salesModel.findAllSales();
   if (!allSales) return errorMessage('not_found', 'Sale not found');
-  console.log('aqui no service', allSales);
   return allSales;
 };
 
@@ -38,12 +37,13 @@ const update = async (id, productId, quantity) => {
 };
 
 const deleteSale = async (id) => {
+  if (!ObjectId.isValid(id)) return errorMessage('invalid_data', 'Wrong sale ID format');
   const saleId = await getSaleById(id);
   console.log('aqui no service', saleId);
-  if (ObjectId.isValid(id) || !saleId) return errorMessage('invald_data', 'Wrong sale ID format');
+  if (!saleId) return errorMessage('invalid_data', 'Wrong sale ID format');
   const removeSale = await salesModel.deleteSale(id);
   console.log('aqui no service 2', removeSale);
-  return removeSale;
+  return saleId;
 };
 
 module.exports = {
