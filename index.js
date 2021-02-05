@@ -1,7 +1,7 @@
 // bodyparser é tradução das requisições para algo que consegue ler
 const express = require('express');
 const bodyParser = require('body-parser');
-const produtosControll = require('./controllers/produtosControll');
+const productController = require('./controllers/productController');
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-app.use('/products', produtosControll);
+app.use('/products', productController);
 
 app.use((err, _req, res, _next) => {
   console.log(err);
