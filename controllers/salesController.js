@@ -5,12 +5,19 @@ const salesService = require('../services/salesService');
 const salesRoute = Router();
 
 salesRoute.post(
-  '/',
-  async (req, res) => {
-    const sales = await salesService.createSale(req.body);
-    if (sales.err) return res.status(422).json(sales);
-    // if (sales.err.code === 'invalid_data') return res.status(404).json(sales);
-    res.status(200).json(sales);
+  '/', async (req, res) => {
+    const sales = req.body;
+    try {
+      const response = await salesService.createSale(sales);
+      return res.status(200).json(response);
+    } catch (err) {
+      if (err.code === 'invalid_data') {
+        return res.status(422).json({ err });
+      }
+      if (err.code === 'stock_problem') {
+        return res.status(404).json({ err });
+      }
+    }
   },
 );
 
@@ -56,7 +63,6 @@ salesRoute.delete(
     const saleDelete = await salesService.deleteSale(id);
     if (saleDelete.err) return res.status(422).json(saleDelete);
     res.status(200).json(saleDelete);
-    // console.log('no controller', saleDelete);
   },
 );
 

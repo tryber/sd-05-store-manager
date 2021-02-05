@@ -1,21 +1,24 @@
 const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
+const productModel = require('../models/productModel');
 
 const errorMessage = (code, message) => ({ err: { code, message } });
 
-const validations = (sales) =>
-  sales.some(({ productId, quantity }) => {
-    if (!ObjectId.isValid(productId)) return true;
-    if (quantity < 1 || typeof quantity !== 'number') return true;
-    return false;
+const createSale = async (saleList) => {
+  const checkSales = saleList.map(async (sale) => {
+    const validProduct = ObjectId.isValid(sale.productId);
+    if (!validProduct) throw { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' };
+    const productExists = await productModel.findById(sale.productId);
+    console.log(productExists);
+    if (!productExists || sale.quantity <= 0 || typeof sale.quantity !== 'number') throw { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' };
+    if (sale.quantity > productExists.quantity) throw { code: 'stock_problem', message: 'Such amount is not permitted to sell' };
+    return saleList;
   });
-
-const createSale = async (sales) => {
-  const isValid = await validations(sales);
-  console.log(isValid);
-  if (isValid) return errorMessage('invalid_data', 'Wrong product ID or invalid quantity');
-  return salesModel.insertSale(sales);
+  await Promise.all(checkSales);
+  return salesModel.insertSale(saleList);
 };
+
+// create by MauSDJ
 
 const getAllSales = async () => {
   const allSales = await salesModel.findAllSales();
