@@ -1,9 +1,23 @@
 const { ObjectId } = require('mongodb');
 const modelSales = require('../models/sales');
 const { verifyQuantitySales } = require('../midlewares/verify');
+const { getById } = require('./products');
 
 const insertNewSale = async (body) => {
-  body.forEach((array) => verifyQuantitySales(array.quantity));
+  body.forEach((product) => verifyQuantitySales(product.quantity));
+  const promissesArray = body.map((product) => getById(product.productId));
+  // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+  // Lidando com array de promises
+  const resolvedArr = await Promise.all(promissesArray);
+  console.log(resolvedArr);
+  const verifyQty = resolvedArr.some((product, index) => body[index].quantity > product.quantity);
+  if (verifyQty) {
+    throw {
+      status: 404,
+      code: 'stock_problem',
+      message: 'Such amount is not permitted to sell',
+    };
+  }
   const newSale = await modelSales.insertNewSale({ itensSold: body });
   return newSale;
 };
