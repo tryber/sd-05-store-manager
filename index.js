@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 const productsController = require('./controllers/productsController');
 
+const salesController = require('./controllers/sales.Controllers');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -18,6 +20,8 @@ app.get('/', (request, response) => {
 // =======================================================
 
 app.use('/products', productsController);
+
+app.use('/sales', salesController);
 
 app.listen(PORT, () => {
   console.log(`Todo mundo odeia o Chris na porta ${PORT}`);
