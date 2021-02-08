@@ -1,5 +1,6 @@
 // camada situada entre controller e model
 // Responsável pela logica de negocio
+const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 
 function erros(code, message) {
@@ -33,6 +34,18 @@ const create = async (name, quantity) => {
   return productModel.create(name, quantity);
 };
 
+const showById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return erros('invalid_data', 'Wrong id format');
+  }
+  const productById = await productModel.showById(id);
+  if (!productById) {
+    return erros('invalid_data', 'Wrong id format');
+  }
+  return productById;
+};
+
 module.exports = {
   create,
+  showById,
 };
