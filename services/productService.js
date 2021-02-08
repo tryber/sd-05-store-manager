@@ -47,7 +47,7 @@ const atualizar = async (id, name, quantity) => {
   }
 
   await productModel.atualizar(id, name, quantity);
-  return ({ _id: ObjectId(id), name, quantity });
+  return { _id: ObjectId(id), name, quantity };
 };
 
 const showById = async (id) => {
@@ -61,9 +61,23 @@ const showById = async (id) => {
   return productById;
 };
 
+const del = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return erros('invalid_data', 'Wrong id format');
+  }
+  const buscaProd = await productModel.showById(id);
+  if (!buscaProd) {
+    return erros('invalid_data', 'Wrong id format');
+  }
+
+  await productModel.deletar(id);
+  return buscaProd;
+};
+
 module.exports = {
   create,
   showById,
   atualizar,
   verificar,
+  del,
 };

@@ -58,4 +58,16 @@ prodRoute.put(
   }),
 );
 
+prodRoute.delete(
+  '/:id',
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const response = await services.del(id);
+    if (response.err && response.err.code === 'invalid_data') {
+      return res.status(422).json(response);
+    }
+    return res.status(200).json(delProd);
+  }),
+);
+
 module.exports = prodRoute;

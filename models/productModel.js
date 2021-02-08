@@ -22,10 +22,13 @@ const showById = async (id) =>
 
 const showAll = async () => getCollection('products').then((products) => products.find().toArray());
 
+const deletar = async (id) => getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   create,
   productByName,
   showById,
   showAll,
   atualizar,
+  deletar,
 };
