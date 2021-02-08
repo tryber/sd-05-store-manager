@@ -34,6 +34,7 @@ const create = async (name, quantity) => {
   if (valido !== true) {
     return valido;
   }
+  console.log('guis gooooooodinho');
 
   const productOk = await productModel.productByName(name);
 
