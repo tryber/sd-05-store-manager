@@ -4,6 +4,8 @@ const service = require('../services/salesService');
 
 const router = Router();
 
+const middleware = require('../middleware/check');
+
 router.get('/', async (_req, res) => {
   const sales = await service.getAll();
 
@@ -26,7 +28,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', middleware, async (req, res) => {
   try {
     const { body } = req;
     const newSale = await service.create(body);
