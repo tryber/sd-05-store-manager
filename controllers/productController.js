@@ -6,42 +6,56 @@ const rescue = require('express-rescue');
 const services = require('../services/productService');
 const productModels = require('../models/productModel');
 
-const route = Router();
+const prodRoute = Router();
 
-route.post(
+prodRoute.post(
   '/',
   rescue(async (req, res) => {
     const { name, quantity } = req.body;
     // const { id } = req.params;
 
-    const newProduct = await services.create(name, quantity);
+    const response = await services.create(name, quantity);
 
-    if (newProduct.err && newProduct.err.code === 'invalid_data') {
-      return res.status(422).json(newProduct);
+    if (response.err && response.err.code === 'invalid_data') {
+      return res.status(422).json(response);
     }
-    return res.status(201).json(newProduct);
+    return res.status(201).json(response);
   }),
 );
 
-route.get(
+prodRoute.get(
   '/',
-  rescue(async (req, res) => {
+  rescue(async (_req, res) => {
     const products = await productModels.showAll();
     return res.status(200).json({ products });
   }),
 );
 
-route.get(
+prodRoute.get(
   '/:id',
   rescue(async (req, res) => {
     const { id } = req.params;
-    const resId = await services.showById(id);
-    if (resId.err && resId.er.code === 'invalid_data') {
-      console.log(resId.err);
-      return res.status(422).json(resId);
+    const response = await services.showById(id);
+    if (response.err && response.er.code === 'invalid_data') {
+      console.log(response.err);
+      return res.status(422).json(response);
     }
-    return res.status(200).json(resId);
+    return res.status(200).json(response);
   }),
 );
 
-module.exports = route;
+prodRoute.put(
+  '/:id',
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+
+    const response = await services.update(id, name, quantity);
+    if (response.err && response.err.code === 'invalid_data') {
+      return res.status(422).json(response);
+    }
+    return res.status(200).json(response);
+  }),
+);
+
+module.exports = prodRoute;

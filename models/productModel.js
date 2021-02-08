@@ -12,6 +12,11 @@ const create = async (name, quantity) =>
     .then((products) => products.insertOne({ name, quantity }))
     .then((result) => ({ _id: result.insertId, name, quantity }));
 
+const atualizar = async (id, name, quantity) =>
+  getCollection('products').then((products) =>
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
+  );
+
 const showById = async (id) =>
   getCollection('products').then((products) => products.findOne(ObjectId(id)));
 
@@ -22,4 +27,5 @@ module.exports = {
   productByName,
   showById,
   showAll,
+  atualizar,
 };

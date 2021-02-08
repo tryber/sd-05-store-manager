@@ -12,7 +12,7 @@ function erros(code, message) {
   };
 }
 
-const create = async (name, quantity) => {
+const verificar = async (name, quantity) => {
   if (typeof name !== 'string' || name.length < 5) {
     return erros('invalid_data', '"name" length must be at least 5 characters long');
   }
@@ -24,14 +24,30 @@ const create = async (name, quantity) => {
   if (typeof quantity !== 'number') {
     return erros('invalid_data', '"quantity" must be a number');
   }
+  return true;
+};
 
+const create = async (name, quantity) => {
+  const valido = await verificar(name, quantity);
+  if (valido !== true) {
+    return valido;
+  }
   const productExist = await productModel.productByName(name);
-
   if (productExist) {
     return erros('invalid_data', 'Product already exists');
   }
 
   return productModel.create(name, quantity);
+};
+
+const atualizar = async (id, name, quantity) => {
+  const valido = await verificar(name, quantity);
+  if (valido !== true) {
+    return valido;
+  }
+
+  await productModel.atualizar(id, name, quantity);
+  return ({ _id: ObjectId(id), name, quantity });
 };
 
 const showById = async (id) => {
@@ -48,4 +64,6 @@ const showById = async (id) => {
 module.exports = {
   create,
   showById,
+  atualizar,
+  verificar,
 };
