@@ -27,7 +27,7 @@ productRoute.post(
 productRoute.get(
   '/',
   rescue(async (_req, res) => {
-    const products = await productModel.getAll();
+    const products = await productModel.showAll();
 
     return res.status(200).json({ products });
   }),

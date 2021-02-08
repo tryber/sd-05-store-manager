@@ -76,7 +76,7 @@ saleRoute.delete(
     const { id } = req.params;
 
     try {
-      const response = await services.excluirVenda(id);
+      const response = await services.excluir(id);
       return res.status(200).json(response);
     } catch (err) {
       if (err.code === 'invalid_data') {
