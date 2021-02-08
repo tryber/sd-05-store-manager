@@ -3,71 +3,78 @@
 
 const { Router } = require('express');
 const rescue = require('express-rescue');
+
+const productModel = require('../models/productModel');
 const services = require('../services/productService');
-const productModels = require('../models/productModel');
 
-const prodRoute = Router();
+const productRoute = Router();
 
-prodRoute.post(
+productRoute.post(
   '/',
   rescue(async (req, res) => {
     const { name, quantity } = req.body;
-    // const { id } = req.params;
 
     const response = await services.create(name, quantity);
 
     if (response.err && response.err.code === 'invalid_data') {
       return res.status(422).json(response);
     }
+
     return res.status(201).json(response);
   }),
 );
 
-prodRoute.get(
+productRoute.get(
   '/',
   rescue(async (_req, res) => {
-    const products = await productModels.showAll();
+    const products = await productModel.getAll();
+
     return res.status(200).json({ products });
   }),
 );
 
-prodRoute.get(
+productRoute.get(
   '/:id',
   rescue(async (req, res) => {
     const { id } = req.params;
+
     const response = await services.showById(id);
-    if (response.err && response.er.code === 'invalid_data') {
-      console.log(response.err);
+    if (response.err && response.err.code === 'invalid_data') {
       return res.status(422).json(response);
     }
     return res.status(200).json(response);
   }),
 );
 
-prodRoute.put(
+productRoute.put(
   '/:id',
   rescue(async (req, res) => {
     const { id } = req.params;
     const { name, quantity } = req.body;
 
-    const response = await services.update(id, name, quantity);
+    const response = await services.atualizar(id, name, quantity);
+
     if (response.err && response.err.code === 'invalid_data') {
       return res.status(422).json(response);
     }
+
     return res.status(200).json(response);
   }),
 );
 
-prodRoute.delete(
+productRoute.delete(
   '/:id',
   rescue(async (req, res) => {
     const { id } = req.params;
-    const response = await services.del(id);
+
+    const response = await services.excluir(id);
+
     if (response.err && response.err.code === 'invalid_data') {
       return res.status(422).json(response);
     }
-    return res.status(200).json(delProd);
+
+    return res.status(200).json(response);
   }),
 );
 
-module.exports = prodRoute;
+module.exports = productRoute;

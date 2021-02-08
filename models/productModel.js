@@ -10,25 +10,25 @@ const productByName = async (name) =>
 const create = async (name, quantity) =>
   getCollection('products')
     .then((products) => products.insertOne({ name, quantity }))
-    .then((result) => ({ _id: result.insertId, name, quantity }));
+    .then((result) => ({ _id: result.insertedId, name, quantity }));
 
 const atualizar = async (id, name, quantity) =>
   getCollection('products').then((products) =>
-    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
-  );
+    products.updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+
+const showAll = async () => getCollection('products').then((products) => products.find().toArray());
 
 const showById = async (id) =>
   getCollection('products').then((products) => products.findOne(ObjectId(id)));
 
-const showAll = async () => getCollection('products').then((products) => products.find().toArray());
-
-const deletar = async (id) => getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
+const deletar = async (id) =>
+  getCollection('products').then((products) => products.deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   create,
   productByName,
-  showById,
   showAll,
+  showById,
   atualizar,
   deletar,
 };

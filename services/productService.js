@@ -1,5 +1,6 @@
 // camada situada entre controller e model
 // Responsável pela logica de negocio
+
 const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 
@@ -24,6 +25,7 @@ const verificar = async (name, quantity) => {
   if (typeof quantity !== 'number') {
     return erros('invalid_data', '"quantity" must be a number');
   }
+
   return true;
 };
 
@@ -32,8 +34,10 @@ const create = async (name, quantity) => {
   if (valido !== true) {
     return valido;
   }
-  const productExist = await productModel.productByName(name);
-  if (productExist) {
+
+  const productOk = await productModel.findProductByName(name);
+
+  if (productOk) {
     return erros('invalid_data', 'Product already exists');
   }
 
@@ -42,6 +46,7 @@ const create = async (name, quantity) => {
 
 const atualizar = async (id, name, quantity) => {
   const valido = await verificar(name, quantity);
+
   if (valido !== true) {
     return valido;
   }
@@ -54,30 +59,35 @@ const showById = async (id) => {
   if (!ObjectId.isValid(id)) {
     return erros('invalid_data', 'Wrong id format');
   }
+
   const productById = await productModel.showById(id);
+
   if (!productById) {
     return erros('invalid_data', 'Wrong id format');
   }
+
   return productById;
 };
 
-const del = async (id) => {
+const excluir = async (id) => {
   if (!ObjectId.isValid(id)) {
     return erros('invalid_data', 'Wrong id format');
   }
-  const buscaProd = await productModel.showById(id);
-  if (!buscaProd) {
+  const showProduct = await productModel.showById(id);
+
+  if (!showProduct) {
     return erros('invalid_data', 'Wrong id format');
   }
 
-  await productModel.deletar(id);
-  return buscaProd;
+  await productModel.excluir(id);
+
+  return showProduct;
 };
 
 module.exports = {
+  verificar,
   create,
   showById,
   atualizar,
-  verificar,
-  del,
+  excluir,
 };
