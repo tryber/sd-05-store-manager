@@ -3,9 +3,9 @@ const saleModel = require('../models/saleModel');
 const productModel = require('../models/productModel');
 
 const create = async (allSale) => {
+  console.log(allSale);
   const verificaVenda = allSale.map(async (sale) => {
     const productOk = ObjectId.isValid(sale.productId);
-
     if (!productOk) {
       throw {
         code: 'invalid_data',
