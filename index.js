@@ -1,28 +1,28 @@
+// DEPENDENCIAS
 const express = require('express');
 const bodyParser = require('body-parser');
+// const rescue = require('express-rescue');
+require('dotenv').config();
 
-const productsRouter = require('./controllers/products.controller');
-const salesRouter = require('./controllers/sales.controller');
-
+// IMPORTACOES
 const app = express();
 
 app.use(bodyParser.json());
-app.use('/products', productsRouter);
-app.use('/sales', salesRouter);
 
-// não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_req, res) => {
-  res.send();
+const prodController = require('./controllers/productsController');
+const salesController = require('./controllers/salesController');
+
+// ENDPOINTS
+// 0 - Não remova esse endpoint, é para o avaliador funcionar
+app.get('/', (request, response) => {
+  response.send();
 });
 
-const errorMiddleware = (err, _res, req, _next) => {
-  // error body format required: { err: { message: 'Error message', code: 'error_code' } }
-  const { status, ...body } = err;
-  req.status(status || 500).json({ err: body });
-};
+app.use('/products', prodController);
+// Todos paths dos endpoints escritos no productsController vão começar com /products
+app.use('/sales', salesController);
 
-app.use(errorMiddleware);
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => console.log(`Online on ${PORT}`));
+// PORT LISTENER
+// const PORT = process.env.PORT || 3000;
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Sweet dreams are made of ${PORT} port (and baguettes!)`));
