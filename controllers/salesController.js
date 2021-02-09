@@ -5,9 +5,10 @@ const salesRouter = Router();
 const salesService = require('../services/salesService');
 
 const salesModel = require('../models/salesModel');
+const checkStock = require('../middlewares/checkStock');
 
 // 5 - Crie um endpoint para cadastrar vendas
-salesRouter.post('/', async (req, res) => {
+salesRouter.post('/', checkStock, async (req, res) => {
   const salesList = req.body; // dessa vez, é um array de objetos
   try {
     const saleCreated = await salesService.create(salesList);
