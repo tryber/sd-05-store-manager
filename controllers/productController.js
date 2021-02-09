@@ -23,7 +23,7 @@ productRoute.post(
 
       return res.status(201).json(response);
     } catch (e) {
-      res.status(500).json(e.message);
+      return res.status(500).json(e.message);
     }
   }),
 );
@@ -36,7 +36,7 @@ productRoute.get(
 
       return res.status(200).json({ products });
     } catch (e) {
-      res.status(500).json(e.message);
+      return res.status(500).json(e.message);
     }
   }),
 );
@@ -53,7 +53,7 @@ productRoute.get(
       }
       return res.status(200).json(response);
     } catch (e) {
-      res.status(500).json(e.message);
+      return res.status(500).json(e.message);
     }
   }),
 );
@@ -73,7 +73,7 @@ productRoute.put(
 
       return res.status(200).json(response);
     } catch (e) {
-      res.status(500).json(e.message);
+      return res.status(500).json(e.message);
     }
   }),
 );
@@ -92,7 +92,7 @@ productRoute.delete(
 
       return res.status(200).json(response);
     } catch (e) {
-      res.status(500).json(e.message);
+      return res.status(500).json(e.message);
     }
   }),
 );

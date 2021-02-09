@@ -20,7 +20,6 @@ saleRoute.post(
       if (err.code === 'stock_problem') {
         return res.status(404).json({ err });
       }
-      res.status(500).json(err.message);
     }
   }),
 );
@@ -33,7 +32,7 @@ saleRoute.get(
 
       return res.status(200).json({ sales });
     } catch (err) {
-      res.status(500).json(err.message);
+      return res.status(500).json(err.message);
     }
   }),
 );
@@ -50,7 +49,7 @@ saleRoute.get(
       if (err.code === 'not_found') {
         return res.status(404).json({ err });
       }
-      res.status(500).json(err.message);
+      return res.status(500).json(err.message);
     }
   }),
 );
@@ -71,7 +70,7 @@ saleRoute.put(
       if (err.code === 'invalid_data') {
         return res.status(422).json({ err });
       }
-      res.status(500).json(err.message);
+      return res.status(500).json(err.message);
     }
   }),
 );
@@ -88,7 +87,7 @@ saleRoute.delete(
       if (err.code === 'invalid_data') {
         return res.status(422).json({ err });
       }
-      res.status(500).json(err.message);
+      return res.status(500).json(err.message);
     }
   }),
 );
