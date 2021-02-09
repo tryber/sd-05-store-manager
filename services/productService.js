@@ -80,7 +80,7 @@ const excluir = async (id) => {
     return erros('invalid_data', 'Wrong id format');
   }
 
-  await productModel.excluir(id);
+  await productModel.deletar(id);
 
   return showProduct;
 };

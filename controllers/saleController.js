@@ -10,7 +10,6 @@ saleRoute.post(
   '/',
   rescue(async (req, res) => {
     const allSale = req.body;
-
     try {
       const response = await services.create(allSale);
       return res.status(200).json(response);
@@ -28,9 +27,13 @@ saleRoute.post(
 saleRoute.get(
   '/',
   rescue(async (_req, res) => {
-    const sales = await saleModel.showAll();
+    try {
+      const sales = await saleModel.showAll();
 
-    return res.status(200).json({ sales });
+      return res.status(200).json({ sales });
+    } catch (e) {
+      res.status(500).json(err.message);
+    }
   }),
 );
 
@@ -46,6 +49,7 @@ saleRoute.get(
       if (err.code === 'not_found') {
         return res.status(404).json({ err });
       }
+      res.status(500).json(err.message);
     }
   }),
 );
@@ -66,6 +70,7 @@ saleRoute.put(
       if (err.code === 'invalid_data') {
         return res.status(422).json({ err });
       }
+      res.status(500).json(err.message);
     }
   }),
 );
@@ -82,6 +87,7 @@ saleRoute.delete(
       if (err.code === 'invalid_data') {
         return res.status(422).json({ err });
       }
+      res.status(500).json(err.message);
     }
   }),
 );
