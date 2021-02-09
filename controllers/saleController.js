@@ -20,6 +20,7 @@ saleRoute.post(
       if (err.code === 'stock_problem') {
         return res.status(404).json({ err });
       }
+      res.status(500).json(err.message);
     }
   }),
 );
