@@ -1,11 +1,9 @@
 const { ObjectID } = require('mongodb');
 const connection = require('./connection');
 
-const getCollection = async () => connection('sales');
-
 const register = async (itensSold) => {
   try {
-    const collection = await getCollection();
+    const collection = await connection('sales');
     const { ops: [response] } = await collection.insertOne({ itensSold });
     return response;
   } catch (error) {
@@ -16,7 +14,7 @@ const register = async (itensSold) => {
 
 const list = async ({ id }) => {
   try {
-    const collection = await getCollection();
+    const collection = await connection('sales');
     return id
       ? await collection.findOne({ _id: ObjectID(id) })
       : { sales: await collection.find().toArray() };
@@ -26,12 +24,21 @@ const list = async ({ id }) => {
   }
 };
 
+const update = async (id, productId, quantity) => {
+  const collection = await connection('sales');
+  const sale = await collection.updateOne(
+    { _id: ObjectID(id), 'itensSold.productId': productId },
+    { $set: { 'itensSold[0].quantity': quantity } },
+  );
+  return sale;
+};
+
 const saleDelete = async (id) => {
   try {
-    const collection = await getCollection();
+    const collection = await connection('sales');
     const sale = await list({ id });
     if (!await collection.deleteOne({ _id: ObjectID(id) })) {
-      throw new Error('Sale dont exists');
+      throw new Error('Sale don\'t exists');
     }
     return sale;
   } catch (error) {
@@ -43,5 +50,6 @@ const saleDelete = async (id) => {
 module.exports = {
   register,
   list,
+  update,
   saleDelete,
 };

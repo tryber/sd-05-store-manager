@@ -1,9 +1,11 @@
 const Joi = require('@hapi/joi');
+const { ObjectID } = require('mongodb');
 // const { ObjectID } = require('mongodb');
 // const connection = require('../models/connection');
 const {
   register,
   list,
+  update,
   saleDelete,
 } = require('../models/sales.model');
 
@@ -23,8 +25,6 @@ const NOT_FOUND = {
   code: 'not_found',
   status: 404,
 };
-
-// const getCollection = async (name) => connection(name);
 
 const registerSales = async (req, _res, next) => {
   const itensSold = req.body;
@@ -50,6 +50,48 @@ const listSales = async (req, _res, next) => {
   }
 };
 
+const updateSale = async (id, name, quantity) => {
+  if (!id) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  if (!ObjectID.isValid(id)) {
+    throw {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
+  if (!name) {
+    throw {
+      code: 'invalid_data',
+      message: '"name" should exist',
+    };
+  }
+  if (name.length <= 5) {
+    throw {
+      code: 'invalid_data',
+      message: '"name" length must be at least 5 characters long',
+    };
+  }
+  if (quantity <= 0) {
+    throw {
+      code: 'invalid_data',
+      message: '"quantity" must be larger than or equal to 1',
+    };
+  }
+  if (!quantity || (typeof quantity !== 'number') || !Number.isInteger(quantity)) {
+    throw {
+      code: 'invalid_data',
+      message: '"quantity" must be a number',
+    };
+  }
+  await update(id, name, quantity);
+
+  return { name, quantity };
+};
+
 const deleteSale = async (req, _res, next) => {
   const { id } = req.params;
   try {
@@ -65,5 +107,6 @@ const deleteSale = async (req, _res, next) => {
 module.exports = {
   registerSales,
   listSales,
+  updateSale,
   deleteSale,
 };
