@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const productsRouter = require('./controllers/products.controller');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use('/products', productsRouter);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_req, res) => {
@@ -11,7 +13,7 @@ app.get('/', (_req, res) => {
 });
 
 const errorMiddleware = (err, _res, req, _next) => {
-  // error body format required: { error: { message: 'Error message', code: 'error_code' } }
+  // error body format required: { err: { message: 'Error message', code: 'error_code' } }
   const { status, ...body } = err;
   req.status(status || 500).json({ err: body });
 };
