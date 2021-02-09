@@ -31,7 +31,7 @@ saleRoute.get(
       const sales = await saleModel.showAll();
 
       return res.status(200).json({ sales });
-    } catch (e) {
+    } catch (err) {
       res.status(500).json(err.message);
     }
   }),
