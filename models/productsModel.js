@@ -28,12 +28,11 @@ const updateProduct = async ({ id, name, quantity }) => {
 };
 
 const deleteProduct = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
-
-  const deleteId = await getCollection('products').then((product) => {
-    product.deleteOne({ _id: ObjectId(id) });
+  const product = await getByProductId(id);
+  await getCollection('products').then((producto) => {
+    producto.deleteOne({ _id: ObjectId(id) });
   });
-  return deleteId;
+  return product;
 };
 
 module.exports = {

@@ -2,9 +2,9 @@ const { MongoClient } = require('mongodb');
 
 const DB_NAME = 'StoreManager';
 //  local
-const DB_URI = `mongodb://localhost:27017/${DB_NAME}`;
+// const DB_URI = `mongodb://localhost:27017/${DB_NAME}`;
 //  remoto
-// const MONGO_DB_URL = `mongodb://mongodb:27017/${DB_NAME}`;
+const DB_URI = `mongodb://mongodb:27017/${DB_NAME}`;
 
 let connection = null;
 

@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const productsModel = require('../models/productsModel');
 
 const createProduct = async ({ name, quantity }) => {
@@ -26,7 +27,7 @@ const createProduct = async ({ name, quantity }) => {
   if (productExists) {
     return {
       code: 'invalid_data',
-      message: 'A product already exists',
+      message: 'Product already exists',
     };
   }
 
@@ -35,6 +36,14 @@ const createProduct = async ({ name, quantity }) => {
 };
 
 const getById = async (id) => {
+  try {
+    ObjectId(id);
+  } catch (error) {
+    return {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    };
+  }
   const productListId = await productsModel.getByProductId(id);
   if (!productListId) {
     return {
@@ -42,17 +51,15 @@ const getById = async (id) => {
       message: 'Wrong id format',
     };
   }
-
   return productListId;
 };
 
-const getAll = async () => {
-  await productsModel.getAllProducts();
-};
+const getAll = async () => productsModel.getAllProducts();
 
-const update = async (id, name, quantity) => {
+const update = async ({ id, name, quantity }) => {
   const updateId = await productsModel.updateProduct({ id, name, quantity });
   if (name.length < 5) {
+    console.log('tinha q dar ruim');
     return {
       code: 'invalid_data',
       message: '"name" length must be at least 5 characters long',
@@ -74,14 +81,14 @@ const update = async (id, name, quantity) => {
   }
 
   const productExists = await productsModel.getProductByName(name);
-  if (productExists) {
+  if (!productExists) {
     return {
       code: 'invalid_data',
-      message: 'A product already exists',
+      message: 'Product already exists',
     };
   }
 
-  if (!id) {
+  if (!ObjectId(id)) {
     return {
       code: 'invalid_data',
       message: 'Wrong id format',
@@ -91,13 +98,15 @@ const update = async (id, name, quantity) => {
 };
 
 const deleteId = async (id) => {
-  const deleteIt = await productsModel.deleteProduct(id);
-  if (!id) {
+  try {
+    ObjectId(id);
+  } catch (error) {
     return {
       code: 'invalid_data',
       message: 'Wrong id format',
     };
   }
+  const deleteIt = await productsModel.deleteProduct(id);
   return deleteIt;
 };
 
